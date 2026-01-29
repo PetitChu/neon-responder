@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 5075397cd92b5e94c9a595e021a0e596
+AssemblyDefinitionImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 157716
+  packageName: Hierarchy Folders
+  packageVersion: 1.3.0
+  assetPath: Packages/com.sisus.hierarchy-folders/Scripts/Editor/Sisus.HierarchyFolders.Editor.asmdef
+  uploadId: 823838

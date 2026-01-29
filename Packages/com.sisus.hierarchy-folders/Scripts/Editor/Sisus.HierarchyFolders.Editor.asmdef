@@ -1,0 +1,19 @@
+{
+    "name": "Sisus.HierarchyFolders.Editor",
+    "rootNamespace": "",
+    "references": [
+        "Sisus.HierarchyFolders",
+        "Unity.InternalAPIEditorBridgeDev.004"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

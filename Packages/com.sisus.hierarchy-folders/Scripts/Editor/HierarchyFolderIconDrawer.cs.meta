@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: e59ac3b2ff050dd46abe95d1d99dddfd
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 157716
+  packageName: Hierarchy Folders
+  packageVersion: 1.3.0
+  assetPath: Packages/com.sisus.hierarchy-folders/Scripts/Editor/HierarchyFolderIconDrawer.cs
+  uploadId: 823838
