@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 4d610ecb47448aa4980d0bd849691d49
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 207724
+  packageName: Runtime Utilities
+  packageVersion: 2.0.3
+  assetPath: Assets/DTT/Runtime Utilities/Tests/Editor/Test_RichTextExtensions.cs
+  uploadId: 508879

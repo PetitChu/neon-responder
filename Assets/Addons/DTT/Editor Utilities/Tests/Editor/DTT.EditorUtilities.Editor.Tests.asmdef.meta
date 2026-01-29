@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: d1f0998129e05f946a9c59e552159836
+AssemblyDefinitionImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 208540
+  packageName: Editor Utilities
+  packageVersion: 3.2.1
+  assetPath: Assets/DTT/Editor Utilities/Tests/Editor/DTT.EditorUtilities.Editor.Tests.asmdef
+  uploadId: 504045

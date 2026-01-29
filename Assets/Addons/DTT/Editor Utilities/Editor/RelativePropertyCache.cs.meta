@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: c363b07b0f2eb514ba6be90fb8e9158f
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 208540
+  packageName: Editor Utilities
+  packageVersion: 3.2.1
+  assetPath: Assets/DTT/Editor Utilities/Editor/RelativePropertyCache.cs
+  uploadId: 504045

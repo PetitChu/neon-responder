@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 47cef90829ab1f44b8f109fa78b63567
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 208540
+  packageName: Editor Utilities
+  packageVersion: 3.2.1
+  assetPath: Assets/DTT/Runtime Utilities/Runtime/Optimization/LazyValueDictionary.cs
+  uploadId: 504045

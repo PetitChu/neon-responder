@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: f09cf3b8ff6c84442bfea48edad36f2f
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 207724
+  packageName: Runtime Utilities
+  packageVersion: 2.0.3
+  assetPath: Assets/DTT/Runtime Utilities/Tests/Editor/Test_TypeExtensions.cs
+  uploadId: 508879

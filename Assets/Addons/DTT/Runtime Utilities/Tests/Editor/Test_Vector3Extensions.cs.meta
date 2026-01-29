@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: fcd7881ccc6eec94baff7a7149603c8b
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 207724
+  packageName: Runtime Utilities
+  packageVersion: 2.0.3
+  assetPath: Assets/DTT/Runtime Utilities/Tests/Editor/Test_Vector3Extensions.cs
+  uploadId: 508879

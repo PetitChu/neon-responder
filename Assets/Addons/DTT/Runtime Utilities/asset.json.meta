@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 778f8fe84557f64469afbc0d3d53dd2e
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 207724
+  packageName: Runtime Utilities
+  packageVersion: 2.0.3
+  assetPath: Assets/DTT/Runtime Utilities/asset.json
+  uploadId: 508879

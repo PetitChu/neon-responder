@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: a701e0350881f7c44836dc6c9c8be064
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 207724
+  packageName: Runtime Utilities
+  packageVersion: 2.0.3
+  assetPath: Assets/DTT/Runtime Utilities/Tests/Editor/Test_LazyDictionaryBase.cs
+  uploadId: 508879
