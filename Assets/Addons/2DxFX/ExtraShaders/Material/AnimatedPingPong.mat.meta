@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 8e646474e4723334fb6f840dc21e10dc
+timeCreated: 1537884663
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 42566
+  packageName: '2DxFX: 2D Sprite FX'
+  packageVersion: 3.1.0
+  assetPath: Assets/2DxFX/ExtraShaders/Material/AnimatedPingPong.mat
+  uploadId: 399770

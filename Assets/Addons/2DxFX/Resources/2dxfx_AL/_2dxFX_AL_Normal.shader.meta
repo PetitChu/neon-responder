@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 50621b8f1b2baaf408f23915ff4e270b
+timeCreated: 1529660429
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 42566
+  packageName: '2DxFX: 2D Sprite FX'
+  packageVersion: 3.1.0
+  assetPath: Assets/2DxFX/Resources/2dxfx_AL/_2dxFX_AL_Normal.shader
+  uploadId: 399770

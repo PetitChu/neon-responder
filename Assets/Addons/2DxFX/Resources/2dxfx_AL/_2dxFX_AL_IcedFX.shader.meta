@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 1f9d4efa3dfa5914496ae7b910bd6a86
+timeCreated: 1529660419
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 42566
+  packageName: '2DxFX: 2D Sprite FX'
+  packageVersion: 3.1.0
+  assetPath: Assets/2DxFX/Resources/2dxfx_AL/_2dxFX_AL_IcedFX.shader
+  uploadId: 399770

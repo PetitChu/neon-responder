@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 9ec0d369db2b532418791e8f7298d08c
+timeCreated: 1529660447
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 42566
+  packageName: '2DxFX: 2D Sprite FX'
+  packageVersion: 3.1.0
+  assetPath: Assets/2DxFX/Resources/2dxfx_AL/_2dxFX_AL_PlasmaRainbow.shader
+  uploadId: 399770

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 95c0fbefc152a594a913e10b217a6561
+timeCreated: 1529660389
+licenseType: Store
+DefaultImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 42566
+  packageName: '2DxFX: 2D Sprite FX'
+  packageVersion: 3.1.0
+  assetPath: Assets/2DxFX/Examples/Scenes/Example_Flame.unity
+  uploadId: 399770

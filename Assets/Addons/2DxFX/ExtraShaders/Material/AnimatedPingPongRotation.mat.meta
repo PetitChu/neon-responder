@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 9db58edf1afb51845aca09c88902e631
+timeCreated: 1537945339
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 42566
+  packageName: '2DxFX: 2D Sprite FX'
+  packageVersion: 3.1.0
+  assetPath: Assets/2DxFX/ExtraShaders/Material/AnimatedPingPongRotation.mat
+  uploadId: 399770

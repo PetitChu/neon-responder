@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: dd705e280a884fc499190318027f767b
+timeCreated: 1542019638
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 42566
+  packageName: '2DxFX: 2D Sprite FX'
+  packageVersion: 3.1.0
+  assetPath: Assets/2DxFX/ExtraShaders/Shader/ColorDarkness.shader
+  uploadId: 399770

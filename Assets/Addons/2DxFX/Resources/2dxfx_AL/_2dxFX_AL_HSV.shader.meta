@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 650ced8851fa15b42b1a8a310d8106e0
+timeCreated: 1529660434
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 42566
+  packageName: '2DxFX: 2D Sprite FX'
+  packageVersion: 3.1.0
+  assetPath: Assets/2DxFX/Resources/2dxfx_AL/_2dxFX_AL_HSV.shader
+  uploadId: 399770

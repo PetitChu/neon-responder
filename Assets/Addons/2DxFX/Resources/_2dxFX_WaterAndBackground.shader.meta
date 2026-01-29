@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 14178bcf6367aa447af5bb07fe30f542
+timeCreated: 1529660415
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 42566
+  packageName: '2DxFX: 2D Sprite FX'
+  packageVersion: 3.1.0
+  assetPath: Assets/2DxFX/Resources/_2dxFX_WaterAndBackground.shader
+  uploadId: 399770

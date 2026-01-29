@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: b93bc70dbb9b98c458fb66ec4c2f8123
+timeCreated: 1537970469
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 42566
+  packageName: '2DxFX: 2D Sprite FX'
+  packageVersion: 3.1.0
+  assetPath: Assets/2DxFX/ExtraShaders/Material/BreakingMirror.mat
+  uploadId: 399770

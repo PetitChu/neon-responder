@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: e4902c6983700bb45857a32e3d6365e1
+timeCreated: 1529660462
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 42566
+  packageName: '2DxFX: 2D Sprite FX'
+  packageVersion: 3.1.0
+  assetPath: Assets/2DxFX/Resources/_2dxFX_Hologram2.shader
+  uploadId: 399770

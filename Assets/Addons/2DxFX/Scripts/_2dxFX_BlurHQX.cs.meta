@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 0b2038115cff7df438309b03b20a5131
+timeCreated: 1529660390
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 42566
+  packageName: '2DxFX: 2D Sprite FX'
+  packageVersion: 3.1.0
+  assetPath: Assets/2DxFX/Scripts/_2dxFX_BlurHQX.cs
+  uploadId: 399770

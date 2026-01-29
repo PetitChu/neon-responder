@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 1a7aaa4ebafbc6d4290d77a15a90bcd0
+timeCreated: 1537970350
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 42566
+  packageName: '2DxFX: 2D Sprite FX'
+  packageVersion: 3.1.0
+  assetPath: Assets/2DxFX/ExtraShaders/Material/AnimatedBurn.mat
+  uploadId: 399770

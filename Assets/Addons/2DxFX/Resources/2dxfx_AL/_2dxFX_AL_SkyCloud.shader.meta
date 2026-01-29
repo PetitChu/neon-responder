@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 19ee865377cb8fe459e28dfb0057a681
+timeCreated: 1529660417
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 42566
+  packageName: '2DxFX: 2D Sprite FX'
+  packageVersion: 3.1.0
+  assetPath: Assets/2DxFX/Resources/2dxfx_AL/_2dxFX_AL_SkyCloud.shader
+  uploadId: 399770

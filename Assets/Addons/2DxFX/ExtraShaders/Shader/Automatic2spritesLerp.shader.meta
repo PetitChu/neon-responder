@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 3cdf2c4a762ad3a4eb0b55de184d304e
+timeCreated: 1542019634
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 42566
+  packageName: '2DxFX: 2D Sprite FX'
+  packageVersion: 3.1.0
+  assetPath: Assets/2DxFX/ExtraShaders/Shader/Automatic2spritesLerp.shader
+  uploadId: 399770

@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: b677c954268f0b540b56afc6725ad2de
+timeCreated: 1542019637
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 42566
+  packageName: '2DxFX: 2D Sprite FX'
+  packageVersion: 3.1.0
+  assetPath: Assets/2DxFX/ExtraShaders/Shader/HolographicTint.shader
+  uploadId: 399770

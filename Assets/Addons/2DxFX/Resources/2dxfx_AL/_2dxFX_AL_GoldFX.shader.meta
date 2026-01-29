@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: e4ff7909ae227524ca97df27eee4af1c
+timeCreated: 1529660463
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 42566
+  packageName: '2DxFX: 2D Sprite FX'
+  packageVersion: 3.1.0
+  assetPath: Assets/2DxFX/Resources/2dxfx_AL/_2dxFX_AL_GoldFX.shader
+  uploadId: 399770

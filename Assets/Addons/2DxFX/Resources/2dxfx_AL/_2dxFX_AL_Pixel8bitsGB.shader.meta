@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: a61a8ffa96f969f43b4992778d99f522
+timeCreated: 1529660450
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 42566
+  packageName: '2DxFX: 2D Sprite FX'
+  packageVersion: 3.1.0
+  assetPath: Assets/2DxFX/Resources/2dxfx_AL/_2dxFX_AL_Pixel8bitsGB.shader
+  uploadId: 399770

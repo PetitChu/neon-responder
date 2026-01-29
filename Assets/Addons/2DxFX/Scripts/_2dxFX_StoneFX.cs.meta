@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: fbc2865745da8f7448873f7b7227c22d
+timeCreated: 1529660394
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 42566
+  packageName: '2DxFX: 2D Sprite FX'
+  packageVersion: 3.1.0
+  assetPath: Assets/2DxFX/Scripts/_2dxFX_StoneFX.cs
+  uploadId: 399770

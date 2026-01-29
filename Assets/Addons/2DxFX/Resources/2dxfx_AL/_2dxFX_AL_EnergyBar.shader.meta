@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: b20af1734e6bb6e468332fbdea44c642
+timeCreated: 1529660455
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 42566
+  packageName: '2DxFX: 2D Sprite FX'
+  packageVersion: 3.1.0
+  assetPath: Assets/2DxFX/Resources/2dxfx_AL/_2dxFX_AL_EnergyBar.shader
+  uploadId: 399770

@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 4e3d00412b491ed46b5623ad5afdce3a
+timeCreated: 1529660427
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 42566
+  packageName: '2DxFX: 2D Sprite FX'
+  packageVersion: 3.1.0
+  assetPath: Assets/2DxFX/Resources/2dxfx_AL/_2dxFX_AL_CircleFade.shader
+  uploadId: 399770

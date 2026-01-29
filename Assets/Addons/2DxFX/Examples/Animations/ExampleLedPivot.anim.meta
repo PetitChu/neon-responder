@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 57c5262b3449b9b40946bc1e0e18dfd1
+timeCreated: 1529660466
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: -1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 42566
+  packageName: '2DxFX: 2D Sprite FX'
+  packageVersion: 3.1.0
+  assetPath: Assets/2DxFX/Examples/Animations/ExampleLedPivot.anim
+  uploadId: 399770

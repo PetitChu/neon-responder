@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: aac7379120a72794a94e8e9769ac8dd6
+timeCreated: 1529660452
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 42566
+  packageName: '2DxFX: 2D Sprite FX'
+  packageVersion: 3.1.0
+  assetPath: Assets/2DxFX/Resources/_2dxFX_GrassMultiFX.shader
+  uploadId: 399770

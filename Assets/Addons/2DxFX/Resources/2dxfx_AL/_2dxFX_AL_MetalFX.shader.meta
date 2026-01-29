@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 8a97c0bb7650e4e489b31e606aac8433
+timeCreated: 1529660442
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 42566
+  packageName: '2DxFX: 2D Sprite FX'
+  packageVersion: 3.1.0
+  assetPath: Assets/2DxFX/Resources/2dxfx_AL/_2dxFX_AL_MetalFX.shader
+  uploadId: 399770

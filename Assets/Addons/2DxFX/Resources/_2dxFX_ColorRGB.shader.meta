@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 6a5def8daa8e86e479081efa80a752c9
+timeCreated: 1529660435
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 42566
+  packageName: '2DxFX: 2D Sprite FX'
+  packageVersion: 3.1.0
+  assetPath: Assets/2DxFX/Resources/_2dxFX_ColorRGB.shader
+  uploadId: 399770

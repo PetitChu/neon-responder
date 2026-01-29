@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 44381f68d9fb14d458f83dba6392de07
+timeCreated: 1537692603
+licenseType: Store
+DefaultImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 42566
+  packageName: '2DxFX: 2D Sprite FX'
+  packageVersion: 3.1.0
+  assetPath: Assets/2DxFX/Examples/Scenes/ExtraShaders.unity
+  uploadId: 399770

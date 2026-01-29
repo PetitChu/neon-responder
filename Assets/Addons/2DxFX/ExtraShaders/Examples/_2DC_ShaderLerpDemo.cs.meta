@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+guid: 1344074fc1d0a864ea2dbdb8f5403d42
+timeCreated: 1539093247
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - mat: {fileID: 2100000, guid: 98c04aa50a773b540aaf124e4b0fddb4, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 42566
+  packageName: '2DxFX: 2D Sprite FX'
+  packageVersion: 3.1.0
+  assetPath: Assets/2DxFX/ExtraShaders/Examples/_2DC_ShaderLerpDemo.cs
+  uploadId: 399770

@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: f10d538baa768044d8d1405430746161
+timeCreated: 1542019638
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 42566
+  packageName: '2DxFX: 2D Sprite FX'
+  packageVersion: 3.1.0
+  assetPath: Assets/2DxFX/ExtraShaders/Shader/TurnLiquid.shader
+  uploadId: 399770

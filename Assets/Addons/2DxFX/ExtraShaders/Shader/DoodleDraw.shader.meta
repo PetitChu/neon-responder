@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 8bf3764d35b24d74e947dc4ef8004e54
+timeCreated: 1542019636
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 42566
+  packageName: '2DxFX: 2D Sprite FX'
+  packageVersion: 3.1.0
+  assetPath: Assets/2DxFX/ExtraShaders/Shader/DoodleDraw.shader
+  uploadId: 399770

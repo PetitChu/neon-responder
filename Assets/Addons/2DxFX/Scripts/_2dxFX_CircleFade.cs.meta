@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 14764895ad4d9354385a82af09b83dc1
+timeCreated: 1529660390
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 42566
+  packageName: '2DxFX: 2D Sprite FX'
+  packageVersion: 3.1.0
+  assetPath: Assets/2DxFX/Scripts/_2dxFX_CircleFade.cs
+  uploadId: 399770

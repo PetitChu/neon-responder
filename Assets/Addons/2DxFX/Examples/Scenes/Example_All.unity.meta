@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 242f1c5a40477524eb61baf9788ae555
+timeCreated: 1529660389
+licenseType: Store
+DefaultImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 42566
+  packageName: '2DxFX: 2D Sprite FX'
+  packageVersion: 3.1.0
+  assetPath: Assets/2DxFX/Examples/Scenes/Example_All.unity
+  uploadId: 399770

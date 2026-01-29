@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 9f6f5764ea9c1fe4eb7edce591a7c442
+timeCreated: 1529660447
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 42566
+  packageName: '2DxFX: 2D Sprite FX'
+  packageVersion: 3.1.0
+  assetPath: Assets/2DxFX/Resources/_2dxFX_EdgeColor.shader
+  uploadId: 399770

@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: d737a86d1c85e414d9d38f322165f481
+timeCreated: 1542019637
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 42566
+  packageName: '2DxFX: 2D Sprite FX'
+  packageVersion: 3.1.0
+  assetPath: Assets/2DxFX/ExtraShaders/Shader/RetroCGA.shader
+  uploadId: 399770

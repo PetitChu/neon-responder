@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 36b5905494e89644186abc68a646553b
+timeCreated: 1542019634
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 42566
+  packageName: '2DxFX: 2D Sprite FX'
+  packageVersion: 3.1.0
+  assetPath: Assets/2DxFX/ExtraShaders/Shader/Plasma.shader
+  uploadId: 399770

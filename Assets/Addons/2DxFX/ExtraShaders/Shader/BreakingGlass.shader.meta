@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 2e7d6abf4ea541648b78a2f8dfdefac9
+timeCreated: 1542019634
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 42566
+  packageName: '2DxFX: 2D Sprite FX'
+  packageVersion: 3.1.0
+  assetPath: Assets/2DxFX/ExtraShaders/Shader/BreakingGlass.shader
+  uploadId: 399770

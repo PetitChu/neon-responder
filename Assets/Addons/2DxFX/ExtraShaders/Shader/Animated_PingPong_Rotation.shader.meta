@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 096479cd77bd29a428c2c1be62b9fff1
+timeCreated: 1542019633
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 42566
+  packageName: '2DxFX: 2D Sprite FX'
+  packageVersion: 3.1.0
+  assetPath: Assets/2DxFX/ExtraShaders/Shader/Animated_PingPong_Rotation.shader
+  uploadId: 399770

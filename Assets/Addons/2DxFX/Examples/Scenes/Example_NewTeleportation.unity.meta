@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a5c8ccf8c2558a646843d5ea11581dde
+timeCreated: 1529660389
+licenseType: Store
+DefaultImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 42566
+  packageName: '2DxFX: 2D Sprite FX'
+  packageVersion: 3.1.0
+  assetPath: Assets/2DxFX/Examples/Scenes/Example_NewTeleportation.unity
+  uploadId: 399770

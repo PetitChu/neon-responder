@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 8412bcf8a08f6364bac175aa75c7f339
+timeCreated: 1542019636
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 42566
+  packageName: '2DxFX: 2D Sprite FX'
+  packageVersion: 3.1.0
+  assetPath: Assets/2DxFX/ExtraShaders/Shader/RetroEGA.shader
+  uploadId: 399770

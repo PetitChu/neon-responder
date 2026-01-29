@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: a66674fe644f9c944b85d0be884b6d99
+timeCreated: 1542019636
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 42566
+  packageName: '2DxFX: 2D Sprite FX'
+  packageVersion: 3.1.0
+  assetPath: Assets/2DxFX/ExtraShaders/Shader/Tilt_Down.shader
+  uploadId: 399770
