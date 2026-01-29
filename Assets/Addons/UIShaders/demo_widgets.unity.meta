@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: e223036c670ce0e4d924f9af992b026a
+timeCreated: 1527947138
+licenseType: Store
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 108094
+  packageName: UI Shaders
+  packageVersion: 2.2
+  assetPath: Assets/UIShaders/demo_widgets.unity
+  uploadId: 658032

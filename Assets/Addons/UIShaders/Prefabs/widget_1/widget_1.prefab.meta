@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 1729912d4e25edd4c8d59fc30c0119be
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 108094
+  packageName: UI Shaders
+  packageVersion: 2.2
+  assetPath: Assets/UIShaders/Prefabs/widget_1/widget_1.prefab
+  uploadId: 658032

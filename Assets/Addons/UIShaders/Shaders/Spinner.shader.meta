@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 0a595ea27f3f54c57825570805c06760
+timeCreated: 1481206093
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 108094
+  packageName: UI Shaders
+  packageVersion: 2.2
+  assetPath: Assets/UIShaders/Shaders/Spinner.shader
+  uploadId: 658032

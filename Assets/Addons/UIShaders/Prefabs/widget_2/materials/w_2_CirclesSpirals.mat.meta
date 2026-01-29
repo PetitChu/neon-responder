@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 91852e5f1f1efa247bef6eaf545eaed3
+timeCreated: 1510252674
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 108094
+  packageName: UI Shaders
+  packageVersion: 2.2
+  assetPath: Assets/UIShaders/Prefabs/widget_2/materials/w_2_CirclesSpirals.mat
+  uploadId: 658032

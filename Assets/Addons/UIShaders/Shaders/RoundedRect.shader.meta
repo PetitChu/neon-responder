@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: a3ba3132de18b5849a03cbc4a97e65ed
+timeCreated: 1483001434
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 108094
+  packageName: UI Shaders
+  packageVersion: 2.2
+  assetPath: Assets/UIShaders/Shaders/RoundedRect.shader
+  uploadId: 658032

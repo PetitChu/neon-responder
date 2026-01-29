@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 840c8a16d98cd4f4cb42e09d182fcaa2
+timeCreated: 1510250936
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 108094
+  packageName: UI Shaders
+  packageVersion: 2.2
+  assetPath: Assets/UIShaders/Prefabs/UI/backPanel.mat
+  uploadId: 658032

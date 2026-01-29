@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 3c16a785f22334ca7a73b0ac05b412eb
+timeCreated: 1524729213
+licenseType: Store
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 108094
+  packageName: UI Shaders
+  packageVersion: 2.2
+  assetPath: Assets/UIShaders/Shaders/CirclesSpirals.shader
+  uploadId: 658032

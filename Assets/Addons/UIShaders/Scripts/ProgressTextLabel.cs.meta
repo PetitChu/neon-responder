@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 81f65fc7567668d43a3274977ea112bb
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 108094
+  packageName: UI Shaders
+  packageVersion: 2.2
+  assetPath: Assets/UIShaders/Scripts/ProgressTextLabel.cs
+  uploadId: 658032

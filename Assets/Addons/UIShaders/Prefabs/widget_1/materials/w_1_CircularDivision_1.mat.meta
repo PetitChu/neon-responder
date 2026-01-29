@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 64c20ffe7dc7cff40805fb2516c2e49d
+timeCreated: 1510252284
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 108094
+  packageName: UI Shaders
+  packageVersion: 2.2
+  assetPath: Assets/UIShaders/Prefabs/widget_1/materials/w_1_CircularDivision_1.mat
+  uploadId: 658032

@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 9e0d5429337014281bf865d2abffe1d5
+timeCreated: 1481206093
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 108094
+  packageName: UI Shaders
+  packageVersion: 2.2
+  assetPath: Assets/UIShaders/Shaders/SimpleGradient.shader
+  uploadId: 658032

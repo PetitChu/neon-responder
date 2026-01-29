@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 4aec9782610d547d58d57672b4033191
+timeCreated: 1534093800
+licenseType: Store
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 108094
+  packageName: UI Shaders
+  packageVersion: 2.2
+  assetPath: Assets/UIShaders/Shaders/HorizontalBar.shader
+  uploadId: 658032

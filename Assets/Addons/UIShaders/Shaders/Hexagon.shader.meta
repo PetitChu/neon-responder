@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 16b982caaee8f44e585b3ee208402f0d
+timeCreated: 1529847703
+licenseType: Store
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 108094
+  packageName: UI Shaders
+  packageVersion: 2.2
+  assetPath: Assets/UIShaders/Shaders/Hexagon.shader
+  uploadId: 658032

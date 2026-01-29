@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 846301ba4b8514690b59c6a1d0114cda
+timeCreated: 1527947138
+licenseType: Store
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 108094
+  packageName: UI Shaders
+  packageVersion: 2.2
+  assetPath: Assets/UIShaders/demo_shaders.unity
+  uploadId: 658032

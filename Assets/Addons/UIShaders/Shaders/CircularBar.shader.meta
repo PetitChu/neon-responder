@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 2a2011bf014f74bda99091c2b97adb2e
+timeCreated: 1481206093
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 108094
+  packageName: UI Shaders
+  packageVersion: 2.2
+  assetPath: Assets/UIShaders/Shaders/CircularBar.shader
+  uploadId: 658032

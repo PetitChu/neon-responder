@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 34b968c49278d47a2a3435cd8afd90c9
+timeCreated: 1510252674
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 108094
+  packageName: UI Shaders
+  packageVersion: 2.2
+  assetPath: Assets/UIShaders/CoreMaterials/DottedPolygon.mat
+  uploadId: 658032

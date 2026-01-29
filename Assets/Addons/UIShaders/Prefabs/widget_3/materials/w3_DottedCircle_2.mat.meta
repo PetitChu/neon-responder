@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: be8f1207bdc116b43ac8bf3a3620eb21
+timeCreated: 1510252674
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 108094
+  packageName: UI Shaders
+  packageVersion: 2.2
+  assetPath: Assets/UIShaders/Prefabs/widget_3/materials/w3_DottedCircle_2.mat
+  uploadId: 658032

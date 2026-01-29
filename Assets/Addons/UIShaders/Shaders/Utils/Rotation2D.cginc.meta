@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 4254c7e377b784836826eafc1276df58
+timeCreated: 1483019774
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 108094
+  packageName: UI Shaders
+  packageVersion: 2.2
+  assetPath: Assets/UIShaders/Shaders/Utils/Rotation2D.cginc
+  uploadId: 658032

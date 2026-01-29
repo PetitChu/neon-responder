@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 5b8b40f11eb7dd74691d0cd5318351a5
+timeCreated: 1510250936
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 108094
+  packageName: UI Shaders
+  packageVersion: 2.2
+  assetPath: Assets/UIShaders/Prefabs/UI/progressBar_5.mat
+  uploadId: 658032
