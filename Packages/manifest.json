@@ -1,9 +1,12 @@
 {
   "dependencies": {
     "com.cathei.linqgen": "https://github.com/cathei/LinqGen.git?path=LinqGen.Unity/Packages/com.cathei.linqgen",
+    "com.cysharp.r3": "https://github.com/Cysharp/R3.git?path=src/R3.Unity/Assets/R3.Unity",
     "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
     "com.eflatun.scenereference": "git+https://github.com/starikcetin/Eflatun.SceneReference.git#4.1.1",
+    "com.github-glitchenzo.nugetforunity": "https://github.com/GlitchEnzo/NuGetForUnity.git?path=/src/NuGetForUnity",
     "com.inspiaaa.unityhfsm": "https://github.com/Inspiaaa/UnityHFSM.git#upm",
+    "com.squido.jungle-xrkit.mcp": "file:G:/Squido/jungle-mcp-package/JungleMCP",
     "com.unity.2d.animation": "13.0.4",
     "com.unity.2d.aseprite": "3.0.1",
     "com.unity.2d.common": "12.0.1",
@@ -15,8 +18,7 @@
     "com.unity.2d.tilemap": "1.0.0",
     "com.unity.2d.tilemap.extras": "6.0.1",
     "com.unity.2d.tooling": "1.0.2",
-    "com.unity.ai.assistant": "1.0.0-pre.12",
-    "com.unity.ai.generators": "1.0.0-pre.20",
+    "com.unity.ai.assistant": "1.5.0-pre.2",
     "com.unity.burst": "1.8.27",
     "com.unity.collections": "2.6.4",
     "com.unity.entities": "1.4.4",
