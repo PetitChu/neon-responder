@@ -28,6 +28,13 @@ namespace BrainlessLabs.Neon.Lifecycle
                 var instance = Object.Instantiate(prefab);
                 var component = instance.GetComponent<T>();
 
+                if (component == null)
+                {
+                    Object.Destroy(instance);
+                    throw new MissingComponentException(
+                        $"Prefab '{prefab.name}' does not have component {typeof(T).Name}.");
+                }
+
                 builder.RegisterInstance(component).As<T>();
                 builder.RegisterBuildCallback(container =>
                 {
@@ -67,8 +74,9 @@ namespace BrainlessLabs.Neon.Lifecycle
             var component = gameObject.GetComponent<T>();
 
             builder.RegisterInstance(component).As<T>();
-            builder.RegisterBuildCallback(_ =>
+            builder.RegisterBuildCallback(container =>
             {
+                container.InjectGameObject(gameObject);
                 Object.DontDestroyOnLoad(gameObject);
             });
             builder.RegisterDisposeCallback(_ =>

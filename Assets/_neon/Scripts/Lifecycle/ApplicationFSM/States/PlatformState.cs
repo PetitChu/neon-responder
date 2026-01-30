@@ -47,7 +47,7 @@ namespace BrainlessLabs.Neon.Lifecycle
             base.OnLifetimeScopeReady(container);
             CreateAndAddTargetStateWithHealthCheckedTransition(
                 container,
-                nameof(NextStateType),
+                NextStateType.Name,
                 NextStateType
             );
         }

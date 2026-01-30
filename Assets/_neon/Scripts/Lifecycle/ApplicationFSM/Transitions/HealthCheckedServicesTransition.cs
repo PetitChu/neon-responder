@@ -12,7 +12,7 @@ namespace BrainlessLabs.Neon.Lifecycle
     /// </summary>
     public class HealthCheckedServicesTransition : ApplicationTransition, IDisposable
     {
-        private readonly IDisposable _subscription;
+        private readonly IDisposable _subscription = null;
         private bool _allHealthy;
 
         public override bool ShouldTransition() => _allHealthy;
@@ -74,7 +74,7 @@ namespace BrainlessLabs.Neon.Lifecycle
             }
         }
 
-        public static Func<Parameters, HealthCheckedServicesTransition> Factory(IObjectResolver container) =>
+        public static Func<Parameters, HealthCheckedServicesTransition> Factory(IObjectResolver _) =>
             parameters => new HealthCheckedServicesTransition(parameters);
 
         #endregion
