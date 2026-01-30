@@ -17,7 +17,7 @@ namespace BrainlessLabs.Neon.Lifecycle
 
         public override bool ShouldTransition() => _allHealthy;
 
-        private HealthCheckedServicesTransition(Parameters parameters)
+        internal HealthCheckedServicesTransition(Parameters parameters)
             : base(parameters.From, parameters.To, parameters.ForceInstantly)
         {
             var services = parameters.HealthCheckedServices;
