@@ -33,7 +33,6 @@ namespace BrainlessLabs.Neon.Lifecycle
         protected virtual void RegisterTypes(IContainerBuilder builder)
         {
             // Register the health-checked transition factory
-            builder.Register<HealthCheckedServicesTransition>(Lifetime.Scoped).AsSelf();
             builder.RegisterFactory(HealthCheckedServicesTransition.Factory, Lifetime.Scoped);
         }
 
