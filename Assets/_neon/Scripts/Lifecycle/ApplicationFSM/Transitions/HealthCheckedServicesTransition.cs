@@ -42,7 +42,7 @@ namespace BrainlessLabs.Neon.Lifecycle
                     _allHealthy = allHealthy;
                     if (allHealthy)
                     {
-                        UnityEngine.Debug.Log($"[Lifecycle] All services healthy, ready to transition: {From} → {To}");
+                        // UnityEngine.Debug.Log($"[Lifecycle] All services healthy, ready to transition: {From} → {To}");
                     }
                 });
         }
