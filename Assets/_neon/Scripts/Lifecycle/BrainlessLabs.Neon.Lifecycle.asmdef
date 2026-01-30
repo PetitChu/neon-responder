@@ -1,0 +1,26 @@
+{
+    "name": "BrainlessLabs.Neon.Lifecycle",
+    "rootNamespace": "BrainlessLabs.Neon.Lifecycle",
+    "references": [
+        "VContainer",
+        "UnityHFSM",
+        "R3.Unity",
+        "Unity.Services.Core",
+        "Eflatun.SceneReference"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.rlabrecern.steamworks.net",
+            "expression": "",
+            "define": "STEAMWORKS_NET"
+        }
+    ],
+    "noEngineReferences": false
+}
