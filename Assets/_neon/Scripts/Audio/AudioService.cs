@@ -119,7 +119,7 @@ namespace BrainlessLabs.Neon
                 audioItem.lastTimePlayed = Time.time;
 
                 var audioObj = new GameObject($"AudioSFX_{name}");
-                audioObj.transform.parent = audioItem.range == 0 ? cameraTransform : finalParent;
+                audioObj.transform.parent = Mathf.Abs(audioItem.range) <= Mathf.Epsilon ? cameraTransform : finalParent;
                 audioObj.transform.position = finalPos;
 
                 var source = audioObj.AddComponent<AudioSource>();
