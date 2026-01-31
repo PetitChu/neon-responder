@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 namespace BrainlessLabs.Neon
@@ -63,91 +64,143 @@ namespace BrainlessLabs.Neon
         {
             if (string.IsNullOrEmpty(name) || _sfxConfiguration == null) return;
 
-            var cameraTransform = Camera.main.transform;
-            var finalPos = pos ?? cameraTransform.position;
-            var finalParent = parent ?? cameraTransform;
+            Transform cameraTransform = null;
 
-            var audioItems = _sfxConfiguration.AudioItems;
-            var found = false;
-
-            foreach (var audioItem in audioItems)
+            // Determine final position without touching Camera.main unless needed
+            Vector3 finalPos;
+            if (pos.HasValue)
             {
-                if (audioItem.name != name) continue;
-
-                if (audioItem.clip.Length == 0)
+                finalPos = pos.Value;
+            }
+            else
+            {
+                var mainCamera = Camera.main;
+                if (mainCamera != null)
                 {
-                    Debug.LogWarning($"AudioClip '{name}' has no clips assigned in the SFX configuration.");
-                    return;
+                    cameraTransform = mainCamera.transform;
+                    finalPos = cameraTransform.position;
                 }
-
-                if (Time.time - audioItem.lastTimePlayed < audioItem.minTimeBetweenCall) return;
-                audioItem.lastTimePlayed = Time.time;
-
-                var audioObj = new GameObject($"AudioSFX_{name}");
-                audioObj.transform.parent = audioItem.range == 0 ? cameraTransform : finalParent;
-                audioObj.transform.position = finalPos;
-
-                var source = audioObj.AddComponent<AudioSource>();
-                var rand = Random.Range(0, audioItem.clip.Length);
-                source.clip = audioItem.clip[rand];
-                source.spatialBlend = 1.0f;
-                source.pitch = 1f + Random.Range(-audioItem.randomPitch, audioItem.randomPitch);
-                source.volume = audioItem.volume + Random.Range(-audioItem.randomVolume, audioItem.randomVolume);
-                source.outputAudioMixerGroup = _sfxConfiguration.MixerGroup;
-                source.rolloffMode = AudioRolloffMode.Custom;
-                source.loop = audioItem.loop;
-
-                if (audioItem.range > 0) source.maxDistance = audioItem.range;
-                if (audioItem.range > 3) source.minDistance = source.maxDistance - 3;
-
-                source.Play();
-
-                if (!audioItem.loop && source.clip != null)
-                    Object.Destroy(audioObj, source.clip.length + Time.deltaTime);
-
-                found = true;
+                else
+                {
+                    // Fallback position when no MainCamera exists
+                    finalPos = Vector3.zero;
+                }
             }
 
-            if (!found) Debug.LogWarning($"No audio item found with name: {name}");
+            // Determine final parent without touching Camera.main unless needed
+            Transform finalParent;
+            if (parent != null)
+            {
+                finalParent = parent;
+            }
+            else
+            {
+                if (cameraTransform == null)
+                {
+                    var mainCamera = Camera.main;
+                    cameraTransform = mainCamera != null ? mainCamera.transform : null;
+                }
+
+                finalParent = cameraTransform;
+            }
+            var audioItems = _sfxConfiguration.AudioItems;
+            var matchingItem = audioItems.FirstOrDefault(item => item.name == name);
+
+            if (matchingItem == null)
+            {
+                Debug.LogWarning($"No audio item found with name: {name}");
+                return;
+            }
+
+            if (matchingItem.clip.Length == 0)
+            {
+                Debug.LogWarning($"AudioClip '{name}' has no clips assigned in the SFX configuration.");
+                return;
+            }
+
+            if (Time.time - matchingItem.lastTimePlayed < matchingItem.minTimeBetweenCall) return;
+            matchingItem.lastTimePlayed = Time.time;
+
+            var audioObj = new GameObject($"AudioSFX_{name}");
+            audioObj.transform.parent = Mathf.Abs(matchingItem.range) <= Mathf.Epsilon ? cameraTransform : finalParent;
+            audioObj.transform.position = finalPos;
+
+            var source = audioObj.AddComponent<AudioSource>();
+            var rand = Random.Range(0, matchingItem.clip.Length);
+            source.clip = matchingItem.clip[rand];
+            source.spatialBlend = 1.0f;
+            source.pitch = 1f + Random.Range(-matchingItem.randomPitch, matchingItem.randomPitch);
+            source.volume = matchingItem.volume + Random.Range(-matchingItem.randomVolume, matchingItem.randomVolume);
+            source.outputAudioMixerGroup = _sfxConfiguration.MixerGroup;
+            source.rolloffMode = AudioRolloffMode.Custom;
+            source.loop = matchingItem.loop;
+
+            if (matchingItem.range > 0) source.maxDistance = matchingItem.range;
+            if (matchingItem.range > 3) source.minDistance = source.maxDistance - 3;
+
+            source.Play();
+
+            if (!matchingItem.loop && source.clip != null)
+                Object.Destroy(audioObj, source.clip.length + Time.deltaTime);
         }
 
         private float GetSFXDurationInternal(string name)
         {
             if (_sfxConfiguration == null) return 0;
 
-            foreach (var audioItem in _sfxConfiguration.AudioItems)
+            var matchingItem = _sfxConfiguration.AudioItems.FirstOrDefault(item => item.name == name);
+
+            if (matchingItem == null)
             {
-                if (audioItem.name == name) return audioItem.clip.Length;
+                Debug.LogWarning($"No audio item found with name: {name}");
+                return 0;
             }
 
-            return 0;
+            if (matchingItem.clip == null || matchingItem.clip.Length == 0)
+            {
+                Debug.LogWarning($"AudioClip '{name}' has no clips assigned in the sfx configuration.");
+                return 0;
+            }
+
+            float maxDuration = 0f;
+            for (int i = 0; i < matchingItem.clip.Length; i++)
+            {
+                var clip = matchingItem.clip[i];
+                if (clip == null) continue;
+                if (clip.length > maxDuration)
+                {
+                    maxDuration = clip.length;
+                }
+            }
+
+            return maxDuration;
         }
 
         private void PlayMusicInternal(string name)
         {
             if (string.IsNullOrEmpty(name) || _musicConfiguration == null) return;
 
-            foreach (var audioItem in _musicConfiguration.AudioItems)
+            var matchingItem = _musicConfiguration.AudioItems.FirstOrDefault(item => item.name == name);
+
+            if (matchingItem == null)
             {
-                if (audioItem.name != name) continue;
-
-                if (audioItem.clip.Length == 0)
-                {
-                    Debug.LogWarning($"AudioClip '{name}' has no clips assigned in the music configuration.");
-                    return;
-                }
-
-                EnsureMusicSource();
-
-                var rand = Random.Range(0, audioItem.clip.Length);
-                _musicSource.clip = audioItem.clip[rand];
-                _musicSource.volume = audioItem.volume;
-                _musicSource.loop = audioItem.loop;
-                _musicSource.Play();
+                Debug.LogWarning($"No music item found with name: {name}");
                 return;
             }
 
-            Debug.LogWarning($"No music item found with name: {name}");
+            if (matchingItem.clip.Length == 0)
+            {
+                Debug.LogWarning($"AudioClip '{name}' has no clips assigned in the music configuration.");
+                return;
+            }
+
+            EnsureMusicSource();
+
+            var rand = Random.Range(0, matchingItem.clip.Length);
+            _musicSource.clip = matchingItem.clip[rand];
+            _musicSource.volume = matchingItem.volume;
+            _musicSource.loop = matchingItem.loop;
+            _musicSource.Play();
         }
 
         private void EnsureMusicSource()
