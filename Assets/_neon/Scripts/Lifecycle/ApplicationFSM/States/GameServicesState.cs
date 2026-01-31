@@ -21,12 +21,13 @@ namespace BrainlessLabs.Neon.Lifecycle
         {
             base.RegisterTypes(builder);
             RegisterNextState(builder);
+            RegisterAudioService(builder);
+        }
 
-            // Placeholder: Add game-specific services here as needed
-            // Example:
-            // builder.RegisterEntryPoint<SomeGameService>()
-            //     .As<ISomeGameService>()
-            //     .As<IHealthCheckedService>();
+        private static void RegisterAudioService(IContainerBuilder builder)
+        {
+            builder.Register<AudioService>(Lifetime.Singleton)
+                .As<IAudioService>();
         }
 
         private void RegisterNextState(IContainerBuilder builder)

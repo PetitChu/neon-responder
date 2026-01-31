@@ -19,7 +19,7 @@ namespace BrainlessLabs.Neon {
             if(showEffect) GameObject.Instantiate(showEffect, transform.position, Quaternion.identity);
 
             //play sfx
-            AudioController.PlaySFX(pickupSFX, transform.position);
+            AudioService.PlaySFX(pickupSFX, transform.position);
             Destroy(gameObject);
         }
     }

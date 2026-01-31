@@ -16,7 +16,7 @@ namespace BrainlessLabs.Neon {
             unit.groundPos = unit.transform.position.y;
             unit.isGrounded = false;
             unit.yForce = unit.settings.jumpHeight; //the upwards force of the jump
-            AudioController.PlaySFX(sfxName, unit.transform.position);
+            AudioService.PlaySFX(sfxName, unit.transform.position);
          }
 
         public override void Update(){
