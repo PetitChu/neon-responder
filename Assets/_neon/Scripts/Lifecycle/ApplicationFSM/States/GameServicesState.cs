@@ -22,12 +22,19 @@ namespace BrainlessLabs.Neon.Lifecycle
             base.RegisterTypes(builder);
             RegisterNextState(builder);
             RegisterAudioService(builder);
+            RegisterInputService(builder);
         }
 
         private static void RegisterAudioService(IContainerBuilder builder)
         {
             builder.Register<AudioService>(Lifetime.Singleton)
                 .As<IAudioService>();
+        }
+
+        private static void RegisterInputService(IContainerBuilder builder)
+        {
+            builder.Register<InputService>(Lifetime.Singleton)
+                .As<IInputService>();
         }
 
         private void RegisterNextState(IContainerBuilder builder)

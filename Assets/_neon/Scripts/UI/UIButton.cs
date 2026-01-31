@@ -6,7 +6,7 @@ using System.Collections;
 
 namespace BrainlessLabs.Neon {
 
-    //class for navigating UI buttons via the InputManager (joypad and keyboard)
+    //class for navigating UI buttons via the InputService (joypad and keyboard)
     public class UIButton : MonoBehaviour, ISelectHandler, IPointerDownHandler, ISubmitHandler {
 
         public bool SelectOnStart;
@@ -27,8 +27,6 @@ namespace BrainlessLabs.Neon {
         public static GameObject lastSelectedButton;
         private bool LoadSceneInProgress;
         private EventSystem eventSystem => EventSystem.current;
-        private InputManager input;
-   
         private Button thisButton;
         private float timeAlive;
 
@@ -37,9 +35,6 @@ namespace BrainlessLabs.Neon {
         }
 
         void Start() {
-
-            //find the InputManager
-            input = GetInputManager(); 
 
             //if true, select this button on start by default
             if(SelectOnStart && GetComponent<Button>() != null) GetComponent<Button>().Select();
@@ -52,7 +47,7 @@ namespace BrainlessLabs.Neon {
         }
 
         //---
-        // Keyboard / Joypad Navigation via InputManager
+        // Keyboard / Joypad Navigation via InputService
         //---
 
         void Update(){
@@ -65,15 +60,15 @@ namespace BrainlessLabs.Neon {
             if(imageTarget != null) imageTarget.enabled = selected;
 
             //conditions for button navigation
-            if(InputManager.Instance == null) return; //do nothing when there is no InputManager
-            if(InputManager.JoypadDirInputDetected(1)) return; //ignore joypad input (this is handled by Unity's built in event manager)
+            if(InputService.Instance == null) return; //do nothing when there is no InputService
+            if(InputService.JoypadDirInputDetected(1)) return; //ignore joypad input (this is handled by Unity's built in event manager)
             if(eventSystem.currentSelectedGameObject == null && UIButton.lastSelectedButton != null) eventSystem.SetSelectedGameObject(UIButton.lastSelectedButton); //fixes an issue with Unity where clicking with a mouse outside of the interactable area deselects all buttons
             if(EventSystem.current.currentSelectedGameObject != gameObject) return; //only listen to selected buttons
-            if(InputManager.GetInputVector(1) == Vector2.zero) waitForButtonRelease = false;//no input buttons are currently pressed, reset waitForButtonRelease
+            if(InputService.GetInputVector(1) == Vector2.zero) waitForButtonRelease = false;//no input buttons are currently pressed, reset waitForButtonRelease
             if(waitForButtonRelease) return; //wait for user to release a button, before continuing
 
             //get keyboard / joypad input direction and navigate accordingly
-            Vector2 dir = InputManager.GetInputVector(1);
+            Vector2 dir = InputService.GetInputVector(1);
             if(dir != Vector2.zero) NavigateToNextSelectable(dir);
         }
 
@@ -85,13 +80,6 @@ namespace BrainlessLabs.Neon {
                 Selectable next = current.FindSelectable(dir);
                 if(next != null) next.Select();
             }
-        }
-
-        //find input manager
-        InputManager GetInputManager(){
-            InputManager im = GameObject.FindObjectOfType<InputManager>();
-            if(im == null) Debug.LogError("No Inputmanager found in this scene");
-            return im;
         }
 
         //this button is selected

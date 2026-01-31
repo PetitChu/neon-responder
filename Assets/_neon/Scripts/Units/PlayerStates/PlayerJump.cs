@@ -22,10 +22,10 @@ namespace BrainlessLabs.Neon {
         public override void Update(){
 
             //perform jump punch attack
-            if(InputManager.PunchKeyDown(playerId)){ unit.UnitStateMachine.SetState(new PlayerJumpAttack(unit.settings.jumpPunch)); return; }
+            if(InputService.PunchKeyDown(playerId)){ unit.UnitStateMachine.SetState(new PlayerJumpAttack(unit.settings.jumpPunch)); return; }
 
             //perform jump kick attack
-            if(InputManager.KickKeyDown(playerId)){ unit.UnitStateMachine.SetState(new PlayerJumpAttack(unit.settings.jumpKick)); return; }
+            if(InputService.KickKeyDown(playerId)){ unit.UnitStateMachine.SetState(new PlayerJumpAttack(unit.settings.jumpKick)); return; }
 
             //go to landed state
             if(hasLanded) unit.UnitStateMachine.SetState(new PlayerLand());
