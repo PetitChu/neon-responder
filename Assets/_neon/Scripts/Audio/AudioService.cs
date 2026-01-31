@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 namespace BrainlessLabs.Neon
@@ -103,8 +104,7 @@ namespace BrainlessLabs.Neon
                 finalParent = cameraTransform;
             }
             var audioItems = _sfxConfiguration.AudioItems;
-            var matchingItem = System.Linq.Enumerable.FirstOrDefault(
-                System.Linq.Enumerable.Where(audioItems, item => item.name == name));
+            var matchingItem = audioItems.FirstOrDefault(item => item.name == name);
 
             if (matchingItem == null)
             {
@@ -148,8 +148,7 @@ namespace BrainlessLabs.Neon
         {
             if (_sfxConfiguration == null) return 0;
 
-            var matchingItem = System.Linq.Enumerable.FirstOrDefault(
-                System.Linq.Enumerable.Where(_sfxConfiguration.AudioItems, item => item.name == name));
+            var matchingItem = _sfxConfiguration.AudioItems.FirstOrDefault(item => item.name == name);
 
             if (matchingItem == null)
             {
@@ -181,8 +180,7 @@ namespace BrainlessLabs.Neon
         {
             if (string.IsNullOrEmpty(name) || _musicConfiguration == null) return;
 
-            var matchingItem = System.Linq.Enumerable.FirstOrDefault(
-                System.Linq.Enumerable.Where(_musicConfiguration.AudioItems, item => item.name == name));
+            var matchingItem = _musicConfiguration.AudioItems.FirstOrDefault(item => item.name == name);
 
             if (matchingItem == null)
             {

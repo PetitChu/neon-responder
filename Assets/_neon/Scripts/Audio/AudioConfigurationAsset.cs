@@ -10,7 +10,7 @@ namespace BrainlessLabs.Neon
         private AudioMixerGroup _mixerGroup;
 
         [SerializeField]
-        private readonly AudioItem[] _audioItems = System.Array.Empty<AudioItem>();
+        private AudioItem[] _audioItems = System.Array.Empty<AudioItem>();
 
         public AudioMixerGroup MixerGroup => _mixerGroup;
         public AudioItem[] AudioItems => _audioItems;
