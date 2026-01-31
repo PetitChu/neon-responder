@@ -5,6 +5,7 @@
         "BrainlessLabs.Neon",
         "Eflatun.SceneReference",
         "R3.Unity",
+        "UniTask",
         "UnityHFSM",
         "Unity.Services.Core",
         "VContainer"

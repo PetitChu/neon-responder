@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -26,13 +27,12 @@ namespace BrainlessLabs.Neon.Lifecycle
 
             // Load the post-bootstrap scene
             var settings = BootstrapSettingsAsset.InstanceAsset.Settings;
-            if (settings.PostBootstrapScene != null && settings.PostBootstrapScene.State == Eflatun.SceneReference.SceneReferenceState.Regular)
+            if (settings.PostBootstrapScene != null)
             {
                 builder.RegisterBuildCallback(_ =>
                 {
-                    var scenePath = settings.PostBootstrapScene.Path;
-                    Debug.Log($"[Lifecycle] Loading post-bootstrap scene: {scenePath}");
-                    UnityEngine.SceneManagement.SceneManager.LoadScene(scenePath, UnityEngine.SceneManagement.LoadSceneMode.Additive);
+                    Debug.Log($"[Lifecycle] Loading post-bootstrap scene: {settings.PostBootstrapScene.SceneName}");
+                    ScenesService.LoadScene(settings.PostBootstrapScene).Forget(e => Debug.LogException(e));
                 });
             }
 

@@ -12,16 +12,16 @@ namespace BrainlessLabs.Neon
     {
         [SerializeField]
         private bool _enableEditorBootstrap = default;
-        
+
         [SerializeField]
         private SceneReference _bootstrapScene = default;
 
         [SerializeField]
-        private SceneReference _postBootstrapScene = default;
+        private SceneDefinitionAsset _postBootstrapScene = default;
 
         [SerializeField]
         private bool _executeBootstrapSequence = default;
-        
+
         /// <inheritdoc/>
         public bool EnableEditorBootstrap
         {
@@ -37,7 +37,7 @@ namespace BrainlessLabs.Neon
         }
 
         /// <inheritdoc/>
-        public SceneReference PostBootstrapScene
+        public SceneDefinitionAsset PostBootstrapScene
         {
             get => _postBootstrapScene;
             set => _postBootstrapScene = value;
@@ -85,13 +85,13 @@ namespace BrainlessLabs.Neon
                     {
                         var serializedObject = new UnityEditor.SerializedObject(target);
                         serializedObject.UpdateIfRequiredOrScript();
-                        
+
                         var bootstrapSceneSerializedProperty = serializedObject.FindProperty(nameof(BootstrapSettingsAsset._settings)).FindPropertyRelative(nameof(_bootstrapScene));
                         UnityEditor.EditorGUILayout.PropertyField(bootstrapSceneSerializedProperty, bootstrapSceneGUIContent);
-                        
+
                         var postBootstrapSceneSerializedProperty = serializedObject.FindProperty(nameof(BootstrapSettingsAsset._settings)).FindPropertyRelative(nameof(_postBootstrapScene));
                         UnityEditor.EditorGUILayout.PropertyField(postBootstrapSceneSerializedProperty, postBootstrapSceneGUIContent);
-                        
+
                         serializedObject.ApplyModifiedProperties();
                     }
                     
