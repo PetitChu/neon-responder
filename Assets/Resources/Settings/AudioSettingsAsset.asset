@@ -12,3 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cf5a94bcd67d74418b0598de49bb0bd, type: 3}
   m_Name: AudioSettingsAsset
   m_EditorClassIdentifier: BrainlessLabs.Neon::BrainlessLabs.Neon.AudioSettingsAsset
+  _settings:
+    _sfxConfiguration: {fileID: 11400000, guid: 064fbed0ed2089c4b8af7b36582f75f8, type: 2}
+    _musicConfiguration: {fileID: 11400000, guid: d84229304e3b26b46a28f597e3420093, type: 2}

@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc555d3c9f8f9e94bad1d405ecc67a81, type: 3}
+  m_Name: ScenesSettingsAsset
+  m_EditorClassIdentifier: BrainlessLabs.Neon::BrainlessLabs.Neon.ScenesSettingsAsset
+  _settings:
+    _sceneDefinitions:
+    - {fileID: 11400000, guid: 52dab9e2125a9ab428de4a6f84e277e9, type: 2}
+    - {fileID: 11400000, guid: d89efd15652a88949b03a06467bcf613, type: 2}
+    - {fileID: 11400000, guid: 503665684e445a74abad0aef1ec1be81, type: 2}
+    - {fileID: 11400000, guid: 3900a3e8eea38964fbc4fda78c4a2b80, type: 2}
+    - {fileID: 11400000, guid: d3814a50636c89e42a8adf88c432346c, type: 2}
+    - {fileID: 11400000, guid: 4c5fe557804bd3b43873b2024df2e6ab, type: 2}

@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: BootstrapSettingsAsset
   m_EditorClassIdentifier: BrainlessLabs.Neon::BrainlessLabs.Neon.BootstrapSettingsAsset
   _settings:
-    _enableEditorBootstrap: 0
+    _enableEditorBootstrap: 1
     _bootstrapScene:
-      asset: {fileID: 0}
-      guid: 00000000000000000000000000000000
+      asset: {fileID: 102900000, guid: 5a6a092d11b3c104c9174a7bf0bb4492, type: 3}
+      guid: 5a6a092d11b3c104c9174a7bf0bb4492
     _postBootstrapScene:
-      asset: {fileID: 0}
-      guid: 00000000000000000000000000000000
-    _executeBootstrapSequence: 0
+      asset: {fileID: 102900000, guid: a27cd78405a9bdd44bcdb8f468626b5a, type: 3}
+      guid: a27cd78405a9bdd44bcdb8f468626b5a
+    _executeBootstrapSequence: 1
