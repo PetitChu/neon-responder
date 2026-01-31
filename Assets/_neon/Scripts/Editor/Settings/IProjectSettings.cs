@@ -32,5 +32,17 @@ namespace BrainlessLabs.Neon.Editor
         /// Facilitates centralized management of audio settings utilized during runtime or editor interaction.
         /// </summary>
         AudioSettingsAsset AudioSettingsAsset { get; }
+
+        /// <summary>
+        /// Represents the configuration settings related to scene management within the application.
+        /// Provides access to scene definitions and scene service configuration.
+        /// </summary>
+        IScenesSettings ScenesSettings { get; }
+
+        /// <summary>
+        /// Represents the configuration asset responsible for storing and providing access to scene-related settings within the application.
+        /// Facilitates centralized management of scene settings utilized during runtime or editor interaction.
+        /// </summary>
+        ScenesSettingsAsset ScenesSettingsAsset { get; }
     }
 }

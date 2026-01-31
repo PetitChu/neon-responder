@@ -17,28 +17,40 @@ namespace BrainlessLabs.Neon.Editor
         
         private IAudioSettings _audioSettings;
         private AudioSettingsAsset _audioSettingsAsset;
-        
-        
+
+        private IScenesSettings _scenesSettings;
+        private ScenesSettingsAsset _scenesSettingsAsset;
+
+
         /// <inheritdoc/>
         public IBootstrapSettings BootstrapSettings => _bootstrapSettings;
-        
+
         /// <inheritdoc/>
         public BootstrapSettingsAsset BootstrapSettingsAsset => _bootstrapSettingsAsset;
-        
+
         /// <inheritdoc/>
         public IAudioSettings AudioSettings => _audioSettings;
-        
+
         /// <inheritdoc/>
         public AudioSettingsAsset AudioSettingsAsset => _audioSettingsAsset;
+
+        /// <inheritdoc/>
+        public IScenesSettings ScenesSettings => _scenesSettings;
+
+        /// <inheritdoc/>
+        public ScenesSettingsAsset ScenesSettingsAsset => _scenesSettingsAsset;
 
 
         private ProjectSettings()
         {
             _bootstrapSettingsAsset = BootstrapSettingsAsset.GetOrCreateSettingsAsset();
             _bootstrapSettings = _bootstrapSettingsAsset.Settings;
-            
+
             _audioSettingsAsset = AudioSettingsAsset.GetOrCreateSettingsAsset();
             _audioSettings = _audioSettingsAsset.Settings;
+
+            _scenesSettingsAsset = ScenesSettingsAsset.GetOrCreateSettingsAsset();
+            _scenesSettings = _scenesSettingsAsset.Settings;
         }
     }
 }

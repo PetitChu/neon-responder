@@ -66,6 +66,9 @@ namespace BrainlessLabs.Neon.Editor
                     
                     DrawLineSeparator();
                     DrawAudioSettings();
+
+                    DrawLineSeparator();
+                    DrawScenesSettings();
                 }
             }
         }
@@ -86,13 +89,26 @@ namespace BrainlessLabs.Neon.Editor
         internal void DrawAudioSettings()
         {
             var audioSettings = _settings.AudioSettings;
-            
+
             using var checkScope = new EditorGUI.ChangeCheckScope();
             audioSettings?.Editor_OnGUI(_settings.AudioSettingsAsset);
-                
+
             if (checkScope.changed)
             {
                 EditorUtility.SetDirty(_settings.AudioSettingsAsset);
+            }
+        }
+
+        internal void DrawScenesSettings()
+        {
+            var scenesSettings = _settings.ScenesSettings;
+
+            using var checkScope = new EditorGUI.ChangeCheckScope();
+            scenesSettings?.Editor_OnGUI(_settings.ScenesSettingsAsset);
+
+            if (checkScope.changed)
+            {
+                EditorUtility.SetDirty(_settings.ScenesSettingsAsset);
             }
         }
         
