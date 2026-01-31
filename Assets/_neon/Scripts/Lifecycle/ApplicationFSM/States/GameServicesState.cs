@@ -47,6 +47,8 @@ namespace BrainlessLabs.Neon.Lifecycle
             base.OnLifetimeScopeReady(container);
             // Force eager initialization of AudioService to ensure Instance is set
             container.Resolve<IAudioService>();
+            // Force eager initialization of InputService to ensure Instance is set
+            container.Resolve<IInputService>();
             CreateAndAddTargetStateWithHealthCheckedTransition(
                 container,
                 NextStateType.Name,
