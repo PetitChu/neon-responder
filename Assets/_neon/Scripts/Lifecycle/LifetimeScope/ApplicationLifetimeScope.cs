@@ -15,7 +15,7 @@ namespace BrainlessLabs.Neon.Lifecycle
     {
         protected override void Configure(IContainerBuilder builder)
         {
-            var settings = BootstrapSettingsAsset.Instance.Settings;
+            var settings = BootstrapSettingsAsset.InstanceAsset.Settings;
 
             if (!settings.ExecuteBootstrapSequence)
             {

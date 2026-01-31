@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace BrainlessLabs.Neon {
 
-    public class PlayerGroundPunch : State {
+    public class PlayerGroundPunch : UnitState {
 
         private string animationName => unit.settings.groundPunch.animationState;
         private AttackData attackData => unit.settings.groundPunch;
@@ -22,7 +22,7 @@ namespace BrainlessLabs.Neon {
 
         public override void Update(){
             if(!damageDealt) damageDealt = unit.CheckForHit(attackData); //check hit until damage was dealt
-            if(Time.time - stateStartTime > animDuration) unit.stateMachine.SetState(new PlayerIdle());
+            if(Time.time - stateStartTime > animDuration) unit.UnitStateMachine.SetState(new PlayerIdle());
         }
     }
 }

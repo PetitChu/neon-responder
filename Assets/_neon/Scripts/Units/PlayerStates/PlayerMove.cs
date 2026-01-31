@@ -2,7 +2,7 @@
 
 namespace BrainlessLabs.Neon {
 
-    public class PlayerMove : State {
+    public class PlayerMove : UnitState {
 
         private string animationName = "Run";
         private int playerId => unit.settings.playerId;
@@ -10,31 +10,31 @@ namespace BrainlessLabs.Neon {
         public override void Update(){
 
             //defend
-            if(InputManager.DefendKeyDown(playerId)){ unit.stateMachine.SetState(new UnitDefend()); return; }
+            if(InputManager.DefendKeyDown(playerId)){ unit.UnitStateMachine.SetState(new UnitDefend()); return; }
 
             //jump
-            if(InputManager.JumpKeyDown(playerId)){ unit.stateMachine.SetState(new PlayerJump()); return; }
+            if(InputManager.JumpKeyDown(playerId)){ unit.UnitStateMachine.SetState(new PlayerJump()); return; }
 
             //use weapon
-            if(unit.weapon && InputManager.PunchKeyDown(playerId)){ unit.stateMachine.SetState(new PlayerWeaponAttack()); return; }
+            if(unit.weapon && InputManager.PunchKeyDown(playerId)){ unit.UnitStateMachine.SetState(new PlayerWeaponAttack()); return; }
 
             //check for nearby enemy to ground pound
-            if(InputManager.PunchKeyDown(playerId) && unit.NearbyEnemyDown()){ unit.stateMachine.SetState(new PlayerGroundPunch()); return; }
+            if(InputManager.PunchKeyDown(playerId) && unit.NearbyEnemyDown()){ unit.UnitStateMachine.SetState(new PlayerGroundPunch()); return; }
 
             //check for nearby enemy to ground kick
-            if(InputManager.KickKeyDown(playerId) && unit.NearbyEnemyDown()){ unit.stateMachine.SetState(new PlayerGroundKick()); return; }
+            if(InputManager.KickKeyDown(playerId) && unit.NearbyEnemyDown()){ unit.UnitStateMachine.SetState(new PlayerGroundKick()); return; }
 
             //punch Key pressed
-            if(InputManager.PunchKeyDown(playerId)){ unit.stateMachine.SetState(new PlayerAttack(ATTACKTYPE.PUNCH)); return; }
+            if(InputManager.PunchKeyDown(playerId)){ unit.UnitStateMachine.SetState(new PlayerAttack(ATTACKTYPE.PUNCH)); return; }
 
             //kick Key pressed
-            if(InputManager.KickKeyDown(playerId)){ unit.stateMachine.SetState(new PlayerAttack(ATTACKTYPE.KICK)); return; }
+            if(InputManager.KickKeyDown(playerId)){ unit.UnitStateMachine.SetState(new PlayerAttack(ATTACKTYPE.KICK)); return; }
 
             //grab something (enemy or item)
-            if(InputManager.GrabKeyDown(playerId) && !unit.weapon){ unit.stateMachine.SetState(new PlayerTryGrab()); return; }
+            if(InputManager.GrabKeyDown(playerId) && !unit.weapon){ unit.UnitStateMachine.SetState(new PlayerTryGrab()); return; }
 
             //drop current weapon
-            if(InputManager.GrabKeyDown(playerId) && unit.weapon){ unit.stateMachine.SetState(new UnitDropWeapon()); return; }
+            if(InputManager.GrabKeyDown(playerId) && unit.weapon){ unit.UnitStateMachine.SetState(new UnitDropWeapon()); return; }
         }
 
         public override void FixedUpdate(){
@@ -44,14 +44,14 @@ namespace BrainlessLabs.Neon {
 
             //go to idle, if there is no input
             if(inputVector.magnitude == 0) {
-                unit.stateMachine.SetState(new PlayerIdle()); 
+                unit.UnitStateMachine.SetState(new PlayerIdle()); 
                 return;
             }
 
             //go to idle if there is a wall in front of us
             Vector2 wallDistanceCheck = unit.col2D? (unit.col2D.size/1.6f) * 1.1f : Vector2.one * .3f; //dividing by 1.6f because the distance check needs to be a bit larger than the collider (otherwise we never encounter a wall)
             if(unit.WallDetected(inputVector * wallDistanceCheck)){
-                unit.stateMachine.SetState(new PlayerIdle()); //go to idle
+                unit.UnitStateMachine.SetState(new PlayerIdle()); //go to idle
                 return;
             }
 

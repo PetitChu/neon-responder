@@ -3,7 +3,7 @@ using UnityEngine;
 namespace BrainlessLabs.Neon {
 
     //sets enemy in a grabbed state
-    public class EnemyGrabbed : State {
+    public class EnemyGrabbed : UnitState {
 
         private string animationName = "Grabbed";
         public override bool canGrab => false; //cannot be grabbed in this state
@@ -19,7 +19,7 @@ namespace BrainlessLabs.Neon {
         public override void Enter(){
 
             //return to idle if there is no player
-            if(player == null) unit.stateMachine.SetState(new EnemyIdle());
+            if(player == null) unit.UnitStateMachine.SetState(new EnemyIdle());
 
             unit.StopMoving();
             unit.animator.Play(animationName);
@@ -38,7 +38,7 @@ namespace BrainlessLabs.Neon {
         public override void Update(){
 
             //grab expires
-            if(Time.time - stateStartTime > grabDuration) unit.stateMachine.SetState(new EnemyIdle());
+            if(Time.time - stateStartTime > grabDuration) unit.UnitStateMachine.SetState(new EnemyIdle());
         }
     }
 }

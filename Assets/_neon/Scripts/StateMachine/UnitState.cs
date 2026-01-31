@@ -1,7 +1,7 @@
 ﻿namespace BrainlessLabs.Neon {
 
     //state base class
-    public abstract class State {
+    public abstract class UnitState {
 
         public virtual bool canGrab => true;
         public float stateStartTime = 0;

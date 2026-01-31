@@ -1,4 +1,3 @@
-using UnityEngine;
 using UnityHFSM;
 using VContainer.Unity;
 
@@ -21,7 +20,7 @@ namespace BrainlessLabs.Neon.Lifecycle
         {
             _fsm = _builder.Build();
             _fsm.Init();
-            Debug.Log("[Lifecycle] Application FSM initialized.");
+            UnityEngine.Debug.Log("[Lifecycle] Application FSM initialized.");
         }
 
         public void Tick()

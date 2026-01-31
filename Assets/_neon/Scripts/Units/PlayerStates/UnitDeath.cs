@@ -2,7 +2,7 @@
 
 namespace BrainlessLabs.Neon {
 
-    public class UnitDeath : State {
+    public class UnitDeath : UnitState {
 
         private string animationName = "Death";
         private bool showDeathAnimation;

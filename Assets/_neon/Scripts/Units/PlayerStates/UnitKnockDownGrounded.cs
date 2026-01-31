@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace BrainlessLabs.Neon {
 
-    public class UnitKnockDownGrounded : State {
+    public class UnitKnockDownGrounded : UnitState {
 
         private string animationName = "KnockDownGrounded";
         public override bool canGrab => false; //cannot be grabbed in this state
@@ -17,10 +17,10 @@ namespace BrainlessLabs.Neon {
             
             //go to death state if there is no health left
             HealthSystem hs = unit.GetComponent<HealthSystem>();
-            if(hs != null && hs.isDead)  unit.stateMachine.SetState(new UnitDeath(false)); 
+            if(hs != null && hs.isDead)  unit.UnitStateMachine.SetState(new UnitDeath(false)); 
 
             //stand up
-            if(Time.time - stateStartTime > unit.settings.knockDownFloorTime) unit.stateMachine.SetState(new UnitStandUp());
+            if(Time.time - stateStartTime > unit.settings.knockDownFloorTime) unit.UnitStateMachine.SetState(new UnitStandUp());
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace BrainlessLabs.Neon {
 
-    public class PlayerGrabItem : State {
+    public class PlayerGrabItem : UnitState {
 
         private string animationName = "Pickup";
         private float animDuration => unit.GetAnimDuration(animationName);
@@ -19,7 +19,7 @@ namespace BrainlessLabs.Neon {
         }
 
         public override void Update(){
-            if((Time.time - stateStartTime) > animDuration) unit.stateMachine.SetState(new PlayerIdle()); //return to idle when animation is finished
+            if((Time.time - stateStartTime) > animDuration) unit.UnitStateMachine.SetState(new PlayerIdle()); //return to idle when animation is finished
         }
     }
 }

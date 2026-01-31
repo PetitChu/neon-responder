@@ -15,7 +15,7 @@ namespace BrainlessLabs.Neon {
         IEnumerator SetPlayerInactive(float delay){
             yield return new WaitForSeconds(startDelay);
 
-            foreach(StateMachine unitStateMachine in GameObject.FindObjectsOfType<StateMachine>()){
+            foreach(UnitStateMachine unitStateMachine in GameObject.FindObjectsOfType<UnitStateMachine>()){
                 if(unitStateMachine.settings.unitType == UNITTYPE.PLAYER){
                     unitStateMachine.SetState(new PlayerInActive());
                 }

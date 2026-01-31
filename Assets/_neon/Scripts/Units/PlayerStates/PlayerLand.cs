@@ -3,7 +3,7 @@
 namespace BrainlessLabs.Neon {
 
     //state for landing after a jump
-    public class PlayerLand : State {
+    public class PlayerLand : UnitState {
 
         private string animationName = "Land";
         private float animDuration => unit.GetAnimDuration(animationName);
@@ -15,7 +15,7 @@ namespace BrainlessLabs.Neon {
         }
 
         public override void Update(){
-            if(Time.time - stateStartTime > animDuration)  unit.stateMachine.SetState(new PlayerIdle()); //go to idle state
+            if(Time.time - stateStartTime > animDuration)  unit.UnitStateMachine.SetState(new PlayerIdle()); //go to idle state
         }
     }
 }

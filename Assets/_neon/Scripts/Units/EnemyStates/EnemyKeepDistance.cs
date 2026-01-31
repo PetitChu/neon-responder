@@ -3,7 +3,7 @@
 namespace BrainlessLabs.Neon {
 
     //enemy keeps a bit of distance from the target
-    public class EnemyKeepDistance : State {
+    public class EnemyKeepDistance : UnitState {
 
         private Vector2 distance; //amount of distance
 
@@ -12,7 +12,7 @@ namespace BrainlessLabs.Neon {
         }
 
         public override void Enter(){
-            if(!unit.target){ unit.stateMachine.SetState(new EnemyIdle()); return; } //go back to idle if there is no target
+            if(!unit.target){ unit.UnitStateMachine.SetState(new EnemyIdle()); return; } //go back to idle if there is no target
             unit.TurnToTarget();
 
             //check if we are on the left or right side of the target
@@ -24,7 +24,7 @@ namespace BrainlessLabs.Neon {
             Vector2 point = new Vector2(xPos, yPos);
 
             //move to position
-            unit.stateMachine.SetState(new EnemyMoveTo(point));
+            unit.UnitStateMachine.SetState(new EnemyMoveTo(point));
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace BrainlessLabs.Neon {
 
-    public class PlayerTryGrab : State {
+    public class PlayerTryGrab : UnitState {
 
         private string animationName => unit.settings.grabAnimation;
         private float animDuration => unit.GetAnimDuration(animationName);
@@ -14,7 +14,7 @@ namespace BrainlessLabs.Neon {
 
             //if there is a pickup nearby... pick it up
             GameObject pickup = unit.GetClosestPickup(Vector2.one * .4f); // .4f is the pickup range
-            if(pickup != null){ unit.stateMachine.SetState(new PlayerGrabItem(pickup)); return; }
+            if(pickup != null){ unit.UnitStateMachine.SetState(new PlayerGrabItem(pickup)); return; }
 
             //otherwise, just play grab animation
             unit.animator.Play(animationName);
@@ -33,7 +33,7 @@ namespace BrainlessLabs.Neon {
 
                         //check if this enemy can be grabbed
                         if(obj.GetComponent<UnitSettings>()?.canBeGrabbed == true){
-                            unit.stateMachine.SetState(new PlayerGrabEnemy(obj));
+                            unit.UnitStateMachine.SetState(new PlayerGrabEnemy(obj));
                             return; //return the first enemy we encounter, because only one enemy can be grabbed at once
                         }
                     }
@@ -41,7 +41,7 @@ namespace BrainlessLabs.Neon {
             }
 
             //if we've grabbed nothing, return to idle when the animation is finished
-            if(Time.time - stateStartTime > animDuration) unit.stateMachine.SetState(new PlayerIdle());
+            if(Time.time - stateStartTime > animDuration) unit.UnitStateMachine.SetState(new PlayerIdle());
         }
     }
 }

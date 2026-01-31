@@ -6,7 +6,7 @@ using System;
 namespace BrainlessLabs.Neon {
 
     //class for handling player combo attacks
-    public class PlayerAttack : State {
+    public class PlayerAttack : UnitState {
 
         private bool damageDealt; //true if the attack has hit something
         private bool animFinished => (Time.time - stateStartTime > animDuration); //true if the end of the animation is reached
@@ -40,7 +40,7 @@ namespace BrainlessLabs.Neon {
                 unit.attackList.Clear();
                 unit.attackList.Add(currentAttackType);
                 currentCombo = FindComBoMatch(unit.attackList);
-                if(currentCombo == null)  unit.stateMachine.SetState(new PlayerIdle()); //still no match? go to idle
+                if(currentCombo == null)  unit.UnitStateMachine.SetState(new PlayerIdle()); //still no match? go to idle
             }
 
             //turn towards input dir
@@ -73,18 +73,18 @@ namespace BrainlessLabs.Neon {
 
                 //if the player is carrying a weapon and the punch key was pressed, continue with a weapon attack
                 if(unit.weapon && attackKeyPressed == ATTACKTYPE.PUNCH){
-                    unit.stateMachine.SetState(new PlayerWeaponAttack()); 
+                    unit.UnitStateMachine.SetState(new PlayerWeaponAttack()); 
                     return; 
                 }
 
                 //continue combo if the an attack key was pressed during this attack
                 if(attackKeyPressed != ATTACKTYPE.NONE){
-                    unit.stateMachine.SetState(new PlayerAttack(attackKeyPressed)); 
+                    unit.UnitStateMachine.SetState(new PlayerAttack(attackKeyPressed)); 
                     return; 
                 }
 
                 //otherwise go back to idle
-                unit.stateMachine.SetState(new PlayerIdle());
+                unit.UnitStateMachine.SetState(new PlayerIdle());
             }            
         }
 

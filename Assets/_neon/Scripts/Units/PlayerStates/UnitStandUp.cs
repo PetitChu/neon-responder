@@ -2,7 +2,7 @@
 
 namespace BrainlessLabs.Neon {
 
-    public class UnitStandUp : State {
+    public class UnitStandUp : UnitState {
 
         private string animationName = "StandUp";
         private float animDuration => unit.GetAnimDuration(animationName);
@@ -14,8 +14,8 @@ namespace BrainlessLabs.Neon {
 
         public override void Update(){
             if(Time.time - stateStartTime > animDuration){
-                if(unit.isPlayer) unit.stateMachine.SetState(new PlayerIdle());
-                else unit.stateMachine.SetState(new EnemyIdle());
+                if(unit.isPlayer) unit.UnitStateMachine.SetState(new PlayerIdle());
+                else unit.UnitStateMachine.SetState(new EnemyIdle());
             }
         }
     }

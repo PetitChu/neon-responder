@@ -1,6 +1,6 @@
 ﻿namespace BrainlessLabs.Neon {
 
-    public class EnemyIdle : State {
+    public class EnemyIdle : UnitState {
 
         private string animationName = "Idle";
         public override void Enter(){

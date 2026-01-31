@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace BrainlessLabs.Neon {
 
-    public class UnitDropWeapon : State {
+    public class UnitDropWeapon : UnitState {
 
         private string animationName = "DropWeapon";
         private float animDuration => unit.GetAnimDuration(animationName);
@@ -22,7 +22,7 @@ namespace BrainlessLabs.Neon {
 
             //return to idle when animation is finished
             if((Time.time - stateStartTime) > animDuration){
-                unit.stateMachine.SetState(new PlayerIdle()); 
+                unit.UnitStateMachine.SetState(new PlayerIdle()); 
             }
         }
     }

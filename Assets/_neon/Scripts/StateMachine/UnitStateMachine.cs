@@ -3,12 +3,12 @@
 namespace BrainlessLabs.Neon {
 
     //state Machine class
-    public class StateMachine : UnitActions {
+    public class UnitStateMachine : UnitActions {
     
         [SerializeField] private bool showStateInGame; //shows the current state in a textfield below this unit
         [ReadOnlyProperty] public string currentState; //used for displaying the current state in the unity inspector
         private TextMesh stateText; //textfield for showing state in game for debugging
-        private State state; //the current state
+        private UnitState _unitState; //the current state
 
         void Start(){
 
@@ -17,38 +17,38 @@ namespace BrainlessLabs.Neon {
             else if(isEnemy) SetState(new EnemyIdle()); //if unit if a enemy, go to state EnemyIdle
         }
 
-        public void SetState(State _state){
+        public void SetState(UnitState unitState){
         
             //exit current state
-            if (this.state != null) state.Exit();
+            if (this._unitState != null) _unitState.Exit();
        
             //set new state
-            state = _state;
-            state.unit = this;
+            _unitState = unitState;
+            _unitState.unit = this;
 
             //set data
             currentState = GetCurrentStateShortName(); //debug info
-            state.stateStartTime = Time.time;
+            _unitState.stateStartTime = Time.time;
 
             //enter the state
-            state.Enter();
+            _unitState.Enter();
         }
 
-        public State GetCurrentState(){
-            return state;;
+        public UnitState GetCurrentState(){
+            return _unitState;;
         }
 
         void Update(){
-            state?.Update();
+            _unitState?.Update();
             UpdateStateText();
         }
 
         void LateUpdate(){
-            state?.LateUpdate();
+            _unitState?.LateUpdate();
         }
 
         void FixedUpdate(){
-            state?.FixedUpdate();
+            _unitState?.FixedUpdate();
         }
 
         void UpdateStateText(){
@@ -81,7 +81,7 @@ namespace BrainlessLabs.Neon {
 
         //returns the name of the current state without the namespace
         string GetCurrentStateShortName(){
-            string currentState = stateMachine?.GetCurrentState().GetType().ToString();
+            string currentState = UnitStateMachine?.GetCurrentState().GetType().ToString();
             string[] splitStrings = currentState.Split('.');                  
             if(splitStrings.Length >= 2) return splitStrings[1];
             return "";

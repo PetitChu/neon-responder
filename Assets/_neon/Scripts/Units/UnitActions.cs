@@ -24,7 +24,7 @@ namespace BrainlessLabs.Neon {
         [HideInInspector] public List<ATTACKTYPE> attackList = new List<ATTACKTYPE>();
 
         public Animator animator => GetComponent<Animator>();
-        public StateMachine stateMachine => GetComponent<StateMachine>();
+        public UnitStateMachine UnitStateMachine => GetComponent<UnitStateMachine>();
         public UnitSettings settings => GetComponent<UnitSettings>();
         public Rigidbody2D rb => GetComponent<Rigidbody2D>();
         public bool isPlayer => settings?.unitType == UNITTYPE.PLAYER;
@@ -90,7 +90,7 @@ namespace BrainlessLabs.Neon {
                     if(targetUnit?.IsDefending(invertedDir) == true){ damageDealt = true; continue; }
 
                     //skip knockdown if this unit is already knocked down
-                    bool unitKnockdownInProgress = obj.GetComponent<StateMachine>()?.GetCurrentState() is UnitKnockDown;
+                    bool unitKnockdownInProgress = obj.GetComponent<UnitStateMachine>()?.GetCurrentState() is UnitKnockDown;
                     if(unitKnockdownInProgress) continue;
                    
                     //show hit effect
@@ -111,7 +111,7 @@ namespace BrainlessLabs.Neon {
 
                         //check if this unit is dead
                         if(targetHealthSystem.isDead){
-                            obj.GetComponent<StateMachine>().SetState(new UnitDeath(true));
+                            obj.GetComponent<UnitStateMachine>().SetState(new UnitDeath(true));
 
                         } else {
 
@@ -121,13 +121,13 @@ namespace BrainlessLabs.Neon {
                             if(!doAKnockdown){
 
                                  //do a default hit
-                                 targetUnit.stateMachine.SetState(new UnitHit());
+                                 targetUnit.UnitStateMachine.SetState(new UnitHit());
 
                             }  else {
                                 
                                 //do a knockdown hit
                                 Vector2 knockDownForce = new Vector2(targetUnit.settings.knockDownDistance, targetUnit.settings.knockDownHeight); //get knockdown data
-                                targetUnit.stateMachine.SetState(new UnitKnockDown(attackData, knockDownForce.x, knockDownForce.y));
+                                targetUnit.UnitStateMachine.SetState(new UnitKnockDown(attackData, knockDownForce.x, knockDownForce.y));
                             }
                         }
                     }
@@ -168,7 +168,7 @@ namespace BrainlessLabs.Neon {
                 if(enemyIsBeingThrown || enemyDoesFallDamage){
                      foreach(GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy")){
                         bool enemyIsMyself = (enemy.gameObject == this.gameObject);
-                        bool enemyIsKnockedDown = enemy.GetComponent<StateMachine>()?.GetCurrentState() is UnitKnockDown || enemy.GetComponent<StateMachine>()?.GetCurrentState() is UnitKnockDownGrounded;
+                        bool enemyIsKnockedDown = enemy.GetComponent<UnitStateMachine>()?.GetCurrentState() is UnitKnockDown || enemy.GetComponent<UnitStateMachine>()?.GetCurrentState() is UnitKnockDownGrounded;
                         if(!enemyIsMyself && !enemyIsKnockedDown) hitableObjects.Add(enemy);
                     }
                 }
@@ -181,7 +181,7 @@ namespace BrainlessLabs.Neon {
 
             //exclude units already in their hit state
             for(int i=hitableObjects.Count-1; i>=0; i--){
-               if(hitableObjects[i].GetComponent<StateMachine>()?.GetCurrentState() is UnitHit) hitableObjects.RemoveAt(i);
+               if(hitableObjects[i].GetComponent<UnitStateMachine>()?.GetCurrentState() is UnitHit) hitableObjects.RemoveAt(i);
             }
         
             //sort objects based on distance
@@ -221,8 +221,8 @@ namespace BrainlessLabs.Neon {
                     if(enemy.GetComponent<HealthSystem>()?.isDead == true) continue;
 
                     //check if a nearby enemy is currently in UnitKnockDownGrounded state
-                    StateMachine targetStateMachine = enemy.GetComponent<StateMachine>();
-                    if(targetStateMachine?.GetCurrentState() is UnitKnockDownGrounded) return enemy;
+                    UnitStateMachine targetUnitStateMachine = enemy.GetComponent<UnitStateMachine>();
+                    if(targetUnitStateMachine?.GetCurrentState() is UnitKnockDownGrounded) return enemy;
                 }
             }
             return null;
@@ -325,15 +325,15 @@ namespace BrainlessLabs.Neon {
 
             //is this is an enemy that has a defend chance enabled, calculate defence probability
             if(isEnemy && settings.defendChance > 0){
-                if(Random.Range(0, 100) < settings.defendChance) stateMachine.SetState(new UnitDefend()); //defend
+                if(Random.Range(0, 100) < settings.defendChance) UnitStateMachine.SetState(new UnitDefend()); //defend
             }
 
             //check if this unit is currently in defended state
-            bool unitIsDefending = stateMachine.GetCurrentState() is UnitDefend;
+            bool unitIsDefending = UnitStateMachine.GetCurrentState() is UnitDefend;
             if(!unitIsDefending) return false;
 
             //send hit event to UnitDefend State
-            if(settings.rearDefenseEnabled || dir == attackDir)(stateMachine.GetCurrentState() as UnitDefend)?.Hit(); 
+            if(settings.rearDefenseEnabled || dir == attackDir)(UnitStateMachine.GetCurrentState() as UnitDefend)?.Hit(); 
 
             if(settings.rearDefenseEnabled) return true; //defend from all directions
             if(dir == attackDir) return true; //only defend front facing attacks

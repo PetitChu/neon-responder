@@ -2,7 +2,7 @@
 
 namespace BrainlessLabs.Neon {
 
-    public class UnitDefend : State {
+    public class UnitDefend : UnitState {
 
         private string animationName = "Defend";
         private string defendHitSFX = "DefendHit";
@@ -27,11 +27,11 @@ namespace BrainlessLabs.Neon {
                 }
 
                 //return to idle when defend button is released
-                if(!InputManager.DefendKeyDown(playerId)) unit.stateMachine.SetState(new PlayerIdle());
+                if(!InputManager.DefendKeyDown(playerId)) unit.UnitStateMachine.SetState(new PlayerIdle());
             }
 
             //for enemies
-            if(unit.isEnemy && (Time.time - stateStartTime > enemyDefendDuration)) unit.stateMachine.SetState(new EnemyIdle());
+            if(unit.isEnemy && (Time.time - stateStartTime > enemyDefendDuration)) unit.UnitStateMachine.SetState(new EnemyIdle());
         }
 
         //we are hit while defending

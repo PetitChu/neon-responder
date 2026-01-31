@@ -2,7 +2,7 @@
 
 namespace BrainlessLabs.Neon {
 
-    public class EnemyAttack : State {
+    public class EnemyAttack : UnitState {
 
         private string animationName => attack.animationState;
         private float animDuration => unit.GetAnimDuration(animationName);
@@ -18,7 +18,7 @@ namespace BrainlessLabs.Neon {
             unit.TurnToTarget();
 
             //don't attack when target is dead
-            if(unit.target && unit.target.GetComponent<HealthSystem>().isDead) unit.stateMachine.SetState(new EnemyIdle());
+            if(unit.target && unit.target.GetComponent<HealthSystem>().isDead) unit.UnitStateMachine.SetState(new EnemyIdle());
             
             //play attack anim
             unit.animator.Play(animationName);
@@ -30,7 +30,7 @@ namespace BrainlessLabs.Neon {
             if(!damageDealt) damageDealt = unit.CheckForHit(attack); //check for hit until damage was dealt
 
             //return to idle when animation is finished
-            if(Time.time - stateStartTime > animDuration) unit.stateMachine.SetState(new EnemyIdle()); 
+            if(Time.time - stateStartTime > animDuration) unit.UnitStateMachine.SetState(new EnemyIdle()); 
         }
     }
 }

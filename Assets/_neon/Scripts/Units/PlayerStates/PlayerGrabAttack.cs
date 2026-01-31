@@ -3,7 +3,7 @@ using UnityEngine;
 namespace BrainlessLabs.Neon {
 
     //state for handling player attacks while holding/grabbing an enemy
-    public class PlayerGrabAttack : State {
+    public class PlayerGrabAttack : UnitState {
 
         private float animDuration => unit.GetAnimDuration(attackData.animationState);
         private bool damageDealt;
@@ -19,7 +19,7 @@ namespace BrainlessLabs.Neon {
 
         public override void Update(){
             if(!damageDealt) damageDealt = unit.CheckForHit(attackData);
-            if(Time.time - stateStartTime > animDuration) unit.stateMachine.SetState(new PlayerIdle());
+            if(Time.time - stateStartTime > animDuration) unit.UnitStateMachine.SetState(new PlayerIdle());
         }
     }
 }

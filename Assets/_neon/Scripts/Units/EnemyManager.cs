@@ -21,7 +21,7 @@ namespace BrainlessLabs.Neon {
 	    public static void DisableAllEnemyAI(){
             foreach(GameObject enemy in enemyList){
                 enemy.GetComponent<EnemyBehaviour>().AI_Active = false;
-                enemy.GetComponent<StateMachine>()?.SetState(new EnemyIdle());
+                enemy.GetComponent<UnitStateMachine>()?.SetState(new EnemyIdle());
             }
 	    }
 
@@ -30,9 +30,9 @@ namespace BrainlessLabs.Neon {
             int attackerCount = 0;
             foreach(GameObject enemy in enemyList){
                 if(!enemy) continue;
-                StateMachine stateMachine = enemy.GetComponent<StateMachine>();
-                if(stateMachine == null) continue;
-                else if(stateMachine.GetCurrentState() is EnemyAttack || stateMachine.GetCurrentState() is EnemyMoveToTargetAndAttack) attackerCount ++;
+                UnitStateMachine unitStateMachine = enemy.GetComponent<UnitStateMachine>();
+                if(unitStateMachine == null) continue;
+                else if(unitStateMachine.GetCurrentState() is EnemyAttack || unitStateMachine.GetCurrentState() is EnemyMoveToTargetAndAttack) attackerCount ++;
             }
             return attackerCount;
         }

@@ -2,7 +2,7 @@
 
 namespace BrainlessLabs.Neon {
 
-    public class EnemyWait : State {
+    public class EnemyWait : UnitState {
 
         private string animationName = "Idle";
         private float timeToWait;
@@ -21,7 +21,7 @@ namespace BrainlessLabs.Neon {
          public override void Update(){
 
             //return to idle
-            if(Time.time - stateStartTime > timeToWait) unit.stateMachine.SetState(new EnemyIdle()); 
+            if(Time.time - stateStartTime > timeToWait) unit.UnitStateMachine.SetState(new EnemyIdle()); 
         }
     }
 }

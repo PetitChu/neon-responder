@@ -3,7 +3,7 @@ using UnityEngine;
 namespace BrainlessLabs.Neon {
 
     //class for the player attacking with a weapon (pickup)
-    public class PlayerWeaponAttack : State {
+    public class PlayerWeaponAttack : UnitState {
 
         private string animationName => unit.weapon.attackData.animationState; //get animation from weapon class
         private AttackData attackData => unit.weapon.attackData; //get attack data from weapon class
@@ -45,7 +45,7 @@ namespace BrainlessLabs.Neon {
             }
 
             //return to Idle
-            if(Time.time - stateStartTime > animDuration) unit.stateMachine.SetState(new PlayerIdle()); 
+            if(Time.time - stateStartTime > animDuration) unit.UnitStateMachine.SetState(new PlayerIdle()); 
         }
     }
 }

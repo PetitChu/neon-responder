@@ -25,7 +25,7 @@ namespace BrainlessLabs.Neon.Lifecycle
             base.RegisterTypes(builder);
 
             // Load the post-bootstrap scene
-            var settings = BootstrapSettingsAsset.Instance.Settings;
+            var settings = BootstrapSettingsAsset.InstanceAsset.Settings;
             if (settings.PostBootstrapScene != null && settings.PostBootstrapScene.State == Eflatun.SceneReference.SceneReferenceState.Regular)
             {
                 builder.RegisterBuildCallback(_ =>

@@ -2,7 +2,7 @@
 
 namespace BrainlessLabs.Neon {
 
-    public class UnitHit : State {
+    public class UnitHit : UnitState {
 
         private string animationName = "Hit";
         private float animDuration => unit.GetAnimDuration(animationName);
@@ -23,8 +23,8 @@ namespace BrainlessLabs.Neon {
             if(unit.GetComponent<HealthSystem>()?.currentHp == 0) return;
 
             if(Time.time - stateStartTime > animDuration){
-                if(unit.isPlayer) unit.stateMachine.SetState(new PlayerIdle());
-                else unit.stateMachine.SetState(new EnemyIdle());
+                if(unit.isPlayer) unit.UnitStateMachine.SetState(new PlayerIdle());
+                else unit.UnitStateMachine.SetState(new EnemyIdle());
             }
         }
     }

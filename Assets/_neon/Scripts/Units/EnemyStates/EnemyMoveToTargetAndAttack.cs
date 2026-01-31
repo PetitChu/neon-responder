@@ -3,7 +3,7 @@
 namespace BrainlessLabs.Neon {
 
     //enemy moves towards the target
-    public class EnemyMoveToTargetAndAttack : State {
+    public class EnemyMoveToTargetAndAttack : UnitState {
 
         private string animationName = "Run";
         private Vector2 maxAttackRange = new Vector2(1.2f, .1f); //the max distance from where we can attack the target
@@ -16,7 +16,7 @@ namespace BrainlessLabs.Neon {
         }
 
         public override void Enter(){
-            if(!unit.target) unit.stateMachine.SetState(new EnemyIdle());
+            if(!unit.target) unit.UnitStateMachine.SetState(new EnemyIdle());
             pauseBeforeAttack = unit.settings.enemyPauseBeforeAttack;
             unit.TurnToTarget();
         }
@@ -37,7 +37,7 @@ namespace BrainlessLabs.Neon {
                 }
 
                 //attack when close, or go to idle when there is no attack
-                unit.stateMachine.SetState(attack != null? new EnemyAttack(attack) : new EnemyIdle());
+                unit.UnitStateMachine.SetState(attack != null? new EnemyAttack(attack) : new EnemyIdle());
             }
         }
 
@@ -53,7 +53,7 @@ namespace BrainlessLabs.Neon {
                 //if there is a wall in front of us, go to Idle
                 Vector2 wallDistanceCheck = unit.col2D? (unit.col2D.size/1.6f) * 1.1f : Vector2.one * .3f; //dividing by 1.8f because the distance check needs to be a bit larger than the collider (otherwise we never encounter a wall)
                 if(unit.WallDetected(dirToPos * wallDistanceCheck)){
-                    unit.stateMachine.SetState(new EnemyIdle());
+                    unit.UnitStateMachine.SetState(new EnemyIdle());
                     return;
                 }
 

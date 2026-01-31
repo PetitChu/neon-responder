@@ -3,7 +3,7 @@
 namespace BrainlessLabs.Neon {
 
     //state for player jump
-    public class PlayerJump : State {
+    public class PlayerJump : UnitState {
 
         private string animationName = "Jump";
         private string sfxName = "JumpUp";
@@ -22,13 +22,13 @@ namespace BrainlessLabs.Neon {
         public override void Update(){
 
             //perform jump punch attack
-            if(InputManager.PunchKeyDown(playerId)){ unit.stateMachine.SetState(new PlayerJumpAttack(unit.settings.jumpPunch)); return; }
+            if(InputManager.PunchKeyDown(playerId)){ unit.UnitStateMachine.SetState(new PlayerJumpAttack(unit.settings.jumpPunch)); return; }
 
             //perform jump kick attack
-            if(InputManager.KickKeyDown(playerId)){ unit.stateMachine.SetState(new PlayerJumpAttack(unit.settings.jumpKick)); return; }
+            if(InputManager.KickKeyDown(playerId)){ unit.UnitStateMachine.SetState(new PlayerJumpAttack(unit.settings.jumpKick)); return; }
 
             //go to landed state
-            if(hasLanded) unit.stateMachine.SetState(new PlayerLand());
+            if(hasLanded) unit.UnitStateMachine.SetState(new PlayerLand());
         }
 
         public override void FixedUpdate(){

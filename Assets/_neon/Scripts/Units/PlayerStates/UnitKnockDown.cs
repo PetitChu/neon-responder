@@ -3,7 +3,7 @@ using UnityEngine;
 namespace BrainlessLabs.Neon {
 
     //class for units during KnockDown
-    public class UnitKnockDown : State {
+    public class UnitKnockDown : UnitState {
 
         private string animationNameUp = "KnockDown Up";
         private string animationNameDown = "KnockDown Down";
@@ -72,7 +72,7 @@ namespace BrainlessLabs.Neon {
 
                     //unit has landed on the floor
                     if(col2D) col2D.offset = Vector2.zero;
-                    unit.stateMachine.SetState(new UnitKnockDownGrounded());
+                    unit.UnitStateMachine.SetState(new UnitKnockDownGrounded());
                     return;
                 }
             }

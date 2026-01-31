@@ -3,7 +3,7 @@
 namespace BrainlessLabs.Neon {
 
     //state for attacking during a jump
-    public class PlayerJumpAttack : State {
+    public class PlayerJumpAttack : UnitState {
 
         private AttackData attackData;
         private bool damageDealt;
@@ -21,7 +21,7 @@ namespace BrainlessLabs.Neon {
         public override void Update(){
 
             //go to landed state
-            if(hasLanded) unit.stateMachine.SetState(new PlayerLand());
+            if(hasLanded) unit.UnitStateMachine.SetState(new PlayerLand());
 
             //check for hit
             if(!damageDealt) damageDealt = unit.CheckForHit(attackData); 

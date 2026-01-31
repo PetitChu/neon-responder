@@ -2,11 +2,12 @@
     "name": "BrainlessLabs.Neon.Lifecycle",
     "rootNamespace": "BrainlessLabs.Neon.Lifecycle",
     "references": [
-        "VContainer",
-        "UnityHFSM",
+        "BrainlessLabs.Neon",
+        "Eflatun.SceneReference",
         "R3.Unity",
+        "UnityHFSM",
         "Unity.Services.Core",
-        "Eflatun.SceneReference"
+        "VContainer"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

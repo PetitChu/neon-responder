@@ -3,7 +3,7 @@ using UnityEngine;
 namespace BrainlessLabs.Neon {
 
     //ctate for actions when the player is holding an enemy in a grab.
-    public class PlayerGrabEnemy : State {
+    public class PlayerGrabEnemy : UnitState {
 
         private GameObject enemy;
         private int playerId => unit.settings.playerId;
@@ -19,7 +19,7 @@ namespace BrainlessLabs.Neon {
             Vector2 enemyGrabPos = (Vector2)unit.transform.position + grabPos; //the enemy position during the grab
 
             //put enemy in grab state
-            enemy.GetComponent<StateMachine>()?.SetState(new EnemyGrabbed(unit.gameObject, enemyGrabPos));
+            enemy.GetComponent<UnitStateMachine>()?.SetState(new EnemyGrabbed(unit.gameObject, enemyGrabPos));
         }
 
         public override void Update(){
@@ -27,35 +27,35 @@ namespace BrainlessLabs.Neon {
 
             //punch button was pressed during grab
             if(InputManager.PunchKeyDown(playerId)){
-                unit.stateMachine.SetState(new PlayerGrabAttack(unit.settings.grabPunch));
+                unit.UnitStateMachine.SetState(new PlayerGrabAttack(unit.settings.grabPunch));
                 enemy = null;
                 return;
             }
 
             //kick button was pressed during grab
             if(InputManager.KickKeyDown(playerId)){
-                unit.stateMachine.SetState(new PlayerGrabAttack(unit.settings.grabKick));
+                unit.UnitStateMachine.SetState(new PlayerGrabAttack(unit.settings.grabKick));
                 enemy = null;
                 return;
             }
 
             //throw button was pressed during grab
             if(InputManager.GrabKeyDown(playerId)){
-                unit.stateMachine.SetState(new PlayerThrowEnemy(enemy));
+                unit.UnitStateMachine.SetState(new PlayerThrowEnemy(enemy));
                 enemy = null;
                 return;
             }
 
             //release grab when time expires
             if(Time.time - stateStartTime > unit.settings.grabDuration){
-                unit.stateMachine.SetState(new PlayerIdle()); //player return to Idle
+                unit.UnitStateMachine.SetState(new PlayerIdle()); //player return to Idle
                 enemy = null;
             }
         }
 
         public override void Exit(){
             //release enemy from grab if something else happens
-            if(enemy != null) enemy.GetComponent<StateMachine>()?.SetState(new EnemyIdle());
+            if(enemy != null) enemy.GetComponent<UnitStateMachine>()?.SetState(new EnemyIdle());
         }
     }
 }

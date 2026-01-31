@@ -3,7 +3,7 @@ using UnityEngine;
 namespace BrainlessLabs.Neon {
 
     //class for the player performing a ground kick
-    public class PlayerGroundKick : State {
+    public class PlayerGroundKick : UnitState {
 
         private string animationName => unit.settings.groundKick.animationState;
         private AttackData attackData => unit.settings.groundKick;
@@ -23,7 +23,7 @@ namespace BrainlessLabs.Neon {
 
         public override void Update(){
             if(!damageDealt) damageDealt = unit.CheckForHit(attackData); //check hit until damage was dealt
-            if(Time.time - stateStartTime > animDuration) unit.stateMachine.SetState(new PlayerIdle());
+            if(Time.time - stateStartTime > animDuration) unit.UnitStateMachine.SetState(new PlayerIdle());
         }
     }
 }

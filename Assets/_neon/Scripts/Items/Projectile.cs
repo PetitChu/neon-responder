@@ -47,7 +47,7 @@ namespace BrainlessLabs.Neon {
                 UnitSettings us = enemyHit.GetComponent<UnitSettings>();
 
                 //if this attack is a knockdown, go to knockdown state
-                if(attackData.knockdown == true && ua?.settings.canBeKnockedDown == true && ua?.isGrounded == true) enemyHit.GetComponent<StateMachine>().SetState(new UnitKnockDown(attackData, us.knockDownDistance, us.knockDownHeight));
+                if(attackData.knockdown == true && ua?.settings.canBeKnockedDown == true && ua?.isGrounded == true) enemyHit.GetComponent<UnitStateMachine>().SetState(new UnitKnockDown(attackData, us.knockDownDistance, us.knockDownHeight));
 
                 //show hit effect
                 if(hitEffect) GameObject.Instantiate(hitEffect, transform.position, Quaternion.identity);

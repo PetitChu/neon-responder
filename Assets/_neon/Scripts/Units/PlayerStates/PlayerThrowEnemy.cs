@@ -3,7 +3,7 @@
 namespace BrainlessLabs.Neon {
 
     //class for throwing an enemy
-    public class PlayerThrowEnemy : State {
+    public class PlayerThrowEnemy : UnitState {
 
         private string animationName = "GrabThrow";
         private float animDuration => unit.GetAnimDuration(animationName);
@@ -16,7 +16,7 @@ namespace BrainlessLabs.Neon {
         public override void Enter(){
 
             //return to idle if there is no enemy
-            if(!enemy) unit.stateMachine.SetState(new PlayerIdle());
+            if(!enemy) unit.UnitStateMachine.SetState(new PlayerIdle());
             unit.StopMoving();
             unit.animator.Play(animationName);
 
@@ -34,11 +34,11 @@ namespace BrainlessLabs.Neon {
 
             //use knockdown state for throw
             UnitSettings enemySettings = enemy.GetComponent<UnitSettings>();
-            enemy.GetComponent<StateMachine>()?.SetState(new UnitKnockDown(unit.settings.grabThrow, enemySettings.throwDistance, enemySettings.throwHeight));
+            enemy.GetComponent<UnitStateMachine>()?.SetState(new UnitKnockDown(unit.settings.grabThrow, enemySettings.throwDistance, enemySettings.throwHeight));
         }
 
         public override void Update(){
-            if((Time.time - stateStartTime) > animDuration) unit.stateMachine.SetState(new PlayerIdle()); //return to idle when animation is finished
+            if((Time.time - stateStartTime) > animDuration) unit.UnitStateMachine.SetState(new PlayerIdle()); //return to idle when animation is finished
         }
     }
 }

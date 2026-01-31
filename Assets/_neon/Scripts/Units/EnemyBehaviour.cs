@@ -11,12 +11,12 @@ namespace BrainlessLabs.Neon {
         private float lastDecisionTime = 0;
         private float startTime = 0;
         [ReadOnlyProperty] public bool targetSpotted;
-        private StateMachine statemachine;
+        private UnitStateMachine statemachine;
         private UnitSettings settings;
 
         void Start(){
             startTime = Time.time;
-            statemachine = GetComponent<StateMachine>();
+            statemachine = GetComponent<UnitStateMachine>();
             settings = GetComponent<UnitSettings>();
         }
 
