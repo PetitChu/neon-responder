@@ -63,10 +63,45 @@ namespace BrainlessLabs.Neon
         {
             if (string.IsNullOrEmpty(name) || _sfxConfiguration == null) return;
 
-            var cameraTransform = Camera.main.transform;
-            var finalPos = pos ?? cameraTransform.position;
-            var finalParent = parent ?? cameraTransform;
+            Transform cameraTransform = null;
 
+            // Determine final position without touching Camera.main unless needed
+            Vector3 finalPos;
+            if (pos.HasValue)
+            {
+                finalPos = pos.Value;
+            }
+            else
+            {
+                var mainCamera = Camera.main;
+                if (mainCamera != null)
+                {
+                    cameraTransform = mainCamera.transform;
+                    finalPos = cameraTransform.position;
+                }
+                else
+                {
+                    // Fallback position when no MainCamera exists
+                    finalPos = Vector3.zero;
+                }
+            }
+
+            // Determine final parent without touching Camera.main unless needed
+            Transform finalParent;
+            if (parent != null)
+            {
+                finalParent = parent;
+            }
+            else
+            {
+                if (cameraTransform == null)
+                {
+                    var mainCamera = Camera.main;
+                    cameraTransform = mainCamera != null ? mainCamera.transform : null;
+                }
+
+                finalParent = cameraTransform;
+            }
             var audioItems = _sfxConfiguration.AudioItems;
             var found = false;
 
