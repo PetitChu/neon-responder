@@ -152,9 +152,29 @@ namespace BrainlessLabs.Neon
 
             foreach (var audioItem in _sfxConfiguration.AudioItems)
             {
-                if (audioItem.name == name) return audioItem.clip.Length;
+                if (audioItem.name != name) continue;
+
+                if (audioItem.clip == null || audioItem.clip.Length == 0)
+                {
+                    Debug.LogWarning($"AudioClip '{name}' has no clips assigned in the sfx configuration.");
+                    return 0;
+                }
+
+                float maxDuration = 0f;
+                for (int i = 0; i < audioItem.clip.Length; i++)
+                {
+                    var clip = audioItem.clip[i];
+                    if (clip == null) continue;
+                    if (clip.length > maxDuration)
+                    {
+                        maxDuration = clip.length;
+                    }
+                }
+
+                return maxDuration;
             }
 
+            Debug.LogWarning($"No audio item found with name: {name}");
             return 0;
         }
 
