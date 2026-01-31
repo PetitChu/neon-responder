@@ -13,6 +13,13 @@ namespace BrainlessLabs.Neon.Lifecycle
     /// </remarks>
     public class ApplicationLifetimeScope : LifetimeScope
     {
+        protected override void Awake()
+        {
+            base.Awake();
+            // Ensure this scope survives scene transitions when loading the post-bootstrap scene
+            DontDestroyOnLoad(gameObject);
+        }
+
         protected override void Configure(IContainerBuilder builder)
         {
             var settings = BootstrapSettingsAsset.InstanceAsset.Settings;

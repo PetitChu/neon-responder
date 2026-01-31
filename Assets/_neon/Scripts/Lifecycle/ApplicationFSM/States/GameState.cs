@@ -32,7 +32,7 @@ namespace BrainlessLabs.Neon.Lifecycle
                 builder.RegisterBuildCallback(_ =>
                 {
                     Debug.Log($"[Lifecycle] Loading post-bootstrap scene: {settings.PostBootstrapScene.SceneName}");
-                    ScenesService.LoadScene(settings.PostBootstrapScene).Forget();
+                    ScenesService.LoadScene(settings.PostBootstrapScene).Forget(e => Debug.LogException(e));
                 });
             }
 
