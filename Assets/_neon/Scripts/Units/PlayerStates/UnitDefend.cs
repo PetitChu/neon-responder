@@ -41,7 +41,7 @@ namespace BrainlessLabs.Neon {
             unit.ShowEffect("DefendEffect"); 
 
             //play sfx
-            AudioController.PlaySFX(defendHitSFX, unit.transform.position);
+            AudioService.PlaySFX(defendHitSFX, unit.transform.position);
         }
     }
 }

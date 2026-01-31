@@ -2,7 +2,7 @@
 
 namespace BrainlessLabs.Neon {
 
-    //audioItem class for use with the AudioController
+    //audioItem class for use with AudioConfigurationAsset
     [System.Serializable]
     public class AudioItem {
 

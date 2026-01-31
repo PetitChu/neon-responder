@@ -83,3 +83,6 @@ crashlytics-build.properties
 /[Aa]ssets/~UnityDirMonSyncFile*
 /.utmp/
 /.idea/
+
+# NuGet packages
+.nuget/

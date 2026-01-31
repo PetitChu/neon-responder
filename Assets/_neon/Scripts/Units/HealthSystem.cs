@@ -89,8 +89,8 @@ namespace BrainlessLabs.Neon {
             if(!invulnerable && healthBar) healthBar.transform.GetChild(0).transform.localScale = new Vector3((float)currentHp/(float)maxHp,1,1);
             
             //play sfx
-            if(currentHp>0) AudioController.PlaySFX(playSFXOnHit, transform.position);
-            else AudioController.PlaySFX(playSFXOnDestroy, transform.position);
+            if(currentHp>0) AudioService.PlaySFX(playSFXOnHit, transform.position);
+            else AudioService.PlaySFX(playSFXOnDestroy, transform.position);
 
             //show hitflash
             if(showHitFlash){

@@ -101,7 +101,7 @@ namespace BrainlessLabs.Neon {
                     if(attackData != null) targetHealthSystem?.SubstractHealth(attackData.damage);
 
                     //play hit sfx (if any)
-                    if(attackData.sfx.Length > 0) AudioController.PlaySFX(attackData.sfx);
+                    if(attackData.sfx.Length > 0) AudioService.PlaySFX(attackData.sfx);
 
                     //send event
                     if(onUnitDealDamage != null) onUnitDealDamage(obj, attackData);
@@ -354,7 +354,7 @@ namespace BrainlessLabs.Neon {
 
         //play sfx
         public void PlaySFX(string sfx){
-            AudioController.PlaySFX(sfx, transform.position);
+            AudioService.PlaySFX(sfx, transform.position);
         }
 
         //play footstep SFX depending on the surface this unit walks on
@@ -363,11 +363,11 @@ namespace BrainlessLabs.Neon {
             foreach(Collider2D col2D in overlappedColliders){
                 Surface surface = col2D.GetComponent<Surface>();
                 if(surface && surface.footstepSFX.Length>0){
-                    AudioController.PlaySFX(surface.footstepSFX, transform.position);
+                    AudioService.PlaySFX(surface.footstepSFX, transform.position);
                     return;
                 }
             }
-            AudioController.PlaySFX("FootstepDefault", transform.position);
+            AudioService.PlaySFX("FootstepDefault", transform.position);
         }
 
         //displays an effect loaded from the resources folder
