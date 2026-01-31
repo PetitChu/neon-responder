@@ -12,7 +12,7 @@ namespace BrainlessLabs.Neon.Lifecycle
     /// </summary>
     public class HealthCheckedServicesTransition : ApplicationTransition, IDisposable
     {
-        private readonly IDisposable _subscription = null;
+        private readonly IDisposable _subscription;
         private bool _allHealthy;
 
         public override bool ShouldTransition() => _allHealthy;
@@ -42,7 +42,7 @@ namespace BrainlessLabs.Neon.Lifecycle
                     _allHealthy = allHealthy;
                     if (allHealthy)
                     {
-                        // UnityEngine.Debug.Log($"[Lifecycle] All services healthy, ready to transition: {From} → {To}");
+                        UnityEngine.Debug.Log($"[Lifecycle] All services healthy, ready to transition: {from} → {to}");
                     }
                 });
         }
