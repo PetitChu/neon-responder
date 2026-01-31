@@ -27,11 +27,22 @@ namespace BrainlessLabs.Neon
 
         public static UniTask LoadScene(SceneDefinitionAsset sceneDefinition)
         {
+            if (Instance == null)
+            {
+                Debug.LogWarning("[ScenesService] Cannot load scene: ScenesService.Instance is null. Ensure the service is initialized before calling the static API.");
+                return UniTask.CompletedTask;
+            }
+
             return Instance.LoadSceneAsyncInternal(sceneDefinition);
         }
 
         public static UniTask LoadScene(string sceneName)
         {
+            if (Instance == null)
+            {
+                Debug.LogWarning("[ScenesService] Cannot load scene: ScenesService.Instance is null. Ensure the service is initialized before calling the static API.");
+                return UniTask.CompletedTask;
+            }
             return Instance.LoadSceneByNameAsyncInternal(sceneName);
         }
 
