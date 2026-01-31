@@ -280,7 +280,7 @@ namespace BrainlessLabs.Neon {
             Vector2 moveVector = transform.position;
 
             //horizontal movement
-            float inputVectorX = InputManager.GetInputVector(settings.playerId).x; //get user input in x direction
+            float inputVectorX = InputService.GetInputVector(settings.playerId).x; //get user input in x direction
             if(inputVectorX != 0) TurnToDir(inputVectorX > 0? DIRECTION.RIGHT : DIRECTION.LEFT); //turn towards x input direction
             moveVector.x = transform.position.x + (inputVectorX * settings.moveSpeedAir * Time.fixedDeltaTime); //calculate speed based on settings
 

@@ -10,37 +10,37 @@ namespace BrainlessLabs.Neon {
         public override void Update(){
 
             //defend
-            if(InputManager.DefendKeyDown(playerId)){ unit.UnitStateMachine.SetState(new UnitDefend()); return; }
+            if(InputService.DefendKeyDown(playerId)){ unit.UnitStateMachine.SetState(new UnitDefend()); return; }
 
             //jump
-            if(InputManager.JumpKeyDown(playerId)){ unit.UnitStateMachine.SetState(new PlayerJump()); return; }
+            if(InputService.JumpKeyDown(playerId)){ unit.UnitStateMachine.SetState(new PlayerJump()); return; }
 
             //use weapon
-            if(unit.weapon && InputManager.PunchKeyDown(playerId)){ unit.UnitStateMachine.SetState(new PlayerWeaponAttack()); return; }
+            if(unit.weapon && InputService.PunchKeyDown(playerId)){ unit.UnitStateMachine.SetState(new PlayerWeaponAttack()); return; }
 
             //check for nearby enemy to ground pound
-            if(InputManager.PunchKeyDown(playerId) && unit.NearbyEnemyDown()){ unit.UnitStateMachine.SetState(new PlayerGroundPunch()); return; }
+            if(InputService.PunchKeyDown(playerId) && unit.NearbyEnemyDown()){ unit.UnitStateMachine.SetState(new PlayerGroundPunch()); return; }
 
             //check for nearby enemy to ground kick
-            if(InputManager.KickKeyDown(playerId) && unit.NearbyEnemyDown()){ unit.UnitStateMachine.SetState(new PlayerGroundKick()); return; }
+            if(InputService.KickKeyDown(playerId) && unit.NearbyEnemyDown()){ unit.UnitStateMachine.SetState(new PlayerGroundKick()); return; }
 
             //punch Key pressed
-            if(InputManager.PunchKeyDown(playerId)){ unit.UnitStateMachine.SetState(new PlayerAttack(ATTACKTYPE.PUNCH)); return; }
+            if(InputService.PunchKeyDown(playerId)){ unit.UnitStateMachine.SetState(new PlayerAttack(ATTACKTYPE.PUNCH)); return; }
 
             //kick Key pressed
-            if(InputManager.KickKeyDown(playerId)){ unit.UnitStateMachine.SetState(new PlayerAttack(ATTACKTYPE.KICK)); return; }
+            if(InputService.KickKeyDown(playerId)){ unit.UnitStateMachine.SetState(new PlayerAttack(ATTACKTYPE.KICK)); return; }
 
             //grab something (enemy or item)
-            if(InputManager.GrabKeyDown(playerId) && !unit.weapon){ unit.UnitStateMachine.SetState(new PlayerTryGrab()); return; }
+            if(InputService.GrabKeyDown(playerId) && !unit.weapon){ unit.UnitStateMachine.SetState(new PlayerTryGrab()); return; }
 
             //drop current weapon
-            if(InputManager.GrabKeyDown(playerId) && unit.weapon){ unit.UnitStateMachine.SetState(new UnitDropWeapon()); return; }
+            if(InputService.GrabKeyDown(playerId) && unit.weapon){ unit.UnitStateMachine.SetState(new UnitDropWeapon()); return; }
         }
 
         public override void FixedUpdate(){
 
             //get input
-            Vector2 inputVector = InputManager.GetInputVector(playerId).normalized;
+            Vector2 inputVector = InputService.GetInputVector(playerId).normalized;
 
             //go to idle, if there is no input
             if(inputVector.magnitude == 0) {
