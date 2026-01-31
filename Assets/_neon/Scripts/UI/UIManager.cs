@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace BeatEmUpTemplate2D {
+namespace BrainlessLabs.Neon {
 
     //this class handles the opening of menu's
     public class UIManager : MonoBehaviour {

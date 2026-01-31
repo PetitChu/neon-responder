@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace BeatEmUpTemplate2D {
+namespace BrainlessLabs.Neon {
 
     //class that fades in or out an image in the User Interface
     public class UIFader : MonoBehaviour {

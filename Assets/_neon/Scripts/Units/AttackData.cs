@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-namespace BeatEmUpTemplate2D {
+namespace BrainlessLabs.Neon {
 
     public enum ATTACKTYPE { NONE, PUNCH, KICK, GROUNDPOUND, GRAB, GRABPUNCH, GRABKICK, GRABTHROW, WEAPON };
 

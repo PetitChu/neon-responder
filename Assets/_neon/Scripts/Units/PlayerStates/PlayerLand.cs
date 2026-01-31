@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace BeatEmUpTemplate2D {
+namespace BrainlessLabs.Neon {
 
     //state for landing after a jump
     public class PlayerLand : State {

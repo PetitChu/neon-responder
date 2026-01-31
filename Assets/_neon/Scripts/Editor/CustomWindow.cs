@@ -1,21 +1,25 @@
 using UnityEngine;
 using UnityEditor;
 
-namespace BeatEmUpTemplate2D {
+namespace BrainlessLabs.Neon.Editor
+{
+    /// <summary>
+    /// Represents a custom editor window in Unity that can display content with a specified title, size, and position.
+    /// </summary>
+    /// <seealso cref="EditorWindow" />
+    public class CustomWindow : EditorWindow
+    {
+        private string _windowTitle;
+        private string _content;
+        private string _url = "https://www.osarion.com/BeatEmUpTemplate2D/documentation.html";
+        private int _padding = 25;
 
-    //custom Window class for displaying help and documentation information
-    public class CustomWindow : EditorWindow {
-
-        private string windowTitle;
-        private string content;
-        private string url = "https://www.osarion.com/BeatEmUpTemplate2D/documentation.html";
-        private int padding = 25;
-
-        public static void ShowWindow(string title, string content, Vector2 size) {
+        public static void ShowWindow(string title, string content, Vector2 size)
+        {
             CustomWindow window = GetWindow<CustomWindow>(title);
 
-            window.windowTitle = title;
-            window.content = content;
+            window._windowTitle = title;
+            window._content = content;
             window.Repaint();
 
             //set window size
@@ -32,61 +36,68 @@ namespace BeatEmUpTemplate2D {
             window.position = new Rect(windowPosition.x, windowPosition.y, windowSize.x, windowSize.y);
         }
 
-        private void OnGUI() {
+        private void OnGUI()
+        {
 
             //title
-            ShowTitle(windowTitle);
+            ShowTitle(_windowTitle);
 
             //show content if it exists
-            if (!string.IsNullOrEmpty(content)) {
-                EditorGUILayout.TextArea(content, labelStyle(), GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
+            if (!string.IsNullOrEmpty(_content))
+            {
+                EditorGUILayout.TextArea(_content, LabelStyle(), GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
             }
 
             //show footeLink to documentation
             EditorGUILayout.Space(10);
             ShowTitle("Documentation");
-            GUILayout.Label("For detailed documentation, FAQ, tutorials, and videos, please visit the website:", labelStyle());
+            GUILayout.Label("For detailed documentation, FAQ, tutorials, and videos, please visit the website:", LabelStyle());
 
             //button to website
-            if (GUILayout.Button(new GUIContent("Online Documentation", "Open link"), buttonStyle())) {
-                Application.OpenURL(url);
+            if (GUILayout.Button(new GUIContent("Online Documentation", "Open link"), ButtonStyle()))
+            {
+                Application.OpenURL(_url);
             }
         }
 
         //style
-        GUIStyle buttonStyle() {
+        private GUIStyle ButtonStyle()
+        {
             GUIStyle style = new GUIStyle(GUI.skin.button);
             style.normal.textColor = new Color(1, 1, 1, .6f);
             style.hover.textColor = Color.white;
             style.alignment = TextAnchor.MiddleCenter;
             style.richText = true;
-            style.margin = new RectOffset(padding, padding, 0, 10);
+            style.margin = new RectOffset(_padding, _padding, 0, 10);
             style.fixedHeight = 40;
             return style;
         }
 
         //style for labels
-        GUIStyle labelStyle(bool bold = false) {
-            GUIStyle style = bold? new GUIStyle(EditorStyles.boldLabel) : new GUIStyle(EditorStyles.label);
+        private GUIStyle LabelStyle(bool bold = false)
+        {
+            GUIStyle style = bold ? new GUIStyle(EditorStyles.boldLabel) : new GUIStyle(EditorStyles.label);
             style.wordWrap = true;
             style.richText = true;
-            style.padding = new RectOffset(padding, padding, 0, 0);
+            style.padding = new RectOffset(_padding, _padding, 0, 0);
             style.alignment = TextAnchor.UpperLeft;
             return style;
         }
- 
+
         //title void
-        void ShowTitle(string label){
+        private void ShowTitle(string label)
+        {
             string richText = $"<b><size=14><color=#FFFFFF>{label}</color></size></b>";
-           GUILayout.Label(richText, titleStyle());
+            GUILayout.Label(richText, TitleStyle());
         }
 
         //style for titles
-        GUIStyle titleStyle() {
+        private GUIStyle TitleStyle()
+        {
             GUIStyle style = new GUIStyle(EditorStyles.boldLabel);
             style.wordWrap = true;
             style.richText = true;
-            style.padding = new RectOffset(padding, padding, padding, 0);
+            style.padding = new RectOffset(_padding, _padding, _padding, 0);
             style.alignment = TextAnchor.UpperLeft;
             style.fontSize = 14;
             style.richText = true;

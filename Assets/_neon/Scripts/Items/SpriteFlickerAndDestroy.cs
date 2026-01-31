@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-namespace BeatEmUpTemplate2D {
+namespace BrainlessLabs.Neon {
 
     //class for flickering a sprite (on and off) and then destroy it
     public class SpriteFlickerAndDestroy : MonoBehaviour {

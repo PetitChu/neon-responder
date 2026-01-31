@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace BeatEmUpTemplate2D {
+namespace BrainlessLabs.Neon {
 
     //sets enemy in a grabbed state
     public class EnemyGrabbed : State {

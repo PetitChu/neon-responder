@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace BeatEmUpTemplate2D {
+namespace BrainlessLabs.Neon {
 
     //class for Health Pickup Items
     public class HealthPickup : Item {

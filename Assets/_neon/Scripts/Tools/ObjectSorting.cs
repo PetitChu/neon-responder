@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace BeatEmUpTemplate2D {
+namespace BrainlessLabs.Neon {
 
     //class for sorting objects or units to appear in front or behind other sprites based on their y position
     public class ObjectSorting : MonoBehaviour {

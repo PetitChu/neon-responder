@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace BeatEmUpTemplate2D {
+namespace BrainlessLabs.Neon {
 
     //state for attacking during a jump
     public class PlayerJumpAttack : State {

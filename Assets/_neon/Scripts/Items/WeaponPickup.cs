@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace BeatEmUpTemplate2D {
+namespace BrainlessLabs.Neon {
 
     //class for weapon pickup items
     public class WeaponPickup : Item  {
@@ -28,7 +28,7 @@ namespace BeatEmUpTemplate2D {
             target.GetComponentInChildren<WeaponAttachment>()?.equipWeapon(this);
 
             //play sfx
-            BeatEmUpTemplate2D.AudioController.PlaySFX(pickupSFX, target.transform.position);
+            AudioController.PlaySFX(pickupSFX, target.transform.position);
         }
     }
 }

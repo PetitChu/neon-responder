@@ -1,10 +1,14 @@
 using UnityEngine;
 
-namespace BeatEmUpTemplate2D {
+namespace BrainlessLabs.Neon
+{
 
-    public class HelpAttribute : PropertyAttribute {
+    public class HelpAttribute : PropertyAttribute
+    {
         public string text;
-        public HelpAttribute(string text) {
+
+        public HelpAttribute(string text)
+        {
             this.text = text;
         }
     }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace BeatEmUpTemplate2D {
+namespace BrainlessLabs.Neon {
 
     //class for visualizing CameraBounds in the Unity Editor
     public class LevelBound : MonoBehaviour {

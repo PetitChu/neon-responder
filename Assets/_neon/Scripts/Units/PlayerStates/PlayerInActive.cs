@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace BeatEmUpTemplate2D {
+namespace BrainlessLabs.Neon {
 
     //State that causes the player to remain inactive, effectively disabling all controls.
     public class PlayerInActive : State {

@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
-namespace BeatEmUpTemplate2D {
+namespace BrainlessLabs.Neon {
 
     //class for prompting players to continue through a level by showing a hand pointer
     public class HandPointer : MonoBehaviour{
@@ -46,7 +46,7 @@ namespace BeatEmUpTemplate2D {
                 hand.enabled = !hand.enabled;
 
                 //play sfx when hand is visible
-                if(hand.enabled) BeatEmUpTemplate2D.AudioController.PlaySFX(sfx, Camera.main.transform.position);
+                if(hand.enabled) AudioController.PlaySFX(sfx, Camera.main.transform.position);
 
                 //wait a moment...
                 yield return new WaitForSeconds(flickerInterval);

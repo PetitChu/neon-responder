@@ -1,15 +1,22 @@
 using UnityEngine;
 using UnityEditor;
 
-namespace BeatEmUpTemplate2D {
-
-    //Editor extension for showing read only variables in the Unity Inspector
+namespace BrainlessLabs.Neon.Editor
+{
+    /// <summary>
+    /// A custom property drawer for displaying fields marked with the <see cref="ReadOnlyProperty"/> attribute
+    /// as read-only in the Unity Inspector.
+    /// This prevents modifications to the field while still allowing the value to be displayed.
+    /// </summary>
     [CustomPropertyDrawer(typeof(ReadOnlyProperty))]
-    public class ReadOnlyAttribute : PropertyDrawer {
-        public override void OnGUI(Rect position, SerializedProperty prop, GUIContent label) {
+    public class ReadOnlyAttributeDrawer : PropertyDrawer
+    {
+        public override void OnGUI(Rect position, SerializedProperty prop, GUIContent label)
+        {
             string valueStr;
 
-            switch (prop.propertyType) {
+            switch (prop.propertyType)
+            {
                 case SerializedPropertyType.Integer:
                     valueStr = prop.intValue.ToString();
                     break;
@@ -31,7 +38,7 @@ namespace BeatEmUpTemplate2D {
                     break;
             }
 
-            EditorGUI.LabelField(position,label.text, valueStr);
+            EditorGUI.LabelField(position, label.text, valueStr);
         }
     }
 }

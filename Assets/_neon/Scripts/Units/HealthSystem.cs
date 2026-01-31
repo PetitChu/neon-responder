@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace BeatEmUpTemplate2D {
+namespace BrainlessLabs.Neon {
 
     //healthsystem class for player, enemy and objects
     public class HealthSystem : MonoBehaviour {
@@ -89,8 +89,8 @@ namespace BeatEmUpTemplate2D {
             if(!invulnerable && healthBar) healthBar.transform.GetChild(0).transform.localScale = new Vector3((float)currentHp/(float)maxHp,1,1);
             
             //play sfx
-            if(currentHp>0) BeatEmUpTemplate2D.AudioController.PlaySFX(playSFXOnHit, transform.position);
-            else BeatEmUpTemplate2D.AudioController.PlaySFX(playSFXOnDestroy, transform.position);
+            if(currentHp>0) AudioController.PlaySFX(playSFXOnHit, transform.position);
+            else AudioController.PlaySFX(playSFXOnDestroy, transform.position);
 
             //show hitflash
             if(showHitFlash){

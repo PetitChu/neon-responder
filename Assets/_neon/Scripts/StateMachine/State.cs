@@ -1,4 +1,4 @@
-﻿namespace BeatEmUpTemplate2D {
+﻿namespace BrainlessLabs.Neon {
 
     //state base class
     public abstract class State {

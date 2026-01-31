@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace BeatEmUpTemplate2D {
+namespace BrainlessLabs.Neon {
 
     //ctate for actions when the player is holding an enemy in a grab.
     public class PlayerGrabEnemy : State {

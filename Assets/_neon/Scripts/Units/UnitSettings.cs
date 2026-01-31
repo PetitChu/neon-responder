@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-namespace BeatEmUpTemplate2D {
+namespace BrainlessLabs.Neon {
 
     public enum UNITTYPE { PLAYER = 0, ENEMY = 10, NPC = 20 }
 

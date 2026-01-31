@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace BeatEmUpTemplate2D {
+namespace BrainlessLabs.Neon {
 
     //class for creating a parallax scrolling effect
     public class ParalaxScrolling : MonoBehaviour {

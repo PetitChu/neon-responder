@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using UnityEditor;
 #endif
 
-namespace BeatEmUpTemplate2D {
+namespace BrainlessLabs.Neon {
 
     //functions that can be utilized by units across different states.
     public class UnitActions : MonoBehaviour {
@@ -354,7 +354,7 @@ namespace BeatEmUpTemplate2D {
 
         //play sfx
         public void PlaySFX(string sfx){
-            BeatEmUpTemplate2D.AudioController.PlaySFX(sfx, transform.position);
+            AudioController.PlaySFX(sfx, transform.position);
         }
 
         //play footstep SFX depending on the surface this unit walks on

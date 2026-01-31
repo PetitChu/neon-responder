@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace BeatEmUpTemplate2D {
+namespace BrainlessLabs.Neon {
 
     //class for Surface-Based Footstep Sound Effects
     [RequireComponent(typeof(Collider2D))]

@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace BeatEmUpTemplate2D {
+namespace BrainlessLabs.Neon {
 
     //behaviour for the bouncing ball in the training area
     public class BallBehaviour : MonoBehaviour {
@@ -71,7 +71,7 @@ namespace BeatEmUpTemplate2D {
                 }
 
                 //play bounce sfx
-                if(bounceSFX.Length>0) BeatEmUpTemplate2D.AudioController.PlaySFX(bounceSFX, transform.position);
+                if(bounceSFX.Length>0) AudioController.PlaySFX(bounceSFX, transform.position);
 
                 //next bounce
                 bounceCount ++;

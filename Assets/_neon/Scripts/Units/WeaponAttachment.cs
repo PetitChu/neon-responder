@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace BeatEmUpTemplate2D {
+namespace BrainlessLabs.Neon {
 
     [RequireComponent(typeof(SpriteRenderer))]
     public class WeaponAttachment : MonoBehaviour {

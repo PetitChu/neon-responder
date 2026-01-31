@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace BeatEmUpTemplate2D {
+namespace BrainlessLabs.Neon {
 
     //class for unit or objects healthbars in the User Interface
     public class UIHUDHealthBar : MonoBehaviour {

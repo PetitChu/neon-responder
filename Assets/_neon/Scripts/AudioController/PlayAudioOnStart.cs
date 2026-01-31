@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace BeatEmUpTemplate2D {
+namespace BrainlessLabs.Neon {
 
     //class for playing a sfx on Start of a scene
     public class PlayAudioOnStart : MonoBehaviour {
@@ -9,7 +9,7 @@ namespace BeatEmUpTemplate2D {
         public Transform parentTransform; //optional
 
         void Start(){
-            if(audioItemName.Length > 0) BeatEmUpTemplate2D.AudioController.PlaySFX(audioItemName, transform.position, parentTransform? parentTransform : null);
+            if(audioItemName.Length > 0) AudioController.PlaySFX(audioItemName, transform.position, parentTransform? parentTransform : null);
         }
     }
 }

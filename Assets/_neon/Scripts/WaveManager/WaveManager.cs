@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 
-namespace BeatEmUpTemplate2D {
+namespace BrainlessLabs.Neon {
 
     //this class spawns waves of enemies until all enemy waves have been defeated
     public class WaveManager : MonoBehaviour {

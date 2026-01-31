@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace BeatEmUpTemplate2D {
+namespace BrainlessLabs.Neon {
 
     public class UnitDefend : State {
 
@@ -41,7 +41,7 @@ namespace BeatEmUpTemplate2D {
             unit.ShowEffect("DefendEffect"); 
 
             //play sfx
-            BeatEmUpTemplate2D.AudioController.PlaySFX(defendHitSFX, unit.transform.position);
+            AudioController.PlaySFX(defendHitSFX, unit.transform.position);
         }
     }
 }

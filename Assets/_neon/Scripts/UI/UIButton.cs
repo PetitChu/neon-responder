@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System.Collections;
 
-namespace BeatEmUpTemplate2D {
+namespace BrainlessLabs.Neon {
 
     //class for navigating UI buttons via the InputManager (joypad and keyboard)
     public class UIButton : MonoBehaviour, ISelectHandler, IPointerDownHandler, ISubmitHandler {
@@ -97,18 +97,18 @@ namespace BeatEmUpTemplate2D {
         //this button is selected
         public void OnSelect(BaseEventData eventData){
             UIButton.lastSelectedButton = gameObject; //set this button as selected
-            if(sfxOnSelect.Length > 0 && Time.time - timeAlive > Time.deltaTime) BeatEmUpTemplate2D.AudioController.PlaySFX(sfxOnSelect, Camera.main.transform.position); //play sfx. (Time.time - timeAlive > 0) skips playing a sfx when the buttons first appears
+            if(sfxOnSelect.Length > 0 && Time.time - timeAlive > Time.deltaTime) AudioController.PlaySFX(sfxOnSelect, Camera.main.transform.position); //play sfx. (Time.time - timeAlive > 0) skips playing a sfx when the buttons first appears
             waitForButtonRelease = true; //wait for user to release button before continueing
         }
 
         //this button is clicked with the mouse
         public void OnPointerDown(PointerEventData eventData){
-             if(sfxOnClick.Length > 0) BeatEmUpTemplate2D.AudioController.PlaySFX(sfxOnClick, Camera.main.transform.position); //play sfx
+             if(sfxOnClick.Length > 0) AudioController.PlaySFX(sfxOnClick, Camera.main.transform.position); //play sfx
         }
 
         //this button is pressed via keyboard
         public void OnSubmit(BaseEventData eventData){
-            if(sfxOnClick.Length > 0) BeatEmUpTemplate2D.AudioController.PlaySFX(sfxOnClick, Camera.main.transform.position); //play sfx
+            if(sfxOnClick.Length > 0) AudioController.PlaySFX(sfxOnClick, Camera.main.transform.position); //play sfx
         }
 
         //disables all button interaction
@@ -129,12 +129,12 @@ namespace BeatEmUpTemplate2D {
 	    }
 
         public void LoadScene(string sceneName){
-            float sfxDuration = BeatEmUpTemplate2D.AudioController.GetSFXDuration(sfxOnClick);
+            float sfxDuration = AudioController.GetSFXDuration(sfxOnClick);
             StartCoroutine(LoadSceneRoutine(sceneName, sfxDuration));
         }
 
         public void ReloadCurrentScene(){
-            float sfxDuration = BeatEmUpTemplate2D.AudioController.GetSFXDuration(sfxOnClick);
+            float sfxDuration = AudioController.GetSFXDuration(sfxOnClick);
             StartCoroutine(LoadSceneRoutine(SceneManager.GetActiveScene().name, sfxDuration));
         }
 

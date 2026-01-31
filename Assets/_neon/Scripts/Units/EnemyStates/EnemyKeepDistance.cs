@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace BeatEmUpTemplate2D {
+namespace BrainlessLabs.Neon {
 
     //enemy keeps a bit of distance from the target
     public class EnemyKeepDistance : State {

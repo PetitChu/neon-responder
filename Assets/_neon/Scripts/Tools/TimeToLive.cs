@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-namespace BeatEmUpTemplate2D {
+namespace BrainlessLabs.Neon {
 
     //class for destroying objects after x seconds
     public class TimeToLive : MonoBehaviour {

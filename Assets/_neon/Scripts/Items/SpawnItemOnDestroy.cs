@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace BeatEmUpTemplate2D {
+namespace BrainlessLabs.Neon {
 
     //class for spawning items when a GameObject is destroyed
     public class SpawnItemOnDestroy : MonoBehaviour {

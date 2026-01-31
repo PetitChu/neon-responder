@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace BeatEmUpTemplate2D {
+namespace BrainlessLabs.Neon {
 
     //preform a camera shake on start
     public class DoCamShake : MonoBehaviour {

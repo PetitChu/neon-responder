@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace BeatEmUpTemplate2D {
+namespace BrainlessLabs.Neon {
 
     //enemy moves towards the target
     public class EnemyMoveToTargetAndAttack : State {

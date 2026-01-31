@@ -1,11 +1,12 @@
 {
-    "name": "BrainlessLabs.Neon",
-    "rootNamespace": "BrainlessLabs.Neon",
+    "name": "BrainlessLabs.Neon.Editor",
+    "rootNamespace": "BrainlessLabs.Neon.Editor",
     "references": [
-        "GUID:75469ad4d38634e559750d17036d5f7c",
-        "GUID:476f7c6c6dfeed041b063446a926e656"
+        "GUID:947f66f46ead20c4497958382f2ecf40"
     ],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
