@@ -345,12 +345,9 @@ namespace BrainlessLabs.Neon
 
             // Apply definition data to UnitSettings if present
             var unitSettings = instance.GetComponent<UnitSettings>();
-            if (unitSettings != null)
+            if (unitSettings != null && !string.IsNullOrEmpty(definition.DisplayName))
             {
-                if (!string.IsNullOrEmpty(definition.DisplayName))
-                {
-                    unitSettings.unitName = definition.DisplayName;
-                }
+                unitSettings.unitName = definition.DisplayName;
             }
 
             // Apply health from definition if configured
