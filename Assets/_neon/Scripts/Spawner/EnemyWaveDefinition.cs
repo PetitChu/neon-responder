@@ -29,11 +29,8 @@ namespace BrainlessLabs.Neon
         /// <summary>Spawn at a distance from the player (offscreen).</summary>
         RelativeToPlayer,
 
-        /// <summary>Spawn at designated EnemySpawnpoint locations in the scene.</summary>
-        AtSpawnPoints,
-
-        /// <summary>Spawn at a fixed world position defined in the wave.</summary>
-        FixedPosition
+        /// <summary>Spawn at a specific level progression percentage.</summary>
+        AtProgression
     }
 
     /// <summary>
@@ -50,11 +47,13 @@ namespace BrainlessLabs.Neon
         [Tooltip("How this wave is triggered to start.")]
         public WaveTriggerType TriggerType = WaveTriggerType.PreviousWaveCompleted;
 
-        [Tooltip("Progression % to trigger this wave (used with ProgressionPercent trigger type).")]
+        [ShowIf("TriggerType", WaveTriggerType.ProgressionPercent)]
+        [Tooltip("Progression % to trigger this wave (0 = level start, 1 = level end).")]
         [Range(0f, 1f)]
         public float TriggerProgressionPercent;
 
-        [Tooltip("Distance from level start to trigger this wave (used with DistanceFromStart trigger type).")]
+        [ShowIf("TriggerType", WaveTriggerType.DistanceFromStart)]
+        [Tooltip("Distance from level start to trigger this wave.")]
         public float TriggerDistance;
 
         [Header("Enemies")]
@@ -72,14 +71,25 @@ namespace BrainlessLabs.Neon
         [Tooltip("How enemies are positioned when spawned.")]
         public SpawnPositionMode SpawnPositionMode = SpawnPositionMode.RelativeToPlayer;
 
+        [ShowIf("SpawnPositionMode", SpawnPositionMode.RelativeToPlayer)]
         [Tooltip("Distance from the player at which enemies spawn (used with RelativeToPlayer mode).")]
         public float SpawnDistanceFromPlayer = 8f;
+
+        [ShowIf("SpawnPositionMode", SpawnPositionMode.AtProgression)]
+        [Tooltip("Where enemies spawn as a progression % of the level (0 = start, 1 = end).")]
+        [Range(0f, 1f)]
+        public float SpawnProgression = 0.5f;
 
         [Tooltip("Vertical range for random Y offset when spawning.")]
         public Vector2 SpawnYRange = new(-1f, 1f);
 
         [Header("Camera")]
-        [Tooltip("Optional level bound to apply when this wave starts (for camera constraints).")]
-        public LevelBound WaveLevelBound;
+        [Tooltip("Whether this wave changes the camera bound.")]
+        public bool HasCameraBound;
+
+        [ShowIf("HasCameraBound")]
+        [Tooltip("Where the camera bound is placed as a progression % of the level (0 = start, 1 = end).")]
+        [Range(0f, 1f)]
+        public float CameraBoundProgression;
     }
 }

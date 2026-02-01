@@ -12,6 +12,7 @@ namespace BrainlessLabs.Neon
     {
         private readonly IEntitiesService _entitiesService;
         private readonly LevelConfigurationAsset _config;
+        private readonly Level _level;
 
         // Wave state
         private int _currentWaveIndex = -1;
@@ -44,10 +45,11 @@ namespace BrainlessLabs.Neon
         public bool AllWavesCompleted => _allWavesCompleted;
         public bool WavesStarted => _wavesStarted;
 
-        public SpawnerService(IEntitiesService entitiesService, LevelConfigurationAsset config)
+        public SpawnerService(IEntitiesService entitiesService, LevelConfigurationAsset config, Level level)
         {
             _entitiesService = entitiesService;
             _config = config;
+            _level = level;
 
             // Listen for entity removals to track wave enemy deaths
             _entitiesService.OnEntityUnregistered += OnEntityUnregistered;
@@ -154,6 +156,17 @@ namespace BrainlessLabs.Neon
             if (_currentWaveIndex < 0 || _currentWaveIndex >= _config.Waves.Count) return;
 
             var wave = _config.Waves[_currentWaveIndex];
+
+            // Check progression/distance triggers for waves waiting to start
+            if (_totalEnemiesToSpawnInWave == 0 && _enemiesAliveInWave == 0)
+            {
+                if (CheckWaveTrigger(wave))
+                {
+                    StartWave(_currentWaveIndex);
+                }
+                return;
+            }
+
             TrySpawnNextEnemy(wave);
         }
 
@@ -188,6 +201,28 @@ namespace BrainlessLabs.Neon
             OnNpcSpawned = null;
         }
 
+        private bool CheckWaveTrigger(EnemyWaveDefinition wave)
+        {
+            var playerEntity = _entitiesService.GetFirstByType(UNITTYPE.PLAYER);
+            if (playerEntity.GameObject == null) return false;
+
+            float playerX = playerEntity.GameObject.transform.position.x;
+
+            switch (wave.TriggerType)
+            {
+                case WaveTriggerType.ProgressionPercent:
+                    float triggerX = _level.ProgressionToWorldX(wave.TriggerProgressionPercent);
+                    return playerX >= triggerX;
+
+                case WaveTriggerType.DistanceFromStart:
+                    float distanceFromStart = playerX - _level.LevelStartX;
+                    return distanceFromStart >= wave.TriggerDistance;
+
+                default:
+                    return false;
+            }
+        }
+
         private void AdvanceToNextWave()
         {
             int nextIndex = _currentWaveIndex + 1;
@@ -200,24 +235,22 @@ namespace BrainlessLabs.Neon
             }
 
             var wave = _config.Waves[nextIndex];
+            _currentWaveIndex = nextIndex;
 
-            // Check if the wave needs a specific trigger
+            // Manual waves wait for TriggerWave() call
             if (wave.TriggerType == WaveTriggerType.Manual)
             {
-                // Manual waves wait for TriggerWave() call
-                _currentWaveIndex = nextIndex;
                 return;
             }
 
-            // For PreviousWaveCompleted (and first wave), start immediately
+            // PreviousWaveCompleted starts immediately
             if (wave.TriggerType == WaveTriggerType.PreviousWaveCompleted)
             {
                 StartWave(nextIndex);
                 return;
             }
 
-            // For other trigger types, just advance the index and let Tick check conditions
-            _currentWaveIndex = nextIndex;
+            // ProgressionPercent and DistanceFromStart are checked each Tick
         }
 
         private void StartWave(int waveIndex)
@@ -240,14 +273,10 @@ namespace BrainlessLabs.Neon
 
             Debug.Log($"[SpawnerService] Starting wave {waveIndex}: '{wave.WaveName}' ({_totalEnemiesToSpawnInWave} enemies)");
 
-            // Apply camera level bound if configured
-            if (wave.WaveLevelBound != null)
+            // Apply camera bound if configured
+            if (wave.HasCameraBound)
             {
-                var camFollow = Camera.main?.GetComponent<CameraFollow>();
-                if (camFollow != null)
-                {
-                    camFollow.levelBound = wave.WaveLevelBound;
-                }
+                _level.SetCameraBoundFromProgression(wave.CameraBoundProgression);
             }
 
             OnWaveStarted?.Invoke(waveIndex);
@@ -324,15 +353,10 @@ namespace BrainlessLabs.Neon
                     float y = playerPos.y + UnityEngine.Random.Range(wave.SpawnYRange.x, wave.SpawnYRange.y);
                     return new Vector2(x, y);
 
-                case SpawnPositionMode.FixedPosition:
-                    // Use the wave level bound position as reference, with Y offset
-                    if (wave.WaveLevelBound != null)
-                    {
-                        float fy = wave.WaveLevelBound.transform.position.y
-                            + UnityEngine.Random.Range(wave.SpawnYRange.x, wave.SpawnYRange.y);
-                        return new Vector2(wave.WaveLevelBound.transform.position.x, fy);
-                    }
-                    return playerPos;
+                case SpawnPositionMode.AtProgression:
+                    float progressionX = _level.ProgressionToWorldX(wave.SpawnProgression);
+                    float progressionY = playerPos.y + UnityEngine.Random.Range(wave.SpawnYRange.x, wave.SpawnYRange.y);
+                    return new Vector2(progressionX, progressionY);
 
                 default:
                     return playerPos + Vector2.right * wave.SpawnDistanceFromPlayer;

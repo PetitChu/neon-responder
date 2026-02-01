@@ -16,6 +16,15 @@ namespace BrainlessLabs.Neon
         [SerializeField]
         private LevelConfigurationAsset _configuration;
 
+        [Header("Level Geometry")]
+        [Tooltip("The world X position where the level starts.")]
+        [SerializeField]
+        private float _levelStartX;
+
+        [Tooltip("The total length of the level in world units. Used for progression-based calculations.")]
+        [SerializeField]
+        private float _levelLength = 50f;
+
         [Header("Debug")]
         [ReadOnlyProperty, SerializeField]
         private int _currentWave;
@@ -28,6 +37,7 @@ namespace BrainlessLabs.Neon
 
         private SpawnerService _spawnerService;
         private bool _slowMotionInProgress;
+        private LevelBound _dynamicCameraBound;
 
         /// <summary>
         /// The level configuration asset.
@@ -38,6 +48,50 @@ namespace BrainlessLabs.Neon
         /// The spawner service for this level.
         /// </summary>
         public SpawnerService SpawnerService => _spawnerService;
+
+        /// <summary>
+        /// The world X position where the level starts.
+        /// </summary>
+        public float LevelStartX => _levelStartX;
+
+        /// <summary>
+        /// The total length of the level in world units.
+        /// </summary>
+        public float LevelLength => _levelLength;
+
+        /// <summary>
+        /// Converts a level progression value (0-1) to a world X position.
+        /// </summary>
+        public float ProgressionToWorldX(float progression)
+        {
+            return _levelStartX + (_levelLength * Mathf.Clamp01(progression));
+        }
+
+        /// <summary>
+        /// Sets the camera bound to a position calculated from level progression.
+        /// Creates a dynamic LevelBound if one doesn't exist.
+        /// </summary>
+        public void SetCameraBoundFromProgression(float progression)
+        {
+            float worldX = ProgressionToWorldX(progression);
+
+            if (_dynamicCameraBound == null)
+            {
+                var go = new GameObject("DynamicLevelBound");
+                go.transform.SetParent(transform);
+                _dynamicCameraBound = go.AddComponent<LevelBound>();
+                _dynamicCameraBound.showDebugLine = true;
+                _dynamicCameraBound.lineColor = Color.red;
+            }
+
+            _dynamicCameraBound.transform.position = new Vector3(worldX, transform.position.y, 0f);
+
+            var camFollow = Camera.main?.GetComponent<CameraFollow>();
+            if (camFollow != null)
+            {
+                camFollow.levelBound = _dynamicCameraBound;
+            }
+        }
 
         void Start()
         {
@@ -56,7 +110,7 @@ namespace BrainlessLabs.Neon
             }
 
             // Create level-scoped spawner
-            _spawnerService = new SpawnerService(entitiesService, _configuration);
+            _spawnerService = new SpawnerService(entitiesService, _configuration, this);
             _spawnerService.OnWaveStarted += OnWaveStarted;
             _spawnerService.OnWaveCompleted += OnWaveCompleted;
             _spawnerService.OnAllWavesCompleted += OnAllWavesCompleted;
@@ -205,6 +259,27 @@ namespace BrainlessLabs.Neon
             }
             Time.timeScale = 1f;
             _slowMotionInProgress = false;
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (_levelLength <= 0) return;
+
+            // Draw level bounds as vertical lines
+            Gizmos.color = Color.yellow;
+            float startX = _levelStartX;
+            float endX = _levelStartX + _levelLength;
+            float y = transform.position.y;
+            Gizmos.DrawLine(new Vector3(startX, y - 5f, 0), new Vector3(startX, y + 5f, 0));
+            Gizmos.DrawLine(new Vector3(endX, y - 5f, 0), new Vector3(endX, y + 5f, 0));
+
+            // Draw progression markers at 25% intervals
+            Gizmos.color = new Color(1f, 1f, 0f, 0.3f);
+            for (float p = 0.25f; p < 1f; p += 0.25f)
+            {
+                float px = ProgressionToWorldX(p);
+                Gizmos.DrawLine(new Vector3(px, y - 3f, 0), new Vector3(px, y + 3f, 0));
+            }
         }
     }
 }
