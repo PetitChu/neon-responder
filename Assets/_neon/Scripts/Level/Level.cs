@@ -101,11 +101,11 @@ namespace BrainlessLabs.Neon
                 return;
             }
 
-            // Resolve EntitiesService (registered as singleton in DI)
-            var entitiesService = EntitiesService.Instance;
+            // Resolve EntitiesService from Services
+            var entitiesService = Services.Entities;
             if (entitiesService == null)
             {
-                Debug.LogError("[Level] EntitiesService.Instance is null. Ensure it is registered and resolved before level loads.");
+                Debug.LogError("[Level] Services.Entities is null. Ensure services are initialized before level loads.");
                 return;
             }
 
@@ -206,16 +206,16 @@ namespace BrainlessLabs.Neon
             if (unitSettings.unitType == UNITTYPE.ENEMY)
             {
                 // Unregister the dead enemy from EntitiesService
-                if (EntitiesService.Instance != null &&
-                    EntitiesService.Instance.TryGetByGameObject(unit, out TrackedEntity entity))
+                if (Services.Entities != null &&
+                    Services.Entities.TryGetByGameObject(unit, out TrackedEntity entity))
                 {
-                    EntitiesService.Instance.Unregister(entity.Id);
+                    Services.Entities.Unregister(entity.Id);
                 }
 
                 // Slow motion on last kill
                 if (_configuration.SlowMotionOnLastKill && _spawnerService.AllWavesCompleted)
                 {
-                    int remaining = EntitiesService.Instance?.GetCount(UNITTYPE.ENEMY) ?? 0;
+                    int remaining = Services.Entities?.GetCount(UNITTYPE.ENEMY) ?? 0;
                     if (remaining == 0)
                     {
                         StartCoroutine(SlowMotionRoutine());

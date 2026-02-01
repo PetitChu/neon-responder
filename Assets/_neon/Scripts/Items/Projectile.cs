@@ -40,7 +40,7 @@ namespace BrainlessLabs.Neon {
                 enemyHit.GetComponent<HealthSystem>()?.SubstractHealth(attackData.damage);
 
                 //play sfx
-                if(attackData.sfx.Length > 0) AudioService.PlaySFX(attackData.sfx);
+                if(attackData.sfx.Length > 0) Services.Audio.PlaySFX(attackData.sfx);
 
                 //get components
                 UnitActions ua = enemyHit.GetComponent<UnitActions>();

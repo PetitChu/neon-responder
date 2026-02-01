@@ -71,7 +71,7 @@ namespace BrainlessLabs.Neon {
                 }
 
                 //play bounce sfx
-                if(bounceSFX.Length>0) AudioService.PlaySFX(bounceSFX, transform.position);
+                if(bounceSFX.Length>0) Services.Audio.PlaySFX(bounceSFX, transform.position);
 
                 //next bounce
                 bounceCount ++;

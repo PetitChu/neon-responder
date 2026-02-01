@@ -101,7 +101,7 @@ namespace BrainlessLabs.Neon {
                     if(attackData != null) targetHealthSystem?.SubstractHealth(attackData.damage);
 
                     //play hit sfx (if any)
-                    if(attackData.sfx.Length > 0) AudioService.PlaySFX(attackData.sfx);
+                    if(attackData.sfx.Length > 0) Services.Audio.PlaySFX(attackData.sfx);
 
                     //send event
                     if(onUnitDealDamage != null) onUnitDealDamage(obj, attackData);
@@ -280,7 +280,7 @@ namespace BrainlessLabs.Neon {
             Vector2 moveVector = transform.position;
 
             //horizontal movement
-            float inputVectorX = InputService.GetInputVector(settings.playerId).x; //get user input in x direction
+            float inputVectorX = Services.Input.GetInputVector(settings.playerId).x; //get user input in x direction
             if(inputVectorX != 0) TurnToDir(inputVectorX > 0? DIRECTION.RIGHT : DIRECTION.LEFT); //turn towards x input direction
             moveVector.x = transform.position.x + (inputVectorX * settings.moveSpeedAir * Time.fixedDeltaTime); //calculate speed based on settings
 
@@ -354,7 +354,7 @@ namespace BrainlessLabs.Neon {
 
         //play sfx
         public void PlaySFX(string sfx){
-            AudioService.PlaySFX(sfx, transform.position);
+            Services.Audio.PlaySFX(sfx, transform.position);
         }
 
         //play footstep SFX depending on the surface this unit walks on
@@ -363,11 +363,11 @@ namespace BrainlessLabs.Neon {
             foreach(Collider2D col2D in overlappedColliders){
                 Surface surface = col2D.GetComponent<Surface>();
                 if(surface && surface.footstepSFX.Length>0){
-                    AudioService.PlaySFX(surface.footstepSFX, transform.position);
+                    Services.Audio.PlaySFX(surface.footstepSFX, transform.position);
                     return;
                 }
             }
-            AudioService.PlaySFX("FootstepDefault", transform.position);
+            Services.Audio.PlaySFX("FootstepDefault", transform.position);
         }
 
         //displays an effect loaded from the resources folder

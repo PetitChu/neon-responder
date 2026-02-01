@@ -59,14 +59,7 @@ namespace BrainlessLabs.Neon.Lifecycle
         protected override void OnLifetimeScopeReady(IObjectResolver container)
         {
             base.OnLifetimeScopeReady(container);
-            // Force eager initialization of AudioService to ensure Instance is set
-            container.Resolve<IAudioService>();
-            // Force eager initialization of InputService to ensure Instance is set
-            container.Resolve<IInputService>();
-            // Force eager initialization of ScenesService to ensure Instance is set
-            container.Resolve<IScenesService>();
-            // Force eager initialization of EntitiesService to ensure Instance is set
-            container.Resolve<IEntitiesService>();
+            Services.Initialize(container);
             CreateAndAddTargetStateWithHealthCheckedTransition(
                 container,
                 NextStateType.Name,

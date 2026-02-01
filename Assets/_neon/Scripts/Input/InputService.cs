@@ -6,8 +6,6 @@ namespace BrainlessLabs.Neon
 {
     public class InputService : IInputService, System.IDisposable
     {
-        public static InputService Instance { get; private set; }
-
         private readonly PlayerControls _playerInput;
         private readonly InputAction _move;
         private readonly InputAction _punch;
@@ -35,60 +33,43 @@ namespace BrainlessLabs.Neon
             _jump.Enable();
 
             InputSystem.onDeviceChange += OnDeviceChange;
-            Instance = this;
         }
 
-        #region Static API (backward compatibility)
-
-        public static bool PunchKeyDown(int playerId)
+        public bool PunchKeyDown(int playerId)
         {
-            return Instance?._punch?.WasPressedThisFrame() ?? false;
+            return _punch?.WasPressedThisFrame() ?? false;
         }
 
-        public static bool KickKeyDown(int playerId)
+        public bool KickKeyDown(int playerId)
         {
-            return Instance?._kick?.WasPressedThisFrame() ?? false;
+            return _kick?.WasPressedThisFrame() ?? false;
         }
 
-        public static bool DefendKeyDown(int playerId)
+        public bool DefendKeyDown(int playerId)
         {
-            return Instance?._defend?.IsPressed() ?? false;
+            return _defend?.IsPressed() ?? false;
         }
 
-        public static bool GrabKeyDown(int playerId)
+        public bool GrabKeyDown(int playerId)
         {
-            return Instance?._grab?.WasPressedThisFrame() ?? false;
+            return _grab?.WasPressedThisFrame() ?? false;
         }
 
-        public static bool JumpKeyDown(int playerId)
+        public bool JumpKeyDown(int playerId)
         {
-            return Instance?._jump?.WasPressedThisFrame() ?? false;
+            return _jump?.WasPressedThisFrame() ?? false;
         }
 
-        public static Vector2 GetInputVector(int playerId)
+        public Vector2 GetInputVector(int playerId)
         {
-            return Instance?._move?.ReadValue<Vector2>() ?? Vector2.zero;
+            return _move?.ReadValue<Vector2>() ?? Vector2.zero;
         }
 
-        public static bool JoypadDirInputDetected(int playerId)
+        public bool JoypadDirInputDetected(int playerId)
         {
-            var value = Instance?._move?.ReadValue<Vector2>() ?? Vector2.zero;
+            var value = _move?.ReadValue<Vector2>() ?? Vector2.zero;
             return value.x != 0 || value.y != 0;
         }
-
-        #endregion
-
-        #region IInputService
-
-        bool IInputService.PunchKeyDown(int playerId) => PunchKeyDown(playerId);
-        bool IInputService.KickKeyDown(int playerId) => KickKeyDown(playerId);
-        bool IInputService.DefendKeyDown(int playerId) => DefendKeyDown(playerId);
-        bool IInputService.GrabKeyDown(int playerId) => GrabKeyDown(playerId);
-        bool IInputService.JumpKeyDown(int playerId) => JumpKeyDown(playerId);
-        Vector2 IInputService.GetInputVector(int playerId) => GetInputVector(playerId);
-        bool IInputService.JoypadDirInputDetected(int playerId) => JoypadDirInputDetected(playerId);
-
-        #endregion
 
         private void OnDeviceChange(InputDevice device, InputDeviceChange change)
         {
@@ -109,8 +90,6 @@ namespace BrainlessLabs.Neon
             _jump.Disable();
 
             _playerInput.Dispose();
-
-            if (Instance == this) Instance = null;
         }
     }
 }

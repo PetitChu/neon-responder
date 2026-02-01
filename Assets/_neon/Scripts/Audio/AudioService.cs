@@ -5,8 +5,6 @@ namespace BrainlessLabs.Neon
 {
     public class AudioService : IAudioService, System.IDisposable
     {
-        public static AudioService Instance { get; private set; }
-
         private readonly AudioConfigurationAsset _sfxConfiguration;
         private readonly AudioConfigurationAsset _musicConfiguration;
 
@@ -18,47 +16,22 @@ namespace BrainlessLabs.Neon
             var settings = AudioSettingsAsset.InstanceAsset.Settings;
             _sfxConfiguration = settings.SfxConfiguration;
             _musicConfiguration = settings.MusicConfiguration;
-            Instance = this;
         }
 
-        #region Static API (backward compatibility)
-
-        public static void PlaySFX(string name = "", Vector3? pos = null, Transform parent = null)
-        {
-            Instance?.PlaySFXInternal(name, pos, parent);
-        }
-
-        public static float GetSFXDuration(string name)
-        {
-            if (Instance == null) return 0;
-            return Instance.GetSFXDurationInternal(name);
-        }
-
-        public static void PlayMusic(string name)
-        {
-            Instance?.PlayMusicInternal(name);
-        }
-
-        #endregion
-
-        #region IAudioService
-
-        void IAudioService.PlaySFX(string name, Vector3? pos, Transform parent)
+        public void PlaySFX(string name = "", Vector3? pos = null, Transform parent = null)
         {
             PlaySFXInternal(name, pos, parent);
         }
 
-        float IAudioService.GetSFXDuration(string name)
+        public float GetSFXDuration(string name)
         {
             return GetSFXDurationInternal(name);
         }
 
-        void IAudioService.PlayMusic(string name)
+        public void PlayMusic(string name)
         {
             PlayMusicInternal(name);
         }
-
-        #endregion
 
         private void PlaySFXInternal(string name, Vector3? pos, Transform parent)
         {
@@ -218,7 +191,6 @@ namespace BrainlessLabs.Neon
         public void Dispose()
         {
             if (_musicObject != null) Object.Destroy(_musicObject);
-            if (Instance == this) Instance = null;
         }
     }
 }

@@ -11,8 +11,6 @@ namespace BrainlessLabs.Neon
     /// </summary>
     public class EntitiesService : IEntitiesService, IDisposable
     {
-        public static EntitiesService Instance { get; private set; }
-
         private int _nextEntityId = 1;
         private readonly Dictionary<int, TrackedEntity> _entitiesById = new();
         private readonly Dictionary<UNITTYPE, List<TrackedEntity>> _entitiesByType = new();
@@ -23,41 +21,11 @@ namespace BrainlessLabs.Neon
 
         public EntitiesService()
         {
-            Instance = this;
-
             // Pre-populate type lists for the known unit types
             _entitiesByType[UNITTYPE.PLAYER] = new List<TrackedEntity>();
             _entitiesByType[UNITTYPE.ENEMY] = new List<TrackedEntity>();
             _entitiesByType[UNITTYPE.NPC] = new List<TrackedEntity>();
         }
-
-        #region Static API
-
-        public static int RegisterEntity(GameObject gameObject, UNITTYPE unitType, UnitDefinitionAsset definition = null)
-        {
-            if (Instance == null)
-            {
-                Debug.LogWarning("[EntitiesService] Cannot register entity: Instance is null.");
-                return -1;
-            }
-
-            return Instance.Register(gameObject, unitType, definition);
-        }
-
-        public static void UnregisterEntity(int entityId)
-        {
-            if (Instance == null)
-            {
-                Debug.LogWarning("[EntitiesService] Cannot unregister entity: Instance is null.");
-                return;
-            }
-
-            Instance.Unregister(entityId);
-        }
-
-        #endregion
-
-        #region IEntitiesService
 
         public int Register(GameObject gameObject, UNITTYPE unitType, UnitDefinitionAsset definition = null)
         {
@@ -183,8 +151,6 @@ namespace BrainlessLabs.Neon
             return false;
         }
 
-        #endregion
-
         public void Dispose()
         {
             _entitiesById.Clear();
@@ -192,11 +158,6 @@ namespace BrainlessLabs.Neon
             _gameObjectToId.Clear();
             OnEntityRegistered = null;
             OnEntityUnregistered = null;
-
-            if (Instance == this)
-            {
-                Instance = null;
-            }
         }
     }
 }
