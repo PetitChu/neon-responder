@@ -40,7 +40,7 @@ namespace BrainlessLabs.Neon {
             signSprite.GetComponent<SpriteRenderer>().color = new Color(1f,1f,1f, a);
 
             //if the player is in range and the punch key is pressed, exit scene
-            if(playerInRange && InputService.PunchKeyDown(1)){
+            if(playerInRange && Services.Input.PunchKeyDown(1)){
                 exitInProgress = true;
                 SceneManager.LoadScene(loadSceneOnExit);
             }

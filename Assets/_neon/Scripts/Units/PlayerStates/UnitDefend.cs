@@ -21,13 +21,13 @@ namespace BrainlessLabs.Neon {
 
                 //change direction while defening
                 if(unit.isPlayer && unit.settings.canChangeDirWhileDefending){
-                    Vector2 inputVector = InputService.GetInputVector(playerId);
+                    Vector2 inputVector = Services.Input.GetInputVector(playerId);
                     if(inputVector.x == 1) unit.TurnToDir(DIRECTION.RIGHT);
                     else if(inputVector.x == -1) unit.TurnToDir(DIRECTION.LEFT);
                 }
 
                 //return to idle when defend button is released
-                if(!InputService.DefendKeyDown(playerId)) unit.UnitStateMachine.SetState(new PlayerIdle());
+                if(!Services.Input.DefendKeyDown(playerId)) unit.UnitStateMachine.SetState(new PlayerIdle());
             }
 
             //for enemies
@@ -41,7 +41,7 @@ namespace BrainlessLabs.Neon {
             unit.ShowEffect("DefendEffect"); 
 
             //play sfx
-            AudioService.PlaySFX(defendHitSFX, unit.transform.position);
+            Services.Audio.PlaySFX(defendHitSFX, unit.transform.position);
         }
     }
 }

@@ -28,7 +28,7 @@ namespace BrainlessLabs.Neon {
             target.GetComponentInChildren<WeaponAttachment>()?.equipWeapon(this);
 
             //play sfx
-            AudioService.PlaySFX(pickupSFX, target.transform.position);
+            Services.Audio.PlaySFX(pickupSFX, target.transform.position);
         }
     }
 }

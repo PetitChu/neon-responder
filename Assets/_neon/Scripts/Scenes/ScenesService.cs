@@ -10,8 +10,6 @@ namespace BrainlessLabs.Neon
     /// </summary>
     public class ScenesService : IScenesService
     {
-        public static ScenesService Instance { get; private set; }
-
         private readonly SceneDefinitionAsset[] _sceneDefinitions;
 
         public SceneDefinitionAsset CurrentScene { get; private set; }
@@ -20,49 +18,9 @@ namespace BrainlessLabs.Neon
         {
             var settings = ScenesSettingsAsset.InstanceAsset.Settings;
             _sceneDefinitions = settings.SceneDefinitions;
-            Instance = this;
         }
 
-        #region Static API
-
-        public static UniTask LoadScene(SceneDefinitionAsset sceneDefinition)
-        {
-            if (Instance == null)
-            {
-                Debug.LogWarning("[ScenesService] Cannot load scene: ScenesService.Instance is null. Ensure the service is initialized before calling the static API.");
-                return UniTask.CompletedTask;
-            }
-
-            return Instance.LoadSceneAsyncInternal(sceneDefinition);
-        }
-
-        public static UniTask LoadScene(string sceneName)
-        {
-            if (Instance == null)
-            {
-                Debug.LogWarning("[ScenesService] Cannot load scene: ScenesService.Instance is null. Ensure the service is initialized before calling the static API.");
-                return UniTask.CompletedTask;
-            }
-            return Instance.LoadSceneByNameAsyncInternal(sceneName);
-        }
-
-        #endregion
-
-        #region IScenesService
-
-        UniTask IScenesService.LoadSceneAsync(SceneDefinitionAsset sceneDefinition)
-        {
-            return LoadSceneAsyncInternal(sceneDefinition);
-        }
-
-        UniTask IScenesService.LoadSceneAsync(string sceneName)
-        {
-            return LoadSceneByNameAsyncInternal(sceneName);
-        }
-
-        #endregion
-
-        private async UniTask LoadSceneAsyncInternal(SceneDefinitionAsset sceneDefinition)
+        public async UniTask LoadSceneAsync(SceneDefinitionAsset sceneDefinition)
         {
             if (sceneDefinition == null)
             {
@@ -81,7 +39,7 @@ namespace BrainlessLabs.Neon
             CurrentScene = sceneDefinition;
         }
 
-        private async UniTask LoadSceneByNameAsyncInternal(string sceneName)
+        public async UniTask LoadSceneAsync(string sceneName)
         {
             if (string.IsNullOrEmpty(sceneName))
             {
@@ -96,7 +54,7 @@ namespace BrainlessLabs.Neon
                 return;
             }
 
-            await LoadSceneAsyncInternal(sceneDefinition);
+            await LoadSceneAsync(sceneDefinition);
         }
     }
 }

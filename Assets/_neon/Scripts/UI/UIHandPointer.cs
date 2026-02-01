@@ -46,7 +46,7 @@ namespace BrainlessLabs.Neon {
                 hand.enabled = !hand.enabled;
 
                 //play sfx when hand is visible
-                if(hand.enabled) AudioService.PlaySFX(sfx, Camera.main.transform.position);
+                if(hand.enabled) Services.Audio.PlaySFX(sfx, Camera.main.transform.position);
 
                 //wait a moment...
                 yield return new WaitForSeconds(flickerInterval);

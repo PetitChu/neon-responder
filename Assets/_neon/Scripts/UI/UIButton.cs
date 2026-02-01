@@ -60,15 +60,15 @@ namespace BrainlessLabs.Neon {
             if(imageTarget != null) imageTarget.enabled = selected;
 
             //conditions for button navigation
-            if(InputService.Instance == null) return; //do nothing when there is no InputService
-            if(InputService.JoypadDirInputDetected(1)) return; //ignore joypad input (this is handled by Unity's built in event manager)
+            if(Services.Input == null) return; //do nothing when there is no InputService
+            if(Services.Input.JoypadDirInputDetected(1)) return; //ignore joypad input (this is handled by Unity's built in event manager)
             if(eventSystem.currentSelectedGameObject == null && UIButton.lastSelectedButton != null) eventSystem.SetSelectedGameObject(UIButton.lastSelectedButton); //fixes an issue with Unity where clicking with a mouse outside of the interactable area deselects all buttons
             if(EventSystem.current.currentSelectedGameObject != gameObject) return; //only listen to selected buttons
-            if(InputService.GetInputVector(1) == Vector2.zero) waitForButtonRelease = false;//no input buttons are currently pressed, reset waitForButtonRelease
+            if(Services.Input.GetInputVector(1) == Vector2.zero) waitForButtonRelease = false;//no input buttons are currently pressed, reset waitForButtonRelease
             if(waitForButtonRelease) return; //wait for user to release a button, before continuing
 
             //get keyboard / joypad input direction and navigate accordingly
-            Vector2 dir = InputService.GetInputVector(1);
+            Vector2 dir = Services.Input.GetInputVector(1);
             if(dir != Vector2.zero) NavigateToNextSelectable(dir);
         }
 
@@ -85,18 +85,18 @@ namespace BrainlessLabs.Neon {
         //this button is selected
         public void OnSelect(BaseEventData eventData){
             UIButton.lastSelectedButton = gameObject; //set this button as selected
-            if(sfxOnSelect.Length > 0 && Time.time - timeAlive > Time.deltaTime) AudioService.PlaySFX(sfxOnSelect, Camera.main.transform.position); //play sfx. (Time.time - timeAlive > 0) skips playing a sfx when the buttons first appears
+            if(sfxOnSelect.Length > 0 && Time.time - timeAlive > Time.deltaTime) Services.Audio.PlaySFX(sfxOnSelect, Camera.main.transform.position); //play sfx. (Time.time - timeAlive > 0) skips playing a sfx when the buttons first appears
             waitForButtonRelease = true; //wait for user to release button before continueing
         }
 
         //this button is clicked with the mouse
         public void OnPointerDown(PointerEventData eventData){
-             if(sfxOnClick.Length > 0) AudioService.PlaySFX(sfxOnClick, Camera.main.transform.position); //play sfx
+             if(sfxOnClick.Length > 0) Services.Audio.PlaySFX(sfxOnClick, Camera.main.transform.position); //play sfx
         }
 
         //this button is pressed via keyboard
         public void OnSubmit(BaseEventData eventData){
-            if(sfxOnClick.Length > 0) AudioService.PlaySFX(sfxOnClick, Camera.main.transform.position); //play sfx
+            if(sfxOnClick.Length > 0) Services.Audio.PlaySFX(sfxOnClick, Camera.main.transform.position); //play sfx
         }
 
         //disables all button interaction
@@ -117,12 +117,12 @@ namespace BrainlessLabs.Neon {
 	    }
 
         public void LoadScene(string sceneName){
-            float sfxDuration = AudioService.GetSFXDuration(sfxOnClick);
+            float sfxDuration = Services.Audio.GetSFXDuration(sfxOnClick);
             StartCoroutine(LoadSceneRoutine(sceneName, sfxDuration));
         }
 
         public void ReloadCurrentScene(){
-            float sfxDuration = AudioService.GetSFXDuration(sfxOnClick);
+            float sfxDuration = Services.Audio.GetSFXDuration(sfxOnClick);
             StartCoroutine(LoadSceneRoutine(SceneManager.GetActiveScene().name, sfxDuration));
         }
 

@@ -9,7 +9,7 @@ namespace BrainlessLabs.Neon {
         public Transform parentTransform; //optional
 
         void Start(){
-            if(audioItemName.Length > 0) AudioService.PlaySFX(audioItemName, transform.position, parentTransform? parentTransform : null);
+            if(audioItemName.Length > 0) Services.Audio.PlaySFX(audioItemName, transform.position, parentTransform? parentTransform : null);
         }
     }
 }

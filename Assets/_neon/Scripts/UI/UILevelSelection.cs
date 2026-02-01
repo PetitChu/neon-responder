@@ -15,7 +15,7 @@ namespace BrainlessLabs.Neon {
 
         public Transform UIItemList; //link to the UI that hold the level items
         public GameObject levelItemPrefab; //level item prefab
-        public Level[] levelData; //list with level data
+        public LevelSelectionEntry[] levelData; //list with level data
         [SerializeField] private List <string> completedLevels; //a local list of levels that have been completed (shown for Debugging purposes)
 
         void Start(){
@@ -90,7 +90,7 @@ namespace BrainlessLabs.Neon {
     }
 
     [System.Serializable]
-    public class Level {
+    public class LevelSelectionEntry {
         public string levelName;
         public Sprite levelImageLocked;
         public Sprite levelImageUnlocked;

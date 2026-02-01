@@ -36,7 +36,7 @@ namespace BrainlessLabs.Neon {
         public void DestroyWeapon(){
 
             //play destroy sfx
-            if(unit.weapon.destroySFX.Length>0) AudioService.PlaySFX(unit.weapon.destroySFX, transform.position);
+            if(unit.weapon.destroySFX.Length>0) Services.Audio.PlaySFX(unit.weapon.destroySFX, transform.position);
 
             //show destroy effect
             if(unit.weapon.destroyEffect) GameObject.Instantiate(unit.weapon.destroyEffect, transform.position, Quaternion.identity);
