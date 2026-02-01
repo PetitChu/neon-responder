@@ -44,7 +44,7 @@ namespace BrainlessLabs.Neon {
             }
 
             //turn towards input dir
-            unit.TurnToFloatDir(Services.Input.GetInputVector(playerId).x);
+            unit.TurnToFloatDir(unit.InputService.GetInputVector(playerId).x);
 
             //get attack Data
             attackData = currentCombo?.attackSequence[comboProgress];
@@ -58,8 +58,8 @@ namespace BrainlessLabs.Neon {
             if(attackData == null) return;
 
             //detect wether the punch key was pressed again during this attack
-            if(Services.Input.PunchKeyDown(playerId)) attackKeyPressed = ATTACKTYPE.PUNCH;
-            else if(Services.Input.KickKeyDown(playerId)) attackKeyPressed = ATTACKTYPE.KICK;
+            if(unit.InputService.PunchKeyDown(playerId)) attackKeyPressed = ATTACKTYPE.PUNCH;
+            else if(unit.InputService.KickKeyDown(playerId)) attackKeyPressed = ATTACKTYPE.KICK;
 
             //check for hit until damage was dealt
             if(!damageDealt) damageDealt = unit.CheckForHit(attackData);

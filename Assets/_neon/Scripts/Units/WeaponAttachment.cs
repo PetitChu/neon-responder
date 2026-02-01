@@ -1,4 +1,5 @@
 using UnityEngine;
+using VContainer;
 
 namespace BrainlessLabs.Neon {
 
@@ -10,6 +11,7 @@ namespace BrainlessLabs.Neon {
         private UnitActions unit;
         private Sprite originalSprite; //the original sprite in the scene (when it wasn't picked up)
         private Vector2 spriteOffset;
+        [Inject] private IAudioService _audioService;
 
         public void equipWeapon(WeaponPickup weapon){
 
@@ -36,7 +38,7 @@ namespace BrainlessLabs.Neon {
         public void DestroyWeapon(){
 
             //play destroy sfx
-            if(unit.weapon.destroySFX.Length>0) Services.Audio.PlaySFX(unit.weapon.destroySFX, transform.position);
+            if(unit.weapon.destroySFX.Length>0) _audioService.PlaySFX(unit.weapon.destroySFX, transform.position);
 
             //show destroy effect
             if(unit.weapon.destroyEffect) GameObject.Instantiate(unit.weapon.destroyEffect, transform.position, Quaternion.identity);

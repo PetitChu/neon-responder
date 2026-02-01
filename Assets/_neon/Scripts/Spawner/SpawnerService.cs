@@ -1,18 +1,21 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using VContainer;
 
 namespace BrainlessLabs.Neon
 {
     /// <summary>
     /// Level-scoped service that handles all unit spawning: players, NPCs, and enemy waves.
     /// Created and owned by the Level MonoBehaviour for each level scene.
+    /// Uses IObjectResolver to inject dependencies into spawned GameObjects.
     /// </summary>
     public class SpawnerService : IDisposable
     {
         private readonly IEntitiesService _entitiesService;
         private readonly LevelConfigurationAsset _config;
         private readonly Level _level;
+        private readonly IObjectResolver _container;
 
         // Wave state
         private int _currentWaveIndex = -1;
@@ -44,11 +47,12 @@ namespace BrainlessLabs.Neon
         public bool AllWavesCompleted => _allWavesCompleted;
         public bool WavesStarted => _wavesStarted;
 
-        public SpawnerService(IEntitiesService entitiesService, LevelConfigurationAsset config, Level level)
+        public SpawnerService(IEntitiesService entitiesService, LevelConfigurationAsset config, Level level, IObjectResolver container)
         {
             _entitiesService = entitiesService;
             _config = config;
             _level = level;
+            _container = container;
 
             // Listen for entity removals to track wave enemy deaths
             _entitiesService.OnEntityUnregistered += OnEntityUnregistered;
@@ -336,6 +340,9 @@ namespace BrainlessLabs.Neon
             }
 
             var instance = UnityEngine.Object.Instantiate(definition.Prefab, position, Quaternion.identity);
+
+            // Inject dependencies into all MonoBehaviours on the spawned object
+            _container.InjectGameObject(instance);
 
             // Set direction
             if (direction == DIRECTION.LEFT)

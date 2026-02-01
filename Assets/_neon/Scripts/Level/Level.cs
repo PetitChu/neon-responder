@@ -1,15 +1,18 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using VContainer;
+using VContainer.Unity;
 
 namespace BrainlessLabs.Neon
 {
     /// <summary>
     /// Core level MonoBehaviour that lives in each level scene.
-    /// Orchestrates spawning of players, NPCs, and enemy waves via SpawnerService.
-    /// Replaces the legacy WaveManager.
+    /// Extends LifetimeScope to create a scene-scoped DI container that inherits
+    /// all application services. Injects scene MonoBehaviours and spawned units.
+    /// Orchestrates spawning of players and enemy waves via SpawnerService.
     /// </summary>
-    public class Level : MonoBehaviour
+    public class Level : LifetimeScope
     {
         [Header("Configuration")]
         [Tooltip("The configuration asset that defines this level's spawn rules.")]
@@ -38,6 +41,7 @@ namespace BrainlessLabs.Neon
         private SpawnerService _spawnerService;
         private bool _slowMotionInProgress;
         private LevelBound _dynamicCameraBound;
+        private IEntitiesService _entitiesService;
 
         /// <summary>
         /// The level configuration asset.
@@ -93,6 +97,18 @@ namespace BrainlessLabs.Neon
             }
         }
 
+        protected override void Configure(IContainerBuilder builder)
+        {
+            builder.RegisterBuildCallback(container =>
+            {
+                // Inject all scene MonoBehaviours with [Inject] attributes
+                foreach (var root in gameObject.scene.GetRootGameObjects())
+                {
+                    container.InjectGameObject(root);
+                }
+            });
+        }
+
         void Start()
         {
             if (_configuration == null)
@@ -101,16 +117,15 @@ namespace BrainlessLabs.Neon
                 return;
             }
 
-            // Resolve EntitiesService from Services
-            var entitiesService = Services.Entities;
-            if (entitiesService == null)
+            _entitiesService = Container.Resolve<IEntitiesService>();
+            if (_entitiesService == null)
             {
-                Debug.LogError("[Level] Services.Entities is null. Ensure services are initialized before level loads.");
+                Debug.LogError("[Level] Could not resolve IEntitiesService from container.");
                 return;
             }
 
-            // Create level-scoped spawner
-            _spawnerService = new SpawnerService(entitiesService, _configuration, this);
+            // Create level-scoped spawner with container access for injection
+            _spawnerService = new SpawnerService(_entitiesService, _configuration, this, Container);
             _spawnerService.OnWaveStarted += OnWaveStarted;
             _spawnerService.OnWaveCompleted += OnWaveCompleted;
             _spawnerService.OnAllWavesCompleted += OnAllWavesCompleted;
@@ -147,7 +162,7 @@ namespace BrainlessLabs.Neon
             HealthSystem.onUnitDeath -= OnUnitDeath;
         }
 
-        void OnDestroy()
+        protected override void OnDestroy()
         {
             if (_spawnerService != null)
             {
@@ -157,6 +172,8 @@ namespace BrainlessLabs.Neon
                 _spawnerService.Dispose();
                 _spawnerService = null;
             }
+
+            base.OnDestroy();
         }
 
         private void OnWaveStarted(int waveIndex)
@@ -206,16 +223,16 @@ namespace BrainlessLabs.Neon
             if (unitSettings.unitType == UNITTYPE.ENEMY)
             {
                 // Unregister the dead enemy from EntitiesService
-                if (Services.Entities != null &&
-                    Services.Entities.TryGetByGameObject(unit, out TrackedEntity entity))
+                if (_entitiesService != null &&
+                    _entitiesService.TryGetByGameObject(unit, out TrackedEntity entity))
                 {
-                    Services.Entities.Unregister(entity.Id);
+                    _entitiesService.Unregister(entity.Id);
                 }
 
                 // Slow motion on last kill
                 if (_configuration.SlowMotionOnLastKill && _spawnerService.AllWavesCompleted)
                 {
-                    int remaining = Services.Entities?.GetCount(UNITTYPE.ENEMY) ?? 0;
+                    int remaining = _entitiesService?.GetCount(UNITTYPE.ENEMY) ?? 0;
                     if (remaining == 0)
                     {
                         StartCoroutine(SlowMotionRoutine());

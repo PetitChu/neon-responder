@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using VContainer;
 
 namespace BrainlessLabs.Neon {
 
@@ -13,6 +14,7 @@ namespace BrainlessLabs.Neon {
         private bool exitInProgress; //true if exit is initiated
         private float a; //sign transparancy
         private Vector2 startPos; //sign start pos
+        [Inject] private IInputService _inputService;
 
         void Start(){
             startPos = signSprite.transform.position;
@@ -40,7 +42,7 @@ namespace BrainlessLabs.Neon {
             signSprite.GetComponent<SpriteRenderer>().color = new Color(1f,1f,1f, a);
 
             //if the player is in range and the punch key is pressed, exit scene
-            if(playerInRange && Services.Input.PunchKeyDown(1)){
+            if(playerInRange && _inputService.PunchKeyDown(1)){
                 exitInProgress = true;
                 SceneManager.LoadScene(loadSceneOnExit);
             }

@@ -26,21 +26,21 @@ namespace BrainlessLabs.Neon {
              unit.groundPos = unit.transform.position.y;
 
             //punch button was pressed during grab
-            if(Services.Input.PunchKeyDown(playerId)){
+            if(unit.InputService.PunchKeyDown(playerId)){
                 unit.UnitStateMachine.SetState(new PlayerGrabAttack(unit.settings.grabPunch));
                 enemy = null;
                 return;
             }
 
             //kick button was pressed during grab
-            if(Services.Input.KickKeyDown(playerId)){
+            if(unit.InputService.KickKeyDown(playerId)){
                 unit.UnitStateMachine.SetState(new PlayerGrabAttack(unit.settings.grabKick));
                 enemy = null;
                 return;
             }
 
             //throw button was pressed during grab
-            if(Services.Input.GrabKeyDown(playerId)){
+            if(unit.InputService.GrabKeyDown(playerId)){
                 unit.UnitStateMachine.SetState(new PlayerThrowEnemy(enemy));
                 enemy = null;
                 return;

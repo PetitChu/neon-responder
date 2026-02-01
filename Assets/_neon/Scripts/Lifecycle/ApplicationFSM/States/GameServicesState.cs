@@ -59,7 +59,6 @@ namespace BrainlessLabs.Neon.Lifecycle
         protected override void OnLifetimeScopeReady(IObjectResolver container)
         {
             base.OnLifetimeScopeReady(container);
-            Services.Initialize(container);
             CreateAndAddTargetStateWithHealthCheckedTransition(
                 container,
                 NextStateType.Name,

@@ -1,4 +1,5 @@
 using UnityEngine;
+using VContainer;
 
 namespace BrainlessLabs.Neon {
 
@@ -8,6 +9,7 @@ namespace BrainlessLabs.Neon {
         [Header("Health Setting")]
         public int healthRecover = 1;
         public GameObject showEffect; //effect to show when picked up
+        [Inject] private IAudioService _audioService;
 
         //item has been picked up
         public override void OnPickUpItem(GameObject target){
@@ -19,7 +21,7 @@ namespace BrainlessLabs.Neon {
             if(showEffect) GameObject.Instantiate(showEffect, transform.position, Quaternion.identity);
 
             //play sfx
-            Services.Audio.PlaySFX(pickupSFX, transform.position);
+            _audioService.PlaySFX(pickupSFX, transform.position);
             Destroy(gameObject);
         }
     }

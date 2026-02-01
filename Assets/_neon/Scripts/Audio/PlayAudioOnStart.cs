@@ -1,4 +1,5 @@
 using UnityEngine;
+using VContainer;
 
 namespace BrainlessLabs.Neon {
 
@@ -7,9 +8,10 @@ namespace BrainlessLabs.Neon {
 
         public string audioItemName = "";
         public Transform parentTransform; //optional
+        [Inject] private IAudioService _audioService;
 
         void Start(){
-            if(audioItemName.Length > 0) Services.Audio.PlaySFX(audioItemName, transform.position, parentTransform? parentTransform : null);
+            if(audioItemName.Length > 0) _audioService.PlaySFX(audioItemName, transform.position, parentTransform? parentTransform : null);
         }
     }
 }

@@ -16,16 +16,16 @@ namespace BrainlessLabs.Neon {
             unit.groundPos = unit.transform.position.y;
             unit.isGrounded = false;
             unit.yForce = unit.settings.jumpHeight; //the upwards force of the jump
-            Services.Audio.PlaySFX(sfxName, unit.transform.position);
+            unit.AudioService.PlaySFX(sfxName, unit.transform.position);
          }
 
         public override void Update(){
 
             //perform jump punch attack
-            if(Services.Input.PunchKeyDown(playerId)){ unit.UnitStateMachine.SetState(new PlayerJumpAttack(unit.settings.jumpPunch)); return; }
+            if(unit.InputService.PunchKeyDown(playerId)){ unit.UnitStateMachine.SetState(new PlayerJumpAttack(unit.settings.jumpPunch)); return; }
 
             //perform jump kick attack
-            if(Services.Input.KickKeyDown(playerId)){ unit.UnitStateMachine.SetState(new PlayerJumpAttack(unit.settings.jumpKick)); return; }
+            if(unit.InputService.KickKeyDown(playerId)){ unit.UnitStateMachine.SetState(new PlayerJumpAttack(unit.settings.jumpKick)); return; }
 
             //go to landed state
             if(hasLanded) unit.UnitStateMachine.SetState(new PlayerLand());

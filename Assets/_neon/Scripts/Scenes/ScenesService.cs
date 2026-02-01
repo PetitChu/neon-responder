@@ -2,20 +2,25 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using VContainer.Unity;
 
 namespace BrainlessLabs.Neon
 {
     /// <summary>
     /// Manages scene loading and unloading. Supports one active scene at a time using single load mode.
+    /// Enqueues the owning LifetimeScope as parent for any LifetimeScope in the loaded scene,
+    /// ensuring the loaded scene's DI scope inherits all registered services.
     /// </summary>
     public class ScenesService : IScenesService
     {
         private readonly SceneDefinitionAsset[] _sceneDefinitions;
+        private readonly LifetimeScope _lifetimeScope;
 
         public SceneDefinitionAsset CurrentScene { get; private set; }
 
-        public ScenesService()
+        public ScenesService(LifetimeScope lifetimeScope)
         {
+            _lifetimeScope = lifetimeScope;
             var settings = ScenesSettingsAsset.InstanceAsset.Settings;
             _sceneDefinitions = settings.SceneDefinitions;
         }
@@ -35,6 +40,8 @@ namespace BrainlessLabs.Neon
                 return;
             }
 
+            // Enqueue our scope as parent so LifetimeScopes in the loaded scene inherit services
+            LifetimeScope.EnqueueParent(_lifetimeScope);
             await SceneManager.LoadSceneAsync(scenePath, LoadSceneMode.Single);
             CurrentScene = sceneDefinition;
         }

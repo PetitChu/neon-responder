@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using VContainer;
 
 namespace BrainlessLabs.Neon {
 
@@ -11,6 +12,7 @@ namespace BrainlessLabs.Neon {
         public float flickerInterval = .4f;
         public float timeUntilNextNotification = 2.5f;
         private bool RoutineInProgress;
+        [Inject] private IAudioService _audioService;
 
          void OnEnable() {
 		    HealthSystem.onUnitDeath += HandPointerCheck; //subscribe to event
@@ -46,7 +48,7 @@ namespace BrainlessLabs.Neon {
                 hand.enabled = !hand.enabled;
 
                 //play sfx when hand is visible
-                if(hand.enabled) Services.Audio.PlaySFX(sfx, Camera.main.transform.position);
+                if(hand.enabled) _audioService.PlaySFX(sfx, Camera.main.transform.position);
 
                 //wait a moment...
                 yield return new WaitForSeconds(flickerInterval);
