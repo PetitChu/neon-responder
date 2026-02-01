@@ -115,13 +115,8 @@ namespace BrainlessLabs.Neon
             _spawnerService.OnWaveCompleted += OnWaveCompleted;
             _spawnerService.OnAllWavesCompleted += OnAllWavesCompleted;
 
-            // Find spawnpoints in the scene
-            var playerSpawnpoints = FindObjectsByType<PlayerSpawnpoint>(FindObjectsSortMode.None);
-            var npcSpawnpoints = FindObjectsByType<NpcSpawnpoint>(FindObjectsSortMode.None);
-
-            // Spawn players and NPCs
-            _spawnerService.SpawnPlayers(playerSpawnpoints);
-            _spawnerService.SpawnNpcs(npcSpawnpoints);
+            // Spawn player at configured progression point
+            _spawnerService.SpawnPlayers();
 
             // Start enemy waves
             _spawnerService.StartWaves();
@@ -279,6 +274,15 @@ namespace BrainlessLabs.Neon
             {
                 float px = ProgressionToWorldX(p);
                 Gizmos.DrawLine(new Vector3(px, y - 3f, 0), new Vector3(px, y + 3f, 0));
+            }
+
+            // Draw player spawn position (green)
+            if (_configuration != null)
+            {
+                Gizmos.color = Color.green;
+                float playerX = ProgressionToWorldX(_configuration.PlayerSpawnProgression);
+                Gizmos.DrawLine(new Vector3(playerX, y - 4f, 0), new Vector3(playerX, y + 4f, 0));
+                Gizmos.DrawWireSphere(new Vector3(playerX, y, 0), 0.5f);
             }
         }
     }

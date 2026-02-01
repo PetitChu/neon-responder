@@ -12,8 +12,15 @@ namespace BrainlessLabs.Neon
     public class LevelConfigurationAsset : ScriptableObject
     {
         [Header("Player")]
-        [Tooltip("The default player unit definition to spawn. Can be overridden per-spawnpoint.")]
+        [Tooltip("The player unit definition to spawn.")]
         public UnitDefinitionAsset DefaultPlayerDefinition;
+
+        [Tooltip("Where the player spawns as a progression % of the level (0 = start, 1 = end).")]
+        [Range(0f, 1f)]
+        public float PlayerSpawnProgression = 0.02f;
+
+        [Tooltip("The direction the player faces when spawning.")]
+        public DIRECTION PlayerSpawnDirection = DIRECTION.RIGHT;
 
         [Header("Waves")]
         [Tooltip("Enemy waves for this level, processed in order.")]

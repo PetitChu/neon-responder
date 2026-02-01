@@ -38,7 +38,6 @@ namespace BrainlessLabs.Neon
         public event Action OnAllWavesCompleted;
         public event Action<GameObject> OnPlayerSpawned;
         public event Action<GameObject> OnEnemySpawned;
-        public event Action<GameObject> OnNpcSpawned;
 
         public int CurrentWaveIndex => _currentWaveIndex;
         public int TotalWaves => _config?.Waves?.Count ?? 0;
@@ -56,78 +55,34 @@ namespace BrainlessLabs.Neon
         }
 
         /// <summary>
-        /// Spawns players at the given spawnpoints.
-        /// Uses the spawnpoint's override definition, or falls back to the level's default.
+        /// Spawns the player at the configured progression point.
+        /// Currently spawns a single player; will be extended for co-op.
         /// </summary>
-        public void SpawnPlayers(PlayerSpawnpoint[] spawnpoints)
+        public void SpawnPlayers()
         {
-            if (spawnpoints == null || spawnpoints.Length == 0)
+            var definition = _config.DefaultPlayerDefinition;
+            if (definition == null || definition.Prefab == null)
             {
-                Debug.LogWarning("[SpawnerService] No player spawnpoints found in the level.");
+                Debug.LogWarning("[SpawnerService] No valid player definition configured.");
                 return;
             }
 
-            foreach (var spawnpoint in spawnpoints)
+            float worldX = _level.ProgressionToWorldX(_config.PlayerSpawnProgression);
+            Vector2 spawnPos = new Vector2(worldX, 0f);
+
+            var player = SpawnUnit(definition, spawnPos, _config.PlayerSpawnDirection);
+            if (player == null) return;
+
+            var unitSettings = player.GetComponent<UnitSettings>();
+            if (unitSettings != null)
             {
-                var definition = spawnpoint.PlayerDefinitionOverride != null
-                    ? spawnpoint.PlayerDefinitionOverride
-                    : _config.DefaultPlayerDefinition;
-
-                if (definition == null || definition.Prefab == null)
-                {
-                    Debug.LogWarning($"[SpawnerService] No valid player definition for spawnpoint (Player {spawnpoint.PlayerIndex + 1}).");
-                    continue;
-                }
-
-                var player = SpawnUnit(definition, spawnpoint.transform.position, spawnpoint.SpawnDirection);
-                if (player == null) continue;
-
-                // Set player ID on UnitSettings
-                var unitSettings = player.GetComponent<UnitSettings>();
-                if (unitSettings != null)
-                {
-                    unitSettings.playerId = spawnpoint.PlayerIndex + 1;
-                }
-
-                int entityId = _entitiesService.Register(player, UNITTYPE.PLAYER, definition);
-                _playerEntityIds.Add(entityId);
-
-                OnPlayerSpawned?.Invoke(player);
-            }
-        }
-
-        /// <summary>
-        /// Spawns NPCs at the given spawnpoints that are marked for level load spawning.
-        /// </summary>
-        public void SpawnNpcs(NpcSpawnpoint[] spawnpoints)
-        {
-            if (spawnpoints == null || spawnpoints.Length == 0) return;
-
-            foreach (var spawnpoint in spawnpoints)
-            {
-                if (!spawnpoint.SpawnOnLevelLoad) continue;
-                SpawnNpcAtPoint(spawnpoint);
-            }
-        }
-
-        /// <summary>
-        /// Spawns a single NPC at the specified spawnpoint.
-        /// Can be called manually for NPC spawnpoints that don't spawn on level load.
-        /// </summary>
-        public void SpawnNpcAtPoint(NpcSpawnpoint spawnpoint)
-        {
-            if (spawnpoint.NpcDefinition == null || spawnpoint.NpcDefinition.Prefab == null)
-            {
-                Debug.LogWarning($"[SpawnerService] NpcSpawnpoint has no valid NPC definition assigned.");
-                return;
+                unitSettings.playerId = 1;
             }
 
-            var npc = SpawnUnit(spawnpoint.NpcDefinition, spawnpoint.transform.position, spawnpoint.SpawnDirection);
-            if (npc == null) return;
+            int entityId = _entitiesService.Register(player, UNITTYPE.PLAYER, definition);
+            _playerEntityIds.Add(entityId);
 
-            _entitiesService.Register(npc, UNITTYPE.NPC, spawnpoint.NpcDefinition);
-
-            OnNpcSpawned?.Invoke(npc);
+            OnPlayerSpawned?.Invoke(player);
         }
 
         /// <summary>
@@ -198,7 +153,6 @@ namespace BrainlessLabs.Neon
             OnAllWavesCompleted = null;
             OnPlayerSpawned = null;
             OnEnemySpawned = null;
-            OnNpcSpawned = null;
         }
 
         private bool CheckWaveTrigger(EnemyWaveDefinition wave)
