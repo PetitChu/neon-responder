@@ -2,7 +2,8 @@
     "name": "BrainlessLabs.Neon.Editor",
     "rootNamespace": "BrainlessLabs.Neon.Editor",
     "references": [
-        "GUID:947f66f46ead20c4497958382f2ecf40"
+        "GUID:947f66f46ead20c4497958382f2ecf40",
+        "GUID:caca889fed6088d40b22c2d7e2909c31"
     ],
     "includePlatforms": [
         "Editor"

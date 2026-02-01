@@ -17,7 +17,5 @@ MonoBehaviour:
     _bootstrapScene:
       asset: {fileID: 102900000, guid: 5a6a092d11b3c104c9174a7bf0bb4492, type: 3}
       guid: 5a6a092d11b3c104c9174a7bf0bb4492
-    _postBootstrapScene:
-      asset: {fileID: 102900000, guid: a27cd78405a9bdd44bcdb8f468626b5a, type: 3}
-      guid: a27cd78405a9bdd44bcdb8f468626b5a
+    _postBootstrapScene: {fileID: 11400000, guid: 52dab9e2125a9ab428de4a6f84e277e9, type: 2}
     _executeBootstrapSequence: 1
