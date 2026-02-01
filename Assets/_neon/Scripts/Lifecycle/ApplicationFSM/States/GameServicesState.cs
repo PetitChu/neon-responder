@@ -24,6 +24,7 @@ namespace BrainlessLabs.Neon.Lifecycle
             RegisterAudioService(builder);
             RegisterInputService(builder);
             RegisterScenesService(builder);
+            RegisterEntitiesService(builder);
         }
 
         private static void RegisterAudioService(IContainerBuilder builder)
@@ -44,6 +45,12 @@ namespace BrainlessLabs.Neon.Lifecycle
                 .As<IScenesService>();
         }
 
+        private static void RegisterEntitiesService(IContainerBuilder builder)
+        {
+            builder.Register<EntitiesService>(Lifetime.Singleton)
+                .As<IEntitiesService>();
+        }
+
         private void RegisterNextState(IContainerBuilder builder)
         {
             builder.Register(NextStateType, Lifetime.Transient).AsSelf();
@@ -58,6 +65,8 @@ namespace BrainlessLabs.Neon.Lifecycle
             container.Resolve<IInputService>();
             // Force eager initialization of ScenesService to ensure Instance is set
             container.Resolve<IScenesService>();
+            // Force eager initialization of EntitiesService to ensure Instance is set
+            container.Resolve<IEntitiesService>();
             CreateAndAddTargetStateWithHealthCheckedTransition(
                 container,
                 NextStateType.Name,

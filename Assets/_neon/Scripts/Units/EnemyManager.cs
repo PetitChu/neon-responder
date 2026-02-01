@@ -3,6 +3,11 @@ using System.Collections.Generic;
 
 namespace BrainlessLabs.Neon {
 
+    /// <summary>
+    /// Legacy enemy tracking. Use EntitiesService for new code.
+    /// Kept for backward compatibility with existing combat code (UnitActions, EnemyBehaviour, HealthSystem).
+    /// </summary>
+    [System.Obsolete("Use EntitiesService for new code. This class is kept for backward compatibility.")]
     public static class EnemyManager {
 
 	    public static List<GameObject> enemyList = new List<GameObject>(); //total list of enemies in the current level

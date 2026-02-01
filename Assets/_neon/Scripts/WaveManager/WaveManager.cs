@@ -5,7 +5,11 @@ using UnityEngine.SceneManagement;
 
 namespace BrainlessLabs.Neon {
 
-    //this class spawns waves of enemies until all enemy waves have been defeated
+    /// <summary>
+    /// Legacy wave manager. Use Level + SpawnerService + LevelConfigurationAsset for new levels.
+    /// Kept for backward compatibility with existing scenes.
+    /// </summary>
+    [System.Obsolete("Use Level component with LevelConfigurationAsset and SpawnerService instead.")]
     public class WaveManager : MonoBehaviour {
     
         [Header("Wave Data")]
