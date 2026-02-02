@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using VContainer;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -34,7 +35,11 @@ namespace BrainlessLabs.Neon {
         private float animDuration;
         public DIRECTION dir => transform.localRotation == Quaternion.Euler(Vector3.zero)? DIRECTION.RIGHT : DIRECTION.LEFT; //the current direction
         public DIRECTION invertedDir => (DIRECTION)((int)dir * -1); //the inverted direction
-        
+        [Inject] private IInputService _inputService;
+        [Inject] private IAudioService _audioService;
+        public IInputService InputService => _inputService;
+        public IAudioService AudioService => _audioService;
+
         public delegate void OnUnitDealDamage(GameObject recipient, AttackData attackData);
 	    public static event OnUnitDealDamage onUnitDealDamage;
 
@@ -101,7 +106,7 @@ namespace BrainlessLabs.Neon {
                     if(attackData != null) targetHealthSystem?.SubstractHealth(attackData.damage);
 
                     //play hit sfx (if any)
-                    if(attackData.sfx.Length > 0) AudioService.PlaySFX(attackData.sfx);
+                    if(attackData.sfx.Length > 0) _audioService.PlaySFX(attackData.sfx);
 
                     //send event
                     if(onUnitDealDamage != null) onUnitDealDamage(obj, attackData);
@@ -280,7 +285,7 @@ namespace BrainlessLabs.Neon {
             Vector2 moveVector = transform.position;
 
             //horizontal movement
-            float inputVectorX = InputService.GetInputVector(settings.playerId).x; //get user input in x direction
+            float inputVectorX = _inputService.GetInputVector(settings.playerId).x; //get user input in x direction
             if(inputVectorX != 0) TurnToDir(inputVectorX > 0? DIRECTION.RIGHT : DIRECTION.LEFT); //turn towards x input direction
             moveVector.x = transform.position.x + (inputVectorX * settings.moveSpeedAir * Time.fixedDeltaTime); //calculate speed based on settings
 
@@ -354,7 +359,7 @@ namespace BrainlessLabs.Neon {
 
         //play sfx
         public void PlaySFX(string sfx){
-            AudioService.PlaySFX(sfx, transform.position);
+            _audioService.PlaySFX(sfx, transform.position);
         }
 
         //play footstep SFX depending on the surface this unit walks on
@@ -363,11 +368,11 @@ namespace BrainlessLabs.Neon {
             foreach(Collider2D col2D in overlappedColliders){
                 Surface surface = col2D.GetComponent<Surface>();
                 if(surface && surface.footstepSFX.Length>0){
-                    AudioService.PlaySFX(surface.footstepSFX, transform.position);
+                    _audioService.PlaySFX(surface.footstepSFX, transform.position);
                     return;
                 }
             }
-            AudioService.PlaySFX("FootstepDefault", transform.position);
+            _audioService.PlaySFX("FootstepDefault", transform.position);
         }
 
         //displays an effect loaded from the resources folder

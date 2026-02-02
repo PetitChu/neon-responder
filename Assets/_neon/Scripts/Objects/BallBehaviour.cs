@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using VContainer;
 
 namespace BrainlessLabs.Neon {
 
@@ -16,6 +17,7 @@ namespace BrainlessLabs.Neon {
 
         private Vector2 startPos; //initial position 
         private bool bounceInProgress;
+        [Inject] private IAudioService _audioService;
 
         void OnEnable() {
 		    UnitActions.onUnitDealDamage += OnHitObject; //subscribe to event
@@ -71,7 +73,7 @@ namespace BrainlessLabs.Neon {
                 }
 
                 //play bounce sfx
-                if(bounceSFX.Length>0) AudioService.PlaySFX(bounceSFX, transform.position);
+                if(bounceSFX.Length>0) _audioService.PlaySFX(bounceSFX, transform.position);
 
                 //next bounce
                 bounceCount ++;

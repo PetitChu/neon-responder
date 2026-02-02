@@ -5,7 +5,8 @@
         "Eflatun.SceneReference",
         "UniTask",
         "Unity.2D.PixelPerfect",
-        "Unity.InputSystem"
+        "Unity.InputSystem",
+        "VContainer"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

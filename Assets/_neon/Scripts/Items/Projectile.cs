@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using VContainer;
 
 namespace BrainlessLabs.Neon {
 
@@ -21,7 +22,8 @@ namespace BrainlessLabs.Neon {
         public Vector2 spriteBoundPositionOffset; //here you can make changes to the sprite hit collider position
         public bool showHitbox; //show or hide the hitbox for debug
         private float startTime;
-    
+        [Inject] private IAudioService _audioService;
+
         void Start(){
             projectileSprite = GetComponentInChildren<SpriteRenderer>();
             if(GetComponent<TrailRenderer>() && projectileSprite) GetComponent<TrailRenderer>().sortingOrder = projectileSprite.sortingOrder -1; //put trail renderer behind sprite
@@ -40,7 +42,7 @@ namespace BrainlessLabs.Neon {
                 enemyHit.GetComponent<HealthSystem>()?.SubstractHealth(attackData.damage);
 
                 //play sfx
-                if(attackData.sfx.Length > 0) AudioService.PlaySFX(attackData.sfx);
+                if(attackData.sfx.Length > 0) _audioService.PlaySFX(attackData.sfx);
 
                 //get components
                 UnitActions ua = enemyHit.GetComponent<UnitActions>();

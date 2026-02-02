@@ -1,0 +1,388 @@
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+using VContainer;
+
+namespace BrainlessLabs.Neon
+{
+    /// <summary>
+    /// Level-scoped service that handles all unit spawning: players, NPCs, and enemy waves.
+    /// Created and owned by the Level MonoBehaviour for each level scene.
+    /// Uses IObjectResolver to inject dependencies into spawned GameObjects.
+    /// </summary>
+    public class SpawnerService : IDisposable
+    {
+        private readonly IEntitiesService _entitiesService;
+        private readonly LevelConfigurationAsset _config;
+        private readonly Level _level;
+        private readonly IObjectResolver _container;
+
+        // Wave state
+        private int _currentWaveIndex = -1;
+        private bool _wavesStarted;
+        private bool _allWavesCompleted;
+
+        // Per-wave tracking
+        private int _enemiesSpawnedInWave;
+        private int _totalEnemiesToSpawnInWave;
+        private int _enemiesAliveInWave;
+        private float _lastSpawnTime;
+        private int _currentEntryIndex;
+        private int _currentEntrySpawned;
+
+        // Spawned entity tracking (for wave management)
+        private readonly HashSet<int> _waveEntityIds = new();
+
+        // Player tracking
+        private readonly List<int> _playerEntityIds = new();
+
+        public event Action<int> OnWaveStarted;
+        public event Action<int> OnWaveCompleted;
+        public event Action OnAllWavesCompleted;
+        public event Action<GameObject> OnPlayerSpawned;
+        public event Action<GameObject> OnEnemySpawned;
+
+        public int CurrentWaveIndex => _currentWaveIndex;
+        public int TotalWaves => _config?.Waves?.Count ?? 0;
+        public bool AllWavesCompleted => _allWavesCompleted;
+        public bool WavesStarted => _wavesStarted;
+
+        public SpawnerService(IEntitiesService entitiesService, LevelConfigurationAsset config, Level level, IObjectResolver container)
+        {
+            _entitiesService = entitiesService;
+            _config = config;
+            _level = level;
+            _container = container;
+
+            // Listen for entity removals to track wave enemy deaths
+            _entitiesService.OnEntityUnregistered += OnEntityUnregistered;
+        }
+
+        /// <summary>
+        /// Spawns the player at the configured progression point.
+        /// Currently spawns a single player; will be extended for co-op.
+        /// </summary>
+        public void SpawnPlayers()
+        {
+            var definition = _config.DefaultPlayerDefinition;
+            if (definition == null || definition.Prefab == null)
+            {
+                Debug.LogWarning("[SpawnerService] No valid player definition configured.");
+                return;
+            }
+
+            float worldX = _level.ProgressionToWorldX(_config.PlayerSpawnProgression);
+            Vector2 spawnPos = new Vector2(worldX, 0f);
+
+            var player = SpawnUnit(definition, spawnPos, _config.PlayerSpawnDirection);
+            if (player == null) return;
+
+            var unitSettings = player.GetComponent<UnitSettings>();
+            if (unitSettings != null)
+            {
+                unitSettings.playerId = 1;
+            }
+
+            int entityId = _entitiesService.Register(player, UNITTYPE.PLAYER, definition);
+            _playerEntityIds.Add(entityId);
+
+            OnPlayerSpawned?.Invoke(player);
+        }
+
+        /// <summary>
+        /// Begins wave processing. Call after players and NPCs are spawned.
+        /// </summary>
+        public void StartWaves()
+        {
+            if (_config.Waves == null || _config.Waves.Count == 0)
+            {
+                Debug.Log("[SpawnerService] No waves configured for this level.");
+                _allWavesCompleted = true;
+                OnAllWavesCompleted?.Invoke();
+                return;
+            }
+
+            _wavesStarted = true;
+            AdvanceToNextWave();
+        }
+
+        /// <summary>
+        /// Must be called every frame by the Level MonoBehaviour to drive wave spawning.
+        /// </summary>
+        public void Tick(float deltaTime)
+        {
+            if (!_wavesStarted || _allWavesCompleted) return;
+            if (_currentWaveIndex < 0 || _currentWaveIndex >= _config.Waves.Count) return;
+
+            var wave = _config.Waves[_currentWaveIndex];
+
+            // Check progression/distance triggers for waves waiting to start
+            if (_totalEnemiesToSpawnInWave == 0 && _enemiesAliveInWave == 0)
+            {
+                if (CheckWaveTrigger(wave))
+                {
+                    StartWave(_currentWaveIndex);
+                }
+                return;
+            }
+
+            TrySpawnNextEnemy(wave);
+        }
+
+        /// <summary>
+        /// Manually triggers a wave by index. Used for Manual trigger type waves.
+        /// </summary>
+        public void TriggerWave(int waveIndex)
+        {
+            if (waveIndex < 0 || waveIndex >= _config.Waves.Count)
+            {
+                Debug.LogWarning($"[SpawnerService] Invalid wave index: {waveIndex}");
+                return;
+            }
+
+            StartWave(waveIndex);
+        }
+
+        public void Dispose()
+        {
+            if (_entitiesService != null)
+            {
+                _entitiesService.OnEntityUnregistered -= OnEntityUnregistered;
+            }
+
+            _waveEntityIds.Clear();
+            _playerEntityIds.Clear();
+            OnWaveStarted = null;
+            OnWaveCompleted = null;
+            OnAllWavesCompleted = null;
+            OnPlayerSpawned = null;
+            OnEnemySpawned = null;
+        }
+
+        private bool CheckWaveTrigger(EnemyWaveDefinition wave)
+        {
+            var playerEntity = _entitiesService.GetFirstByType(UNITTYPE.PLAYER);
+            if (playerEntity.GameObject == null) return false;
+
+            float playerX = playerEntity.GameObject.transform.position.x;
+
+            switch (wave.TriggerType)
+            {
+                case WaveTriggerType.ProgressionPercent:
+                    float triggerX = _level.ProgressionToWorldX(wave.TriggerProgressionPercent);
+                    return playerX >= triggerX;
+
+                case WaveTriggerType.DistanceFromStart:
+                    float distanceFromStart = playerX - _level.LevelStartX;
+                    return distanceFromStart >= wave.TriggerDistance;
+
+                default:
+                    return false;
+            }
+        }
+
+        private void AdvanceToNextWave()
+        {
+            int nextIndex = _currentWaveIndex + 1;
+
+            if (nextIndex >= _config.Waves.Count)
+            {
+                _allWavesCompleted = true;
+                OnAllWavesCompleted?.Invoke();
+                return;
+            }
+
+            var wave = _config.Waves[nextIndex];
+            _currentWaveIndex = nextIndex;
+
+            // Manual waves wait for TriggerWave() call
+            if (wave.TriggerType == WaveTriggerType.Manual)
+            {
+                return;
+            }
+
+            // PreviousWaveCompleted starts immediately
+            if (wave.TriggerType == WaveTriggerType.PreviousWaveCompleted)
+            {
+                StartWave(nextIndex);
+                return;
+            }
+
+            // ProgressionPercent and DistanceFromStart are checked each Tick
+        }
+
+        private void StartWave(int waveIndex)
+        {
+            _currentWaveIndex = waveIndex;
+            var wave = _config.Waves[waveIndex];
+
+            _enemiesSpawnedInWave = 0;
+            _enemiesAliveInWave = 0;
+            _currentEntryIndex = 0;
+            _currentEntrySpawned = 0;
+            _lastSpawnTime = -wave.CooldownBetweenSpawns; // Allow immediate first spawn
+            _waveEntityIds.Clear();
+
+            _totalEnemiesToSpawnInWave = 0;
+            foreach (var entry in wave.Entries)
+            {
+                _totalEnemiesToSpawnInWave += entry.Count;
+            }
+
+            Debug.Log($"[SpawnerService] Starting wave {waveIndex}: '{wave.WaveName}' ({_totalEnemiesToSpawnInWave} enemies)");
+
+            // Apply camera bound if configured
+            if (wave.HasCameraBound)
+            {
+                _level.SetCameraBoundFromProgression(wave.CameraBoundProgression);
+            }
+
+            OnWaveStarted?.Invoke(waveIndex);
+        }
+
+        private void TrySpawnNextEnemy(EnemyWaveDefinition wave)
+        {
+            // All enemies spawned for this wave, waiting for them to die
+            if (_enemiesSpawnedInWave >= _totalEnemiesToSpawnInWave) return;
+
+            // Max active enemies reached
+            if (_enemiesAliveInWave >= wave.MaxActiveEnemies) return;
+
+            // Cooldown between spawns
+            if (Time.time - _lastSpawnTime < wave.CooldownBetweenSpawns) return;
+
+            // Find the current entry to spawn from
+            while (_currentEntryIndex < wave.Entries.Count)
+            {
+                var entry = wave.Entries[_currentEntryIndex];
+                if (_currentEntrySpawned < entry.Count)
+                {
+                    SpawnWaveEnemy(wave, entry);
+                    return;
+                }
+
+                // Move to next entry
+                _currentEntryIndex++;
+                _currentEntrySpawned = 0;
+            }
+        }
+
+        private void SpawnWaveEnemy(EnemyWaveDefinition wave, EnemySpawnEntry entry)
+        {
+            if (entry.UnitDefinition == null || entry.UnitDefinition.Prefab == null)
+            {
+                Debug.LogWarning("[SpawnerService] Enemy spawn entry has no valid unit definition.");
+                _currentEntrySpawned++;
+                _enemiesSpawnedInWave++;
+                return;
+            }
+
+            Vector2 spawnPos = CalculateEnemySpawnPosition(wave);
+            DIRECTION spawnDir = GetSpawnDirectionTowardsPlayer(spawnPos);
+
+            var enemy = SpawnUnit(entry.UnitDefinition, spawnPos, spawnDir);
+            if (enemy == null) return;
+
+            int entityId = _entitiesService.Register(enemy, UNITTYPE.ENEMY, entry.UnitDefinition);
+            _waveEntityIds.Add(entityId);
+
+            _currentEntrySpawned++;
+            _enemiesSpawnedInWave++;
+            _enemiesAliveInWave++;
+            _lastSpawnTime = Time.time;
+
+            OnEnemySpawned?.Invoke(enemy);
+        }
+
+        private Vector2 CalculateEnemySpawnPosition(EnemyWaveDefinition wave)
+        {
+            // Find the first player as reference
+            var playerEntity = _entitiesService.GetFirstByType(UNITTYPE.PLAYER);
+            Vector2 playerPos = playerEntity.GameObject != null
+                ? (Vector2)playerEntity.GameObject.transform.position
+                : Vector2.zero;
+
+            switch (wave.SpawnPositionMode)
+            {
+                case SpawnPositionMode.RelativeToPlayer:
+                    // Alternate left/right of player
+                    float side = (_enemiesSpawnedInWave % 2 == 0) ? 1f : -1f;
+                    float x = playerPos.x + (wave.SpawnDistanceFromPlayer * side);
+                    float y = playerPos.y + UnityEngine.Random.Range(wave.SpawnYRange.x, wave.SpawnYRange.y);
+                    return new Vector2(x, y);
+
+                case SpawnPositionMode.AtProgression:
+                    float progressionX = _level.ProgressionToWorldX(wave.SpawnProgression);
+                    float progressionY = playerPos.y + UnityEngine.Random.Range(wave.SpawnYRange.x, wave.SpawnYRange.y);
+                    return new Vector2(progressionX, progressionY);
+
+                default:
+                    return playerPos + Vector2.right * wave.SpawnDistanceFromPlayer;
+            }
+        }
+
+        private DIRECTION GetSpawnDirectionTowardsPlayer(Vector2 spawnPos)
+        {
+            var playerEntity = _entitiesService.GetFirstByType(UNITTYPE.PLAYER);
+            if (playerEntity.GameObject == null) return DIRECTION.RIGHT;
+
+            return spawnPos.x > playerEntity.GameObject.transform.position.x
+                ? DIRECTION.LEFT
+                : DIRECTION.RIGHT;
+        }
+
+        private GameObject SpawnUnit(UnitDefinitionAsset definition, Vector2 position, DIRECTION direction)
+        {
+            if (definition == null || definition.Prefab == null)
+            {
+                Debug.LogWarning("[SpawnerService] Cannot spawn unit: null definition or prefab.");
+                return null;
+            }
+
+            var instance = UnityEngine.Object.Instantiate(definition.Prefab, position, Quaternion.identity);
+
+            // Inject dependencies into all MonoBehaviours on the spawned object
+            _container.InjectGameObject(instance);
+
+            // Set direction
+            if (direction == DIRECTION.LEFT)
+            {
+                instance.transform.localRotation = Quaternion.Euler(0, 180, 0);
+            }
+
+            // Apply definition data to UnitSettings if present
+            var unitSettings = instance.GetComponent<UnitSettings>();
+            if (unitSettings != null && !string.IsNullOrEmpty(definition.DisplayName))
+            {
+                unitSettings.unitName = definition.DisplayName;
+            }
+
+            // Apply health from definition if configured
+            var healthSystem = instance.GetComponent<HealthSystem>();
+            if (healthSystem != null && definition.MaxHealth > 0)
+            {
+                healthSystem.maxHp = definition.MaxHealth;
+                healthSystem.currentHp = definition.MaxHealth;
+            }
+
+            return instance;
+        }
+
+        private void OnEntityUnregistered(TrackedEntity entity)
+        {
+            // Track wave enemy deaths
+            if (_waveEntityIds.Remove(entity.Id))
+            {
+                _enemiesAliveInWave = Mathf.Max(0, _enemiesAliveInWave - 1);
+
+                // Check if wave is complete (all spawned and all dead)
+                if (_enemiesSpawnedInWave >= _totalEnemiesToSpawnInWave && _enemiesAliveInWave <= 0)
+                {
+                    Debug.Log($"[SpawnerService] Wave {_currentWaveIndex} completed.");
+                    OnWaveCompleted?.Invoke(_currentWaveIndex);
+                    AdvanceToNextWave();
+                }
+            }
+        }
+    }
+}

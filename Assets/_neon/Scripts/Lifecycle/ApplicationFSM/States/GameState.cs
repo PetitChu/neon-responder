@@ -29,10 +29,11 @@ namespace BrainlessLabs.Neon.Lifecycle
             var settings = BootstrapSettingsAsset.InstanceAsset.Settings;
             if (settings.PostBootstrapScene != null)
             {
-                builder.RegisterBuildCallback(_ =>
+                builder.RegisterBuildCallback(container =>
                 {
                     Debug.Log($"[Lifecycle] Loading post-bootstrap scene: {settings.PostBootstrapScene.SceneName}");
-                    ScenesService.LoadScene(settings.PostBootstrapScene).Forget(e => Debug.LogException(e));
+                    var scenesService = container.Resolve<IScenesService>();
+                    scenesService.LoadSceneAsync(settings.PostBootstrapScene).Forget(e => Debug.LogException(e));
                 });
             }
 

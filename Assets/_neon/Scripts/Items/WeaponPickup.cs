@@ -1,4 +1,5 @@
 using UnityEngine;
+using VContainer;
 
 namespace BrainlessLabs.Neon {
 
@@ -15,6 +16,7 @@ namespace BrainlessLabs.Neon {
         [Help("* The sprite that gets attached to the player")]
         public Sprite spriteAttachment; //sprite that gets attached to the hand of the unit
         public Vector2 spritePosOffset; //position offset for when the sprite gets parented to the unit
+        [Inject] private IAudioService _audioService;
 
         [Header("On Destroy")]
         public string destroySFX = "";
@@ -28,7 +30,7 @@ namespace BrainlessLabs.Neon {
             target.GetComponentInChildren<WeaponAttachment>()?.equipWeapon(this);
 
             //play sfx
-            AudioService.PlaySFX(pickupSFX, target.transform.position);
+            _audioService.PlaySFX(pickupSFX, target.transform.position);
         }
     }
 }

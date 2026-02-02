@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using VContainer;
 
 namespace BrainlessLabs.Neon {
 
@@ -39,6 +40,7 @@ namespace BrainlessLabs.Neon {
 
         public bool isPlayer => gameObject.CompareTag("Player");
         public bool isEnemy => gameObject.CompareTag("Enemy");
+        [Inject] private IAudioService _audioService;
 
         public delegate void OnHealthChange(HealthSystem hs);
 	    public static event OnHealthChange onHealthChange;
@@ -89,8 +91,8 @@ namespace BrainlessLabs.Neon {
             if(!invulnerable && healthBar) healthBar.transform.GetChild(0).transform.localScale = new Vector3((float)currentHp/(float)maxHp,1,1);
             
             //play sfx
-            if(currentHp>0) AudioService.PlaySFX(playSFXOnHit, transform.position);
-            else AudioService.PlaySFX(playSFXOnDestroy, transform.position);
+            if(currentHp>0) _audioService.PlaySFX(playSFXOnHit, transform.position);
+            else _audioService.PlaySFX(playSFXOnDestroy, transform.position);
 
             //show hitflash
             if(showHitFlash){
