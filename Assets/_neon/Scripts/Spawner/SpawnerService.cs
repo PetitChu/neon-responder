@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using VContainer;
+using VContainer.Unity;
 
 namespace BrainlessLabs.Neon
 {

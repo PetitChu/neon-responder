@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5611a78292a56254990fa2f6bed774f6, type: 3}
+  m_Name: UnitDefinition_NmeOne
+  m_EditorClassIdentifier: BrainlessLabs.Neon::BrainlessLabs.Neon.UnitDefinitionAsset
+  _unitId: NME-ONE
+  _displayName: Enemy
+  _unitType: 10
+  _prefab: {fileID: 4955587178937794416, guid: 9b3c06f11fa3aa0438a864ecb939b5ca, type: 3}
+  _portrait: {fileID: 21300000, guid: 5d96b704716877b47b2b16dc37e5f2f4, type: 3}
+  _maxHealth: 10

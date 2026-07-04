@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57d30a705dad8e74e9d91db06192ae59, type: 3}
+  m_Name: Level1
+  m_EditorClassIdentifier: BrainlessLabs.Neon::BrainlessLabs.Neon.LevelConfigurationAsset
+  DefaultPlayerDefinition: {fileID: 11400000, guid: be0aa0423fb0e5a4d92509ef57edae4a, type: 2}
+  PlayerSpawnProgression: 0
+  PlayerSpawnDirection: 1
+  Waves:
+  - WaveName: level-01-wave-01-easy
+    TriggerType: 1
+    TriggerProgressionPercent: 0.05
+    TriggerDistance: 0
+    Entries:
+    - UnitDefinition: {fileID: 11400000, guid: 6eec7b60903b2fc47a5d28af3addcd2f, type: 2}
+      Count: 10
+      SpawnInterval: 1
+    MaxActiveEnemies: 5
+    CooldownBetweenSpawns: 1
+    SpawnPositionMode: 0
+    SpawnDistanceFromPlayer: 2
+    SpawnProgression: 0.5
+    SpawnYRange: {x: -2, y: 2}
+    HasCameraBound: 1
+    CameraBoundProgression: 0.15
+  EndLevelWhenAllWavesCompleted: 1
+  SlowMotionOnLastKill: 1
+  LevelCompletedMenu: LevelCompleted
+  AllLevelsCompletedMenu: AllLevelsCompleted
+  GameOverMenu: GameOver
