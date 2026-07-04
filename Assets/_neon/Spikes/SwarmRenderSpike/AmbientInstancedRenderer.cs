@@ -70,13 +70,9 @@ namespace BrainlessLabs.Neon.SwarmRenderSpike
                 _matrices[i] = Matrix4x4.TRS(new Vector3(p.x, p.y, 1f), Quaternion.identity, scale);
             }
 
-            // Explicit worldBounds: the default zero-size bounds can get the whole
-            // instanced draw frustum-culled.
-            var renderParams = new RenderParams(_material)
-            {
-                worldBounds = new Bounds(Vector3.zero, new Vector3(200f, 50f, 10f))
-            };
-            Graphics.RenderMeshInstanced(renderParams, _quad, 0, _matrices, positions.Length);
+            // Graphics.DrawMeshInstanced: the built-in-RP instancing path (this
+            // project has no SRP asset assigned — RenderMeshInstanced draws nothing).
+            Graphics.DrawMeshInstanced(_quad, 0, _material, _matrices, positions.Length);
         }
 
         private static Mesh BuildQuad()
