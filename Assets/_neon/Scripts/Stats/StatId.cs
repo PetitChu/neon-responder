@@ -10,6 +10,7 @@ namespace BrainlessLabs.Neon
         AutoEngageRate = 0,
         AutoEngageDamage = 1,
         AutoEngageArcDegrees = 2,
+        AutoEngageRange = 3,
 
         // Cross-cutting multipliers (Momentum registers modifiers here)
         DamageMultiplier = 100,

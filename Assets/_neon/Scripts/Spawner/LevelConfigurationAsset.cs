@@ -26,6 +26,10 @@ namespace BrainlessLabs.Neon
         [Tooltip("Enemy waves for this level, processed in order.")]
         public List<EnemyWaveDefinition> Waves = new();
 
+        [Header("Swarm")]
+        [Tooltip("DOTS chaff/ambient density for this level (spec §6 budget: chaff 80-150, ambient ~100).")]
+        public SwarmDensityBlock Swarm = new();
+
         [Header("Completion")]
         [Tooltip("Automatically end the level when all waves are completed.")]
         public bool EndLevelWhenAllWavesCompleted = true;
@@ -42,5 +46,25 @@ namespace BrainlessLabs.Neon
 
         [Tooltip("Menu to open when the player dies.")]
         public string GameOverMenu = "GameOver";
+    }
+
+    [System.Serializable]
+    public class SwarmDensityBlock
+    {
+        [Tooltip("Master switch — off leaves the level exactly as it was pre-M1.")]
+        public bool EnableSwarm = false;
+
+        [Range(0, 150)] public int ChaffCap = 120;
+        [Range(0, 150)] public int AmbientCap = 100;
+
+        [Tooltip("Chaff spawned per second (flooding from both belt ends) until the cap is reached.")]
+        public float ChaffSpawnRatePerSecond = 8f;
+
+        [Tooltip("Chaff walk speed toward the player.")]
+        public float ChaffMoveSpeed = 1.6f;
+
+        [Tooltip("Belt depth band (world Y) the swarm walks in.")]
+        public float BeltYMin = -3.5f;
+        public float BeltYMax = -0.5f;
     }
 }
