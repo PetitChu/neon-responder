@@ -1,0 +1,93 @@
+using UnityEngine;
+
+namespace BrainlessLabs.Neon
+{
+    /// <summary>
+    /// Gameplay-specific queries over <see cref="IEntitiesService"/>, replacing the legacy
+    /// static EnemyManager helpers. Kept as extension methods (not on the service interface)
+    /// so IEntitiesService stays a thin, DOTS-facing registry while combat code gets the
+    /// convenience queries it needs. All methods are null-safe on the receiver so call sites
+    /// in scenes without a DI scope degrade gracefully instead of throwing.
+    /// </summary>
+    public static class EntitiesQueries
+    {
+        /// <summary>
+        /// Number of tracked enemies currently attacking the player
+        /// (in an <see cref="EnemyAttack"/> or <see cref="EnemyMoveToTargetAndAttack"/> state).
+        /// </summary>
+        public static int GetEnemyAttackerCount(this IEntitiesService entities)
+        {
+            if (entities == null) return 0;
+
+            int count = 0;
+            var enemies = entities.GetByType(UNITTYPE.ENEMY);
+            for (int i = 0; i < enemies.Count; i++)
+            {
+                var go = enemies[i].GameObject;
+                if (go == null) continue;
+
+                var stateMachine = go.GetComponent<UnitStateMachine>();
+                var state = stateMachine != null ? stateMachine.GetCurrentState() : null;
+                if (state is EnemyAttack || state is EnemyMoveToTargetAndAttack) count++;
+            }
+            return count;
+        }
+
+        /// <summary>
+        /// Disables AI and forces every tracked enemy to idle (e.g. when the player dies).
+        /// </summary>
+        public static void DisableAllEnemyAI(this IEntitiesService entities)
+        {
+            if (entities == null) return;
+
+            var enemies = entities.GetByType(UNITTYPE.ENEMY);
+            for (int i = 0; i < enemies.Count; i++)
+            {
+                var go = enemies[i].GameObject;
+                if (go == null) continue;
+
+                var behaviour = go.GetComponent<EnemyBehaviour>();
+                if (behaviour != null) behaviour.AI_Active = false;
+
+                go.GetComponent<UnitStateMachine>()?.SetState(new EnemyIdle());
+            }
+        }
+
+        /// <summary>
+        /// Returns a living tracked enemy within <paramref name="range"/> of <paramref name="position"/>
+        /// that is currently knocked down on the ground, or null if none.
+        /// </summary>
+        public static GameObject GetNearbyDownedEnemy(this IEntitiesService entities, Vector2 position, float range)
+        {
+            if (entities == null) return null;
+
+            var enemies = entities.GetByType(UNITTYPE.ENEMY);
+            for (int i = 0; i < enemies.Count; i++)
+            {
+                var go = enemies[i].GameObject;
+                if (go == null) continue;
+                if (Vector2.Distance(position, go.transform.position) >= range) continue;
+
+                if (go.GetComponent<HealthSystem>()?.isDead == true) continue;
+                if (go.GetComponent<UnitStateMachine>()?.GetCurrentState() is UnitKnockDownGrounded) return go;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// True if any tracked enemy has spotted the player.
+        /// </summary>
+        public static bool AnyEnemyDetectedPlayer(this IEntitiesService entities)
+        {
+            if (entities == null) return false;
+
+            var enemies = entities.GetByType(UNITTYPE.ENEMY);
+            for (int i = 0; i < enemies.Count; i++)
+            {
+                var go = enemies[i].GameObject;
+                if (go != null && go.GetComponent<UnitActions>()?.targetSpotted == true) return true;
+            }
+            return false;
+        }
+    }
+}

@@ -25,7 +25,7 @@ namespace BrainlessLabs.Neon {
             unit.StopMoving(true);
 
             //disable all enemy AI if a player has died
-            if(unit.isPlayer) EnemyManager.DisableAllEnemyAI();
+            if(unit.isPlayer) unit.Entities.DisableAllEnemyAI();
 
             //flicker and remove enemy units from the field
             if(unit.isEnemy){

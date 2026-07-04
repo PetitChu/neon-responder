@@ -41,7 +41,7 @@ namespace BrainlessLabs.Neon {
             GetAllEnemyWaves();
             DisableAllWaves();
             ActivateWave(0);
-            totalEnemiesLeft = EnemyManager.GetTotalEnemyCount();
+            totalEnemiesLeft = GetTotalEnemyCount();
         }
 
         //get all enemy waves (Child gameobjects)
@@ -62,7 +62,7 @@ namespace BrainlessLabs.Neon {
             if(enemyWaves.Count == 0 && wave == 0) return;
 
             //finish if there are no more waves left, or if all enemies are dead
-            if(wave >= enemyWaves.Count || EnemyManager.GetTotalEnemyCount() == 0){
+            if(wave >= enemyWaves.Count || GetTotalEnemyCount() == 0){
                 OnFinish(); 
                 return; 
             }
@@ -77,14 +77,14 @@ namespace BrainlessLabs.Neon {
             else SetCameraLevelBound(); //instantly set levelBound A to B
 
             //show enemies left in this wave (debug)
-            enemiesLeftInThisWave = EnemyManager.GetCurrentEnemyCount();
+            enemiesLeftInThisWave = GetCurrentEnemyCount();
         }
 
         //event
         public void OnUnitDeath(GameObject unit){
 
             //update total enemies left in this level (debug)
-            totalEnemiesLeft = EnemyManager.GetTotalEnemyCount();
+            totalEnemiesLeft = GetTotalEnemyCount();
 
             //if the player is dead...
             if(unit.GetComponent<UnitSettings>()?.unitType == UNITTYPE.PLAYER){
@@ -99,7 +99,7 @@ namespace BrainlessLabs.Neon {
                 if(triggerSlowMotionOnLastEnemyKill && totalEnemiesLeft == 0) StartCoroutine(StartSlowMotionEffectRoutine());
 
                 //if 0 enemies are left in this wave... start next wave
-                enemiesLeftInThisWave = EnemyManager.GetCurrentEnemyCount();
+                enemiesLeftInThisWave = GetCurrentEnemyCount();
                 if(enemiesLeftInThisWave == 0) ActivateWave(currentWave + 1);
            }
         }
@@ -188,6 +188,23 @@ namespace BrainlessLabs.Neon {
         void OnPlayerDeath(){
             UIManager UI = GameObject.FindObjectOfType<UIManager>();
             if(UI != null) UI.ShowMenu(menuToOpenOnPlayerDeath);
+        }
+
+        //total number of living enemies in the level (incl. inactive). Inlined from the
+        //removed static EnemyManager so this legacy wave manager no longer depends on it.
+        int GetTotalEnemyCount(){
+            int total = 0;
+            foreach(HealthSystem hs in FindObjectsByType<HealthSystem>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+                if(hs.isEnemy && hs.currentHp > 0) total++;
+            return total;
+        }
+
+        //number of living enemies that are currently active
+        int GetCurrentEnemyCount(){
+            int total = 0;
+            foreach(HealthSystem hs in FindObjectsByType<HealthSystem>(FindObjectsInactive.Exclude, FindObjectsSortMode.None))
+                if(hs.isEnemy && hs.currentHp > 0) total++;
+            return total;
         }
     }
 }

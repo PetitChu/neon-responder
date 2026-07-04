@@ -37,8 +37,10 @@ namespace BrainlessLabs.Neon {
         public DIRECTION invertedDir => (DIRECTION)((int)dir * -1); //the inverted direction
         [Inject] private IInputService _inputService;
         [Inject] private IAudioService _audioService;
+        [Inject] private IEntitiesService _entitiesService;
         public IInputService InputService => _inputService;
         public IAudioService AudioService => _audioService;
+        public IEntitiesService Entities => _entitiesService;
 
         public delegate void OnUnitDealDamage(GameObject recipient, AttackData attackData);
 	    public static event OnUnitDealDamage onUnitDealDamage;
@@ -217,20 +219,7 @@ namespace BrainlessLabs.Neon {
 
         //check if there is an enemy down nearby
         public GameObject NearbyEnemyDown(){
-            if(EnemyManager.enemyList.Count == 0) return null; //do nothing if there are no enemies
-            float range = 1;
-            foreach(GameObject enemy in EnemyManager.enemyList){
-                if(enemy && Vector2.Distance(transform.position, enemy.transform.position) < range){
-
-                    //skip dead enemies
-                    if(enemy.GetComponent<HealthSystem>()?.isDead == true) continue;
-
-                    //check if a nearby enemy is currently in UnitKnockDownGrounded state
-                    UnitStateMachine targetUnitStateMachine = enemy.GetComponent<UnitStateMachine>();
-                    if(targetUnitStateMachine?.GetCurrentState() is UnitKnockDownGrounded) return enemy;
-                }
-            }
-            return null;
+            return _entitiesService.GetNearbyDownedEnemy(transform.position, 1f);
         }
 
         //returns true if a target is within z range

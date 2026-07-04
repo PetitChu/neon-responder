@@ -47,16 +47,9 @@ namespace BrainlessLabs.Neon {
         public delegate void OnUnitDeath(GameObject Unit);
 	    public static event OnUnitDeath onUnitDeath;
 
-        void OnEnable() {
-
-            //add enemies to enemyList
-            if(isEnemy) EnemyManager.AddEnemyToList(gameObject);
-        }
-
-        void OnDisable() {
-            //remove enemies from enemyList
-            if(isEnemy) EnemyManager.RemoveEnemyFromList(gameObject);
-        }
+        // Enemy tracking is now owned by EntitiesService: SpawnerService registers spawned
+        // units and Level unregisters them on death (see SpawnerService / Level). HealthSystem
+        // no longer maintains a separate enemy list.
 
         void Start(){
 

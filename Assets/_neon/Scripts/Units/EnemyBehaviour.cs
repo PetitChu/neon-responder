@@ -1,4 +1,5 @@
 using UnityEngine;
+using VContainer;
 
 namespace BrainlessLabs.Neon {
 
@@ -13,6 +14,7 @@ namespace BrainlessLabs.Neon {
         [ReadOnlyProperty] public bool targetSpotted;
         private UnitStateMachine statemachine;
         private UnitSettings settings;
+        [Inject] private IEntitiesService _entities;
 
         void Start(){
             startTime = Time.time;
@@ -46,13 +48,13 @@ namespace BrainlessLabs.Neon {
             GetRandomAttack();
 
             //75% chance to attack if nobody is attacking the player
-            if(EnemyManager.GetEnemyAttackerCount() == 0 && Random.Range(0, 100) < 75) {
+            if(_entities.GetEnemyAttackerCount() == 0 && Random.Range(0, 100) < 75) {
                 AttackData attack = GetRandomAttack(); //get a random attack
                 statemachine?.SetState(new EnemyMoveToTargetAndAttack(attack)); 
                 return; 
 
             //25% change that this enemy attacks when 2 or less enemies are attacking the player
-            } else if(EnemyManager.GetEnemyAttackerCount() <= 2 && Random.Range(0, 100) < 25) {
+            } else if(_entities.GetEnemyAttackerCount() <= 2 && Random.Range(0, 100) < 25) {
                 AttackData attack = GetRandomAttack(); //get a random attack
                 statemachine?.SetState(new EnemyMoveToTargetAndAttack(attack)); 
                 return; 

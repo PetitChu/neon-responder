@@ -13,6 +13,7 @@ namespace BrainlessLabs.Neon {
         public float timeUntilNextNotification = 2.5f;
         private bool RoutineInProgress;
         [Inject] private IAudioService _audioService;
+        [Inject] private IEntitiesService _entities;
 
          void OnEnable() {
 		    HealthSystem.onUnitDeath += HandPointerCheck; //subscribe to event
@@ -39,7 +40,7 @@ namespace BrainlessLabs.Neon {
             for(int i=0; i<8; i++){
 
                 //exit if enemies have spotted the player
-                if((EnemyManager.GetTotalEnemyCount() == 0 || EnemiesDetectedPlayer()) && !hand.enabled){
+                if((_entities.GetCount(UNITTYPE.ENEMY) == 0 || EnemiesDetectedPlayer()) && !hand.enabled){
                     RoutineInProgress = false;
                     yield break;
                 }
@@ -60,10 +61,7 @@ namespace BrainlessLabs.Neon {
 
         //true if any of the current wave of enemies have spotted the player
         bool EnemiesDetectedPlayer(){
-            foreach(GameObject enemy in EnemyManager.enemyList){
-                if(enemy && enemy.GetComponent<UnitActions>().targetSpotted) return true;
-            }
-            return false;
+            return _entities.AnyEnemyDetectedPlayer();
         }
     }
 }
