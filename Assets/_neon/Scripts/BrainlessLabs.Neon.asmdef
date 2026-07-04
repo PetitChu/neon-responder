@@ -7,7 +7,10 @@
         "R3.Unity",
         "UniTask",
         "Unity.2D.PixelPerfect",
+        "Unity.Collections",
+        "Unity.Entities",
         "Unity.InputSystem",
+        "Unity.Mathematics",
         "VContainer"
     ],
     "includePlatforms": [],

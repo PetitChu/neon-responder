@@ -27,6 +27,7 @@ namespace BrainlessLabs.Neon.Lifecycle
             RegisterGameplayClock(builder);
             RegisterScenesService(builder);
             RegisterMomentumSystem(builder);
+            RegisterNullSwarmBridge(builder);
         }
 
         private static void RegisterGameplaySignals(IContainerBuilder builder)
@@ -62,6 +63,14 @@ namespace BrainlessLabs.Neon.Lifecycle
                 .WithParameter(MomentumConfig.FromSettings())
                 .As<IMomentumSystem>();
             builder.RegisterBuildCallback(container => container.Resolve<IMomentumSystem>());
+        }
+
+        // Session default: scenes without a swarm (menus, training hall) still
+        // inject ISwarmBridge safely. Level scopes shadow this with SwarmBridge.
+        private static void RegisterNullSwarmBridge(IContainerBuilder builder)
+        {
+            builder.Register<NullSwarmBridge>(Lifetime.Singleton)
+                .As<ISwarmBridge>();
         }
 
         private void RegisterNextState(IContainerBuilder builder)

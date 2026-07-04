@@ -99,6 +99,8 @@ namespace BrainlessLabs.Neon
 
         protected override void Configure(IContainerBuilder builder)
         {
+            RegisterEngagementSystems(builder);
+
             builder.RegisterBuildCallback(container =>
             {
                 // Inject all scene MonoBehaviours with [Inject] attributes
@@ -106,7 +108,24 @@ namespace BrainlessLabs.Neon
                 {
                     container.InjectGameObject(root);
                 }
+
+                // Eager-create the per-level engagement systems: nothing else
+                // resolves them, and they must exist to register into the clock.
+                if (_configuration != null)
+                {
+                    container.Resolve<ISwarmBridge>();
+                }
             });
+        }
+
+        // Per-run systems live in the Level scope (spec §4.3) and tear down with it.
+        private void RegisterEngagementSystems(IContainerBuilder builder)
+        {
+            if (_configuration == null) return;
+
+            builder.RegisterInstance(SwarmConfig.From(_configuration, this));
+            builder.RegisterInstance(EngagementConfig.FromSettings());
+            builder.Register<SwarmBridge>(Lifetime.Scoped).As<ISwarmBridge>();
         }
 
         void Start()
