@@ -26,6 +26,7 @@ namespace BrainlessLabs.Neon.Lifecycle
             RegisterStatSystem(builder);
             RegisterGameplayClock(builder);
             RegisterScenesService(builder);
+            RegisterMomentumSystem(builder);
         }
 
         private static void RegisterGameplaySignals(IContainerBuilder builder)
@@ -53,6 +54,14 @@ namespace BrainlessLabs.Neon.Lifecycle
         {
             builder.Register<ScenesService>(Lifetime.Singleton)
                 .As<IScenesService>();
+        }
+
+        private static void RegisterMomentumSystem(IContainerBuilder builder)
+        {
+            builder.Register<MomentumSystem>(Lifetime.Singleton)
+                .WithParameter(MomentumConfig.FromSettings())
+                .As<IMomentumSystem>();
+            builder.RegisterBuildCallback(container => container.Resolve<IMomentumSystem>());
         }
 
         private void RegisterNextState(IContainerBuilder builder)
