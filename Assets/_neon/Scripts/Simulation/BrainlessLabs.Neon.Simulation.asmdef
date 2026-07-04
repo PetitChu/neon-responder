@@ -1,14 +1,11 @@
 {
-    "name": "BrainlessLabs.Neon",
-    "rootNamespace": "BrainlessLabs.Neon",
+    "name": "BrainlessLabs.Neon.Simulation",
+    "rootNamespace": "BrainlessLabs.Neon.Simulation",
     "references": [
-        "BrainlessLabs.Neon.Simulation",
-        "Eflatun.SceneReference",
-        "R3.Unity",
-        "UniTask",
-        "Unity.2D.PixelPerfect",
-        "Unity.InputSystem",
-        "VContainer"
+        "Unity.Entities",
+        "Unity.Burst",
+        "Unity.Collections",
+        "Unity.Mathematics"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
