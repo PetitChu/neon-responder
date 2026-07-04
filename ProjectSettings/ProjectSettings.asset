@@ -718,7 +718,8 @@ PlayerSettings:
   webGLCloseOnQuit: 0
   webWasm2023: 0
   webEnableSubmoduleStrippingCompatibility: 0
-  scriptingDefineSymbols: {}
+  scriptingDefineSymbols:
+    Standalone: APP_UI_EDITOR_ONLY
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:
@@ -830,11 +831,11 @@ PlayerSettings:
   captureStartupLogs: {}
   activeInputHandler: 1
   windowsGamepadBackendHint: 0
-  cloudProjectId: c0639c9d-2370-404f-8f6c-aa66a126c086
+  cloudProjectId: 2aaf30e8-d05b-4158-88e8-ff9ba5647eef
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
   projectName: neon-responder
-  organizationId: brainless-labs-pro
+  organizationId: unitysquido
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}
