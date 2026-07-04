@@ -6,12 +6,11 @@ namespace BrainlessLabs.Neon.Lifecycle
 {
     /// <summary>
     /// Initializes game-specific services.
-    /// Currently a placeholder for future services.
-    /// Transitions to GameState when all services are healthy.
+    /// Transitions to GameplayServicesState when all services are healthy.
     /// </summary>
     internal class GameServicesState : LifetimeStateMachine
     {
-        public readonly Type NextStateType = typeof(GameState);
+        public readonly Type NextStateType = typeof(GameplayServicesState);
 
         public GameServicesState(LifetimeScope lifetimeScope) : base(lifetimeScope)
         {
