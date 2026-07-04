@@ -20,9 +20,9 @@ combat/progression systems are design intent only — do not present them as exi
 
 | System | Where | Status |
 | --- | --- | --- |
-| Entities registry (`IEntitiesService` / `EntitiesService`) | `Scripts/Entities/` | `[BUILT]` |
-| Entity gameplay queries (`EntitiesQueries`) | `Scripts/Entities/` | `[BUILT]` |
-| Spawner + wave progression (`SpawnerService`, `LevelConfigurationAsset`, `EnemyWaveDefinition`, `EnemySpawnEntry`) | `Scripts/Spawner/` | `[BUILT]` |
+| Entities registry (`IEntitiesService` / `EntitiesService`) | `Scripts/Entities/` | `[IN-MIGRATION → DOTS]` |
+| Entity gameplay queries (`EntitiesQueries`) | `Scripts/Entities/` | `[IN-MIGRATION → DOTS]` |
+| Spawner + wave progression (`SpawnerService`, `LevelConfigurationAsset`, `EnemyWaveDefinition`, `EnemySpawnEntry`) | `Scripts/Spawner/` | `[IN-MIGRATION → DOTS]` |
 | Level controller + per-level DI scope (`Level`, `LevelBound`, `Surface`) | `Scripts/Level/` | `[BUILT]` |
 | Health (`HealthSystem`) | `Scripts/Units/HealthSystem.cs` | `[BUILT]` |
 | Unit definition / settings (`UnitDefinitionAsset`, `UnitSettings`, `UNITTYPE`) | `Scripts/Units/` | `[BUILT]` |
@@ -42,7 +42,7 @@ combat/progression systems are design intent only — do not present them as exi
 
 ## 2. Built systems
 
-### EntitiesService + EntitiesQueries `[BUILT]`
+### EntitiesService + EntitiesQueries `[IN-MIGRATION → DOTS]`
 `Scripts/Entities/IEntitiesService.cs`, `EntitiesService.cs`, `EntitiesQueries.cs`
 
 Central entity registry. **Replaced the old static `EnemyManager` tracking** — `HealthSystem`, `Level`,
@@ -56,7 +56,7 @@ inlined counts in `WaveManager`).
 - **DI**: registered singleton in `Scripts/Lifecycle/ApplicationFSM/States/GameServicesState.cs` as `EntitiesService` → `IEntitiesService`.
 - **Data flow**: `SpawnerService` registers spawned players/enemies; `Level.OnUnitDeath` unregisters dead enemies; `SpawnerService` listens to `OnEntityUnregistered` to count wave deaths.
 
-### SpawnerService + spawn config `[BUILT]`
+### SpawnerService + spawn config `[IN-MIGRATION → DOTS]`
 `Scripts/Spawner/SpawnerService.cs`, `LevelConfigurationAsset.cs`, `EnemyWaveDefinition.cs`, `EnemySpawnEntry.cs`
 
 Level-scoped (plain C#, not a MonoBehaviour) service that spawns players and enemy waves. Constructed and

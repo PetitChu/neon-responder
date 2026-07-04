@@ -15,7 +15,7 @@ Side-scroll beat-'em-up. PC / Steam, Unity 6, single-player, **NOT VR** — do n
 | --- | --- |
 | MonoBehaviour FSM brawler (`UnitStateMachine` + `Player*`/`Enemy*`/`Unit*` states) | **`[BUILT]`** — this is the combat that runs today. |
 | DOTS/ECS **combat** logic | **`[IN-MIGRATION → DOTS]`** — a design-level target, **not implemented**. No ECS combat systems exist. |
-| DOTS entity/spawn layer (`EntitiesService`, `SpawnerService`, `Level`) | Exists and is merged, but carries **NO combat logic** — it is a registry + spawner only (replaced the old static `EnemyManager`). |
+| DOTS entity/spawn layer (`EntitiesService`, `SpawnerService`) `[IN-MIGRATION → DOTS]` | Exists and is merged, but carries **NO combat logic** — a registry + spawner only (replaced the old static `EnemyManager`). `Level : LifetimeScope` is the `[BUILT]` DI scope that constructs/owns them. |
 
 When asked to "add DOTS combat," treat it as greenfield against the engine-agnostic design; do not claim any ECS combat exists to extend. Route MonoBehaviour-vs-ECS integration questions to the parallel DOTS track.
 

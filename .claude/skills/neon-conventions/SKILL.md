@@ -155,7 +155,7 @@ Custom attributes live in `Scripts/Attributes/`; drawers in `Scripts/Editor/Draw
 
 - **`[ShowIf(conditionField, compareValues…)]`** — conditionally shows a field when a
   sibling field matches; omit values to compare against `true`.
-  `[ShowIf("HasCameraBound")]` or `[ShowIf("TriggerType", WaveTriggerType.Percent)]`.
+  `[ShowIf("HasCameraBound")]` or `[ShowIf("TriggerType", WaveTriggerType.ProgressionPercent)]`.
 - **`[ReadOnly]`** — displays a field but blocks editing. NOTE: the class is named
   **`ReadOnlyProperty`** (usage: `[ReadOnlyProperty] public int foo;`), not `ReadOnly`.
 - **`[Help("…")]`** — draws a yellow help label above a field: `[Help("Explains the field")]`.
