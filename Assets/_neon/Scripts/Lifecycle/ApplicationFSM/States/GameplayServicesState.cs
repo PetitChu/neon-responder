@@ -25,6 +25,7 @@ namespace BrainlessLabs.Neon.Lifecycle
             RegisterGameplaySignals(builder);
             RegisterStatSystem(builder);
             RegisterGameplayClock(builder);
+            RegisterScenesService(builder);
         }
 
         private static void RegisterGameplaySignals(IContainerBuilder builder)
@@ -43,6 +44,15 @@ namespace BrainlessLabs.Neon.Lifecycle
         {
             builder.RegisterEntryPoint<GameplayClock>()
                 .As<IGameplayClock>();
+        }
+
+        // F1 spine-visibility fix: ScenesService captures its owning scope as the DI
+        // parent of every loaded scene (LifetimeScope.EnqueueParent). It must live in
+        // the DEEPEST session scope or scenes cannot resolve the spine services.
+        private static void RegisterScenesService(IContainerBuilder builder)
+        {
+            builder.Register<ScenesService>(Lifetime.Singleton)
+                .As<IScenesService>();
         }
 
         private void RegisterNextState(IContainerBuilder builder)
