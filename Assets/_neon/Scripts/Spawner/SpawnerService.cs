@@ -284,6 +284,12 @@ namespace BrainlessLabs.Neon
             var enemy = SpawnUnit(entry.UnitDefinition, spawnPos, spawnDir);
             if (enemy == null) return;
 
+            // AI_Active spawn-gap fix (neon-troubleshooting): spawned enemies never had
+            // their AI enabled — only scene-placed values worked. Mirrors the off-switch
+            // in EntitiesQueries.DisableAllEnemyAI.
+            var enemyBehaviour = enemy.GetComponent<EnemyBehaviour>();
+            if (enemyBehaviour != null) enemyBehaviour.AI_Active = true;
+
             int entityId = _entitiesService.Register(enemy, UNITTYPE.ENEMY, entry.UnitDefinition);
             _waveEntityIds.Add(entityId);
 
