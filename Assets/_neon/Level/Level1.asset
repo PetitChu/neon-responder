@@ -32,6 +32,14 @@ MonoBehaviour:
     SpawnYRange: {x: -2, y: 2}
     HasCameraBound: 1
     CameraBoundProgression: 0.15
+  Swarm:
+    EnableSwarm: 1
+    ChaffCap: 120
+    AmbientCap: 100
+    ChaffSpawnRatePerSecond: 8
+    ChaffMoveSpeed: 1.6
+    BeltYMin: -3.5
+    BeltYMax: -0.5
   EndLevelWhenAllWavesCompleted: 1
   SlowMotionOnLastKill: 1
   LevelCompletedMenu: LevelCompleted
