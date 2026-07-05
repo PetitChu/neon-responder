@@ -63,4 +63,119 @@ namespace BrainlessLabs.Neon
             AttackType = attackType;
         }
     }
+
+    /// <summary>A chaff agent died (any cause — a finish also emits its death). Kill XP hangs off this.</summary>
+    public readonly struct ChaffDied
+    {
+        public readonly Vector2 Position;
+
+        public ChaffDied(Vector2 position)
+        {
+            Position = position;
+        }
+    }
+
+    /// <summary>Raw XP grant from the economy (already Momentum-multiplied).</summary>
+    public readonly struct XpGained
+    {
+        public readonly int Amount;
+        public readonly int TotalXp;
+
+        public XpGained(int amount, int totalXp)
+        {
+            Amount = amount;
+            TotalXp = totalXp;
+        }
+    }
+
+    /// <summary>Progression's view for the HUD bar: position within the current level.</summary>
+    public readonly struct XpProgressChanged
+    {
+        public readonly int Level;
+        public readonly int XpIntoLevel;
+        public readonly int XpForNextLevel;
+
+        public XpProgressChanged(int level, int xpIntoLevel, int xpForNextLevel)
+        {
+            Level = level;
+            XpIntoLevel = xpIntoLevel;
+            XpForNextLevel = xpForNextLevel;
+        }
+    }
+
+    public readonly struct PlayerLevelChanged
+    {
+        public readonly int Level;
+
+        public PlayerLevelChanged(int level)
+        {
+            Level = level;
+        }
+    }
+
+    public readonly struct NeonChargeChanged
+    {
+        public readonly int Total;
+
+        public NeonChargeChanged(int total)
+        {
+            Total = total;
+        }
+    }
+
+    public readonly struct OverchargeChanged
+    {
+        public readonly int Value;
+        public readonly int Cap;
+
+        public OverchargeChanged(int value, int cap)
+        {
+            Value = value;
+            Cap = cap;
+        }
+    }
+
+    /// <summary>Level-up: pick 1 of 3 (slow-mo held until Choose).</summary>
+    public readonly struct LevelUpChoicesReady
+    {
+        public readonly int Level;
+        public readonly ProtocolDefinitionAsset[] Choices;
+
+        public LevelUpChoicesReady(int level, ProtocolDefinitionAsset[] choices)
+        {
+            Level = level;
+            Choices = choices;
+        }
+    }
+
+    public readonly struct ProtocolAcquired
+    {
+        public readonly ProtocolDefinitionAsset Protocol;
+        public readonly int StackCount;
+
+        public ProtocolAcquired(ProtocolDefinitionAsset protocol, int stackCount)
+        {
+            Protocol = protocol;
+            StackCount = stackCount;
+        }
+    }
+
+    /// <summary>Hero-tier finish-challenge state for the HUD prompt (chaff stay single-verb).</summary>
+    public readonly struct FinishChallengeChanged
+    {
+        public readonly bool Active;
+        public readonly Vector2 TargetPosition;
+        public readonly ATTACKTYPE ExpectedVerb;
+        public readonly int Progress;
+        public readonly int Total;
+
+        public FinishChallengeChanged(bool active, Vector2 targetPosition, ATTACKTYPE expectedVerb, int progress, int total)
+        {
+            Active = active;
+            TargetPosition = targetPosition;
+            ExpectedVerb = expectedVerb;
+            Progress = progress;
+            Total = total;
+        }
+    }
 }

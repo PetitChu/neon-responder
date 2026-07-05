@@ -15,5 +15,16 @@ namespace BrainlessLabs.Neon
         // Cross-cutting multipliers (Momentum registers modifiers here)
         DamageMultiplier = 100,
         GainMultiplier = 101,
+
+        // Momentum knobs (bases seeded by MomentumSystem; Protocols modify via modifiers)
+        MomentumDecaySeconds = 200,
+        MomentumBonusStepsBelowHot = 201,
+        OverdriveMultiplier = 202,
+
+        // Growth-layer derived knobs (bases seeded + consumed by ProtocolEffectsSystem)
+        PlayerMaxHealthPct = 300,
+        GrabDurationScale = 301,
+        FinishAoeRadius = 302,
+        HealPerFinish = 303,
     }
 }
