@@ -20,7 +20,15 @@ MonoBehaviour:
     _xpCostBase: 10
     _xpCostExponent: 1.35
     _levelUpSlowMoScale: 0.1
-    _protocolCatalog: []
+    _protocolCatalog:
+    - {fileID: 11400000, guid: 7b4029fe604989c43ba4c72e2d93404e, type: 2}
+    - {fileID: 11400000, guid: 80bf9daab474ed14983963e41f7f96f7, type: 2}
+    - {fileID: 11400000, guid: c8c41b24b37c14841aa2c85994e8043d, type: 2}
+    - {fileID: 11400000, guid: 7f1086437eb955f4c909b953c9b52259, type: 2}
+    - {fileID: 11400000, guid: 9f9a048433c8e8945827c98faa503ba5, type: 2}
+    - {fileID: 11400000, guid: b0ba2043299c6aa4ba1fc2aa1dd7850c, type: 2}
+    - {fileID: 11400000, guid: 3954f2f6289d23246bd6c081ca5ead84, type: 2}
+    - {fileID: 11400000, guid: 9cb0d87d36fa7fd488b02b9c8907d4da, type: 2}
     _challengeSequenceBase: 0100000002000000
     _challengeSequenceHot: 010000000200000001000000
     _challengeInputWindowSeconds: 0.9

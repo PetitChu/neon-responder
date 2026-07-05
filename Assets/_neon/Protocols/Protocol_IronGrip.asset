@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77d02749dcc84b6439e57ee197efb62c, type: 3}
+  m_Name: Protocol_IronGrip
+  m_EditorClassIdentifier: BrainlessLabs.Neon::BrainlessLabs.Neon.ProtocolDefinitionAsset
+  DisplayName: Iron Grip
+  Family: 3
+  Rarity: 1
+  Description: "Grab holds 50% longer (3s \u2192 4.5s)."
+  MaxStacks: 1
+  Prerequisite: {fileID: 0}
+  FirstCopyModifiers:
+  - Sheet: 0
+    Stat: 301
+    Op: 1
+    Value: 0.5
+  AdditionalCopyModifiers: []
