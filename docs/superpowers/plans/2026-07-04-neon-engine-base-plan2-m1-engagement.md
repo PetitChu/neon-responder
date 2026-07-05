@@ -3593,6 +3593,8 @@ Answered from instrumented runtime evidence; the two *feel* items need Sebastien
 - **Momentum climbs from finishing / stings on whiff:** PASS. Meter: COOL grey 0.25 → WARM 0.5 warm-gold on a 3-finish burst; decays back per 2.5 s idle window; empty-air punch published `VerbWhiffed` and snapped tier to COOL.
 - **Spawned wave enemies fight back (AI_Active fix):** PASS. Ten wave enemies spawned AI-active, closed distance, and beat a stationary 10 HP player to death unaided. (Pre-fix they idled at spawn.)
 
+**Sebastien's feel pass (2026-07-04): GATE SIGNED OFF** — "ok enough to pass to the next phase." The R2/R9 pending items above are accepted for M1; the tuning flags below carry into Plan 3.
+
 ### Deviations encountered during execution (beyond the plan's own deviation list)
 
 1. **Test asmdef needs `VContainer` + `Unity.Collections` refs** — `GameplayClock` implements VContainer's `ITickable`, and Entities source-gen demands Unity.Collections; plan only listed `Unity.Entities`.
