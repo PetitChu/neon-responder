@@ -22,9 +22,12 @@ namespace BrainlessLabs.Neon
             if (world == null || Paths == null || Paths.Length == 0) return;
 
             var em = world.EntityManager;
-            var entity = em.CreateEntity(typeof(WalkwayPathsTag));
-            var pointBuf = em.AddBuffer<WalkwayPoint>(entity);
-            var rangeBuf = em.AddBuffer<WalkwayPathRange>(entity);
+            // All components in one CreateEntity: each AddBuffer would be a structural
+            // change invalidating previously acquired buffer handles.
+            var entity = em.CreateEntity(
+                typeof(WalkwayPathsTag), typeof(WalkwayPoint), typeof(WalkwayPathRange));
+            var pointBuf = em.GetBuffer<WalkwayPoint>(entity);
+            var rangeBuf = em.GetBuffer<WalkwayPathRange>(entity);
 
             foreach (var root in Paths)
             {

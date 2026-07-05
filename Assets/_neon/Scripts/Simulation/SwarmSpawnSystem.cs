@@ -27,7 +27,7 @@ namespace BrainlessLabs.Neon.Simulation
                 typeof(SwarmAgent), typeof(BeltPosition), typeof(SwarmVelocity),
                 typeof(SwarmHealth), typeof(FinishReadyTag));
             _ambientArchetype = state.EntityManager.CreateArchetype(
-                typeof(SwarmAgent), typeof(BeltPosition), typeof(SwarmVelocity));
+                typeof(SwarmAgent), typeof(BeltPosition), typeof(SwarmVelocity), typeof(AmbientPathState));
 
             _chaffQuery = state.GetEntityQuery(ComponentType.ReadOnly<SwarmHealth>());
             _ambientQuery = new EntityQueryBuilder(Unity.Collections.Allocator.Temp)
@@ -50,6 +50,12 @@ namespace BrainlessLabs.Neon.Simulation
         private void SeedAmbient(ref SystemState state, in SwarmWorldState world)
         {
             int missing = world.AmbientCap - _ambientQuery.CalculateEntityCount();
+            if (missing <= 0) return;
+
+            int pathCount = 0;
+            if (SystemAPI.TryGetSingletonEntity<WalkwayPathsTag>(out var pathsEntity))
+                pathCount = state.EntityManager.GetBuffer<WalkwayPathRange>(pathsEntity).Length;
+
             for (int i = 0; i < missing; i++)
             {
                 var entity = state.EntityManager.CreateEntity(_ambientArchetype);
@@ -59,6 +65,13 @@ namespace BrainlessLabs.Neon.Simulation
                 state.EntityManager.SetComponentData(entity, new SwarmVelocity
                 {
                     Value = _random.NextFloat2Direction() * _random.NextFloat(0.2f, 0.8f)
+                });
+                state.EntityManager.SetComponentData(entity, new AmbientPathState
+                {
+                    PathId = pathCount > 0 ? (int)(_random.NextUInt() % (uint)pathCount) : -1,
+                    Distance = _random.NextFloat(0f, 50f),
+                    Speed = _random.NextFloat(0.4f, 1.1f),
+                    Lateral = _random.NextFloat(-0.6f, 0.6f),
                 });
             }
         }

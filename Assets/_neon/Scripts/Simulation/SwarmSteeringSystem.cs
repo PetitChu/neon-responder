@@ -76,27 +76,30 @@ namespace BrainlessLabs.Neon.Simulation
             }
             crowd.Dispose();
 
-            // Ambient: bounce-wander (spike pattern).
-            foreach (var (position, velocity) in
-                     SystemAPI.Query<RefRW<BeltPosition>, RefRW<SwarmVelocity>>()
-                         .WithNone<SwarmHealth>())
+            // Ambient: walk authored walkway paths (offset laterally, looping).
+            // No paths baked (or PathId -1) = agents hold position; Plan C authors
+            // the real per-level paths.
+            if (SystemAPI.TryGetSingletonEntity<WalkwayPathsTag>(out var pathsEntity))
             {
-                float2 p = position.ValueRO.Value + velocity.ValueRO.Value * deltaTime;
-                float2 v = velocity.ValueRO.Value;
-
-                if (p.x < world.BeltMin.x || p.x > world.BeltMax.x)
+                var points = SystemAPI.GetBuffer<WalkwayPoint>(pathsEntity);
+                var ranges = SystemAPI.GetBuffer<WalkwayPathRange>(pathsEntity);
+                if (points.Length >= 2 && ranges.Length > 0)
                 {
-                    v.x = -v.x;
-                    p.x = math.clamp(p.x, world.BeltMin.x, world.BeltMax.x);
-                }
-                if (p.y < world.BeltMin.y || p.y > world.BeltMax.y)
-                {
-                    v.y = -v.y;
-                    p.y = math.clamp(p.y, world.BeltMin.y, world.BeltMax.y);
-                }
+                    var pointArr = points.AsNativeArray().Reinterpret<float2>(); // WalkwayPoint is one float2
+                    foreach (var (position, path) in
+                             SystemAPI.Query<RefRW<BeltPosition>, RefRW<AmbientPathState>>())
+                    {
+                        if (path.ValueRO.PathId < 0 || path.ValueRO.PathId >= ranges.Length) continue;
+                        var range = ranges[path.ValueRO.PathId];
 
-                position.ValueRW.Value = p;
-                velocity.ValueRW.Value = v;
+                        path.ValueRW.Distance += path.ValueRO.Speed * deltaTime;
+                        WalkwayPathSampler.Sample(pointArr, range.Start, range.Count,
+                            path.ValueRO.Distance, out float2 pos, out float2 dir);
+
+                        float2 perp = new float2(-dir.y, dir.x);
+                        position.ValueRW.Value = pos + perp * path.ValueRO.Lateral;
+                    }
+                }
             }
         }
     }
