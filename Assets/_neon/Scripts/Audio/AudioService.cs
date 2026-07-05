@@ -9,7 +9,10 @@ namespace BrainlessLabs.Neon
         private readonly AudioConfigurationAsset _musicConfiguration;
 
         private GameObject _musicObject;
-        private AudioSource _musicSource;
+        private AudioSource _musicSource;   // the ACTIVE music bed
+        private AudioSource _musicSourceB;  // the incoming bed during a crossfade
+        private MusicFadeRunner _fadeRunner;
+        private string _currentTrack;
 
         public AudioService()
         {
@@ -31,6 +34,43 @@ namespace BrainlessLabs.Neon
         public void PlayMusic(string name)
         {
             PlayMusicInternal(name);
+        }
+
+        public void CrossfadeMusic(string name, float seconds)
+        {
+            if (string.IsNullOrEmpty(name) || _musicConfiguration == null) return;
+            if (name == _currentTrack) return;
+
+            var matchingItem = _musicConfiguration.AudioItems.FirstOrDefault(item => item.name == name);
+
+            if (matchingItem == null)
+            {
+                Debug.LogWarning($"No music item found with name: {name}");
+                return;
+            }
+
+            if (matchingItem.clip.Length == 0)
+            {
+                Debug.LogWarning($"AudioClip '{name}' has no clips assigned in the music configuration.");
+                return;
+            }
+
+            EnsureMusicSource();
+            EnsureCrossfadeRig();
+
+            var incoming = _musicSourceB;
+            var rand = Random.Range(0, matchingItem.clip.Length);
+            incoming.clip = matchingItem.clip[rand];
+            incoming.volume = 0f;
+            incoming.loop = matchingItem.loop;
+            incoming.Play();
+
+            // Unscaled fade (freeze-frame must not stall the music swap).
+            _fadeRunner.Begin(_musicSource, incoming, matchingItem.volume, Mathf.Max(0.01f, seconds));
+
+            // Swap roles: incoming becomes the active bed.
+            (_musicSource, _musicSourceB) = (incoming, _musicSource);
+            _currentTrack = name;
         }
 
         private void PlaySFXInternal(string name, Vector3? pos, Transform parent)
@@ -174,6 +214,7 @@ namespace BrainlessLabs.Neon
             _musicSource.volume = matchingItem.volume;
             _musicSource.loop = matchingItem.loop;
             _musicSource.Play();
+            _currentTrack = name;
         }
 
         private void EnsureMusicSource()
@@ -188,9 +229,57 @@ namespace BrainlessLabs.Neon
             _musicSource.outputAudioMixerGroup = _musicConfiguration.MixerGroup;
         }
 
+        private void EnsureCrossfadeRig()
+        {
+            if (_musicSourceB != null) return;
+
+            _musicSourceB = _musicObject.AddComponent<AudioSource>();
+            _musicSourceB.spatialBlend = 0f;
+            _musicSourceB.outputAudioMixerGroup = _musicConfiguration.MixerGroup;
+            _fadeRunner = _musicObject.AddComponent<MusicFadeRunner>();
+        }
+
         public void Dispose()
         {
             if (_musicObject != null) Object.Destroy(_musicObject);
+        }
+
+        /// <summary>Drives one music crossfade on UNSCALED time (runtime-added; never in scenes).</summary>
+        private sealed class MusicFadeRunner : MonoBehaviour
+        {
+            private AudioSource _from;
+            private AudioSource _to;
+            private float _fromStart;
+            private float _toTarget;
+            private float _seconds;
+            private float _t;
+
+            void Awake() => enabled = false;
+
+            public void Begin(AudioSource from, AudioSource to, float targetVolume, float seconds)
+            {
+                _from = from;
+                _to = to;
+                _fromStart = from != null ? from.volume : 0f;
+                _toTarget = targetVolume;
+                _seconds = seconds;
+                _t = 0f;
+                enabled = true;
+            }
+
+            void Update()
+            {
+                _t += Time.unscaledDeltaTime;
+                float k = Mathf.Clamp01(_t / _seconds);
+                if (_from != null) _from.volume = Mathf.Lerp(_fromStart, 0f, k);
+                if (_to != null) _to.volume = Mathf.Lerp(0f, _toTarget, k);
+
+                if (k >= 1f)
+                {
+                    if (_from != null) _from.Stop();
+                    enabled = false;
+                }
+            }
         }
     }
 }
