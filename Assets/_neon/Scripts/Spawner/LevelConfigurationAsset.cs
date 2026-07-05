@@ -30,6 +30,10 @@ namespace BrainlessLabs.Neon
         [Tooltip("DOTS chaff/ambient density for this level (spec §6 budget: chaff 80-150, ambient ~100).")]
         public SwarmDensityBlock Swarm = new();
 
+        [Header("Run (M3)")]
+        [Tooltip("Encounter sequence for this level — one Reboot Node per encounter.")]
+        public RunBlock Run = new();
+
         [Header("Completion")]
         [Tooltip("Automatically end the level when all waves are completed.")]
         public bool EndLevelWhenAllWavesCompleted = true;
@@ -66,5 +70,19 @@ namespace BrainlessLabs.Neon
         [Tooltip("Belt depth band (world Y) the swarm walks in.")]
         public float BeltYMin = -3.5f;
         public float BeltYMax = -0.5f;
+    }
+
+    [System.Serializable]
+    public class RunBlock
+    {
+        [Tooltip("Master switch — off leaves the level running the pre-M3 free-fight path.")]
+        public bool EnableRun = false;
+
+        [Tooltip("One Reboot-Node world position per encounter. Count = number of encounters. " +
+                 "Completing all of them lands the Signal on dawn = run won.")]
+        public Vector2[] EncounterNodePositions = new Vector2[0];
+
+        [Tooltip("Radius the player must stand within to charge a node.")]
+        public float NodeRadius = 2.5f;
     }
 }

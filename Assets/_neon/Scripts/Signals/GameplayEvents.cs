@@ -178,4 +178,69 @@ namespace BrainlessLabs.Neon
             Total = total;
         }
     }
+
+    /// <summary>Reboot-node objective fill state for the HUD + node visual (0..1).</summary>
+    public readonly struct ObjectiveProgress
+    {
+        public readonly float Normalized;
+        public readonly Vector2 Position;
+        public readonly bool PlayerInZone;
+
+        public ObjectiveProgress(float normalized, Vector2 position, bool playerInZone)
+        {
+            Normalized = normalized;
+            Position = position;
+            PlayerInZone = playerInZone;
+        }
+    }
+
+    /// <summary>An objective completed (raises the Signal). EncounterIndex is 0-based.</summary>
+    public readonly struct ObjectiveCompleted
+    {
+        public readonly int EncounterIndex;
+
+        public ObjectiveCompleted(int encounterIndex)
+        {
+            EncounterIndex = encounterIndex;
+        }
+    }
+
+    /// <summary>The dawn scalar changed. Value is 0..Dawn; Dawn is the win threshold.</summary>
+    public readonly struct SignalChanged
+    {
+        public readonly float Value;
+        public readonly float Dawn;
+
+        public SignalChanged(float value, float dawn)
+        {
+            Value = value;
+            Dawn = dawn;
+        }
+    }
+
+    public readonly struct RunPhaseChanged
+    {
+        public readonly RunPhase Previous;
+        public readonly RunPhase Current;
+        public readonly int EncounterIndex;
+        public readonly int TotalEncounters;
+
+        public RunPhaseChanged(RunPhase previous, RunPhase current, int encounterIndex, int totalEncounters)
+        {
+            Previous = previous;
+            Current = current;
+            EncounterIndex = encounterIndex;
+            TotalEncounters = totalEncounters;
+        }
+    }
+
+    public readonly struct RunEnded
+    {
+        public readonly bool Won;
+
+        public RunEnded(bool won)
+        {
+            Won = won;
+        }
+    }
 }

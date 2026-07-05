@@ -26,5 +26,9 @@ namespace BrainlessLabs.Neon
         GrabDurationScale = 301,
         FinishAoeRadius = 302,
         HealPerFinish = 303,
+
+        // Run layer (M3)
+        SpawnNastiness = 400,       // Run sheet; base 1, Signal raises it, SwarmBridge reads it
+        ObjectiveFillRateScale = 401, // Run sheet; base 1, Objective protocols / Priority Override tune it
     }
 }

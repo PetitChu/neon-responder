@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bddce57935c8284d9b2e445e8e55b3e, type: 3}
+  m_Name: RunSettingsAsset
+  m_EditorClassIdentifier: BrainlessLabs.Neon::BrainlessLabs.Neon.RunSettingsAsset
+  _settings:
+    _encounterIntroSeconds: 1.5
+    _rebootDurationSeconds: 50
+    _dawnValue: 1
+    _maxSpawnNastinessBonus: 1
+    _shopHealCost: 25
+    _shopHealAmount: 40
+    _shopPauseScale: 0
+    _nightColor: {r: 0.04, g: 0.05, b: 0.1, a: 1}
+    _dawnColor: {r: 0.45, g: 0.35, b: 0.3, a: 1}
