@@ -131,6 +131,7 @@ namespace BrainlessLabs.Neon.Tests
         public int Xp => XpValue;
         public int NeonCharge => NeonChargeValue;
         public int Overcharge => OverchargeValue;
+        public bool IsOverchargeFull => OverchargeFull;
 
         public bool TrySpend(int amount)
         {

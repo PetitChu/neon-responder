@@ -18,6 +18,9 @@ namespace BrainlessLabs.Neon
         /// <summary>Deduct Neon Charge if affordable. Returns false (no change) if too poor.</summary>
         bool TrySpend(int amount);
 
+        /// <summary>True when the Overcharge meter is at cap (the finisher's gate).</summary>
+        bool IsOverchargeFull { get; }
+
         /// <summary>Fire the Overcharge finisher: if the meter is full, zero it and return true.</summary>
         bool TryConsumeOvercharge();
     }

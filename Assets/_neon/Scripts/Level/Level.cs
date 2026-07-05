@@ -121,6 +121,7 @@ namespace BrainlessLabs.Neon
                     container.Resolve<ProtocolEffectsSystem>();
                     container.Resolve<IRunService>();
                     container.Resolve<ISpecialSystem>();
+                    container.Resolve<IOverchargeFinisher>();
                 }
             });
         }
@@ -137,6 +138,7 @@ namespace BrainlessLabs.Neon
             builder.Register<RunService>(Lifetime.Scoped).As<IRunService>();
             builder.RegisterInstance(SpecialConfig.FromSettings());
             builder.Register<SpecialSystem>(Lifetime.Scoped).As<ISpecialSystem>();
+            builder.Register<OverchargeFinisher>(Lifetime.Scoped).As<IOverchargeFinisher>();
             builder.Register<SwarmBridge>(Lifetime.Scoped).As<ISwarmBridge>();
             builder.Register<AutoEngageSystem>(Lifetime.Scoped).AsSelf();
             builder.Register<FinishReadySystem>(Lifetime.Scoped).AsSelf();

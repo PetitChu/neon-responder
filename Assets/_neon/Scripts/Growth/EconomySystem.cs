@@ -55,6 +55,8 @@ namespace BrainlessLabs.Neon
             return true;
         }
 
+        public bool IsOverchargeFull => Overcharge >= _config.OverchargeCap;
+
         public bool TryConsumeOvercharge()
         {
             if (Overcharge < _config.OverchargeCap) return false;
