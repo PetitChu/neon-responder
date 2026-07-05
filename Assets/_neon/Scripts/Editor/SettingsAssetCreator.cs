@@ -19,6 +19,7 @@ namespace BrainlessLabs.Neon.Editor
             EngagementSettingsAsset.GetOrCreateSettingsAsset();
             GrowthSettingsAsset.GetOrCreateSettingsAsset();
             RunSettingsAsset.GetOrCreateSettingsAsset();
+            FeelSettingsAsset.GetOrCreateSettingsAsset();
             AssetDatabase.SaveAssets();
             Debug.Log("[Neon] All settings assets present under Assets/Resources/Settings/.");
         }

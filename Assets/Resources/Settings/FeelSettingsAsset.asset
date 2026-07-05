@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b0baaafe76af204b94ab04288d1045f, type: 3}
+  m_Name: FeelSettingsAsset
+  m_EditorClassIdentifier: BrainlessLabs.Neon::BrainlessLabs.Neon.FeelSettingsAsset
+  _settings:
+    _punch:
+      HitstopScale: 0.08
+      HitstopSeconds: 0.04
+      ShakeIntensity: 0.1
+      ShakeSeconds: 0.15
+    _kick:
+      HitstopScale: 0.06
+      HitstopSeconds: 0.06
+      ShakeIntensity: 0.16
+      ShakeSeconds: 0.2
+    _weapon:
+      HitstopScale: 0.05
+      HitstopSeconds: 0.07
+      ShakeIntensity: 0.2
+      ShakeSeconds: 0.22
+    _throw:
+      HitstopScale: 0.03
+      HitstopSeconds: 0.1
+      ShakeIntensity: 0.35
+      ShakeSeconds: 0.35
+    _defaultHit:
+      HitstopScale: 0.1
+      HitstopSeconds: 0.03
+      ShakeIntensity: 0.08
+      ShakeSeconds: 0.12
+    _finish:
+      HitstopScale: 0.04
+      HitstopSeconds: 0.09
+      ShakeIntensity: 0.28
+      ShakeSeconds: 0.3
+    _tierUp:
+      HitstopScale: 0.15
+      HitstopSeconds: 0.08
+      ShakeIntensity: 0.22
+      ShakeSeconds: 0.3
+    _finisherFreezeSeconds: 0.35
+    _whiffFlashSeconds: 0.25
+    _sirenCooldownSeconds: 6
+    _sirenChargeCost: 20
+    _sirenRadius: 5
+    _finisherRadius: 12

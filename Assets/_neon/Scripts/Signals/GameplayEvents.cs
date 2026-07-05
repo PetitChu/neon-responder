@@ -243,4 +243,54 @@ namespace BrainlessLabs.Neon
             Won = won;
         }
     }
+
+    /// <summary>Special (Siren Pulse) cooldown/availability for the HUD. 1 = ready.</summary>
+    public readonly struct SpecialStateChanged
+    {
+        public readonly bool Ready;
+        public readonly float CooldownNormalized; // 0 (just fired) → 1 (ready)
+
+        public SpecialStateChanged(bool ready, float cooldownNormalized)
+        {
+            Ready = ready;
+            CooldownNormalized = cooldownNormalized;
+        }
+    }
+
+    /// <summary>The Overcharge finisher became available / unavailable (meter full ↔ spent).</summary>
+    public readonly struct OverchargeReadyChanged
+    {
+        public readonly bool Ready;
+
+        public OverchargeReadyChanged(bool ready)
+        {
+            Ready = ready;
+        }
+    }
+
+    /// <summary>The Overcharge finisher fired (feedback + audio hook). Count = chaff cleared.</summary>
+    public readonly struct OverchargeFinisherFired
+    {
+        public readonly Vector2 Position;
+        public readonly int ChaffCleared;
+
+        public OverchargeFinisherFired(Vector2 position, int chaffCleared)
+        {
+            Position = position;
+            ChaffCleared = chaffCleared;
+        }
+    }
+
+    /// <summary>A floating world-space callout ("NODE RESTORED", "SIREN PULSE"). Feedback consumes it.</summary>
+    public readonly struct Callout
+    {
+        public readonly string Text;
+        public readonly Vector2 Position;
+
+        public Callout(string text, Vector2 position)
+        {
+            Text = text;
+            Position = position;
+        }
+    }
 }
