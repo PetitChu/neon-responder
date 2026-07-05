@@ -50,13 +50,15 @@ real system; nothing repeats for free.*
 [ 0. Camera & scale  ∥  A. Swarm rework  ∥  B. Render foundation ] → C. Level 01 build → [ D. Character art ∥ E. UI / feedback ]
 ```
 
-Plans 0, A, B are mutually independent (parallelizable). C depends on all three. D and E follow C; E also touches
-Plan 0 (Impulse). `writing-plans` owns final task breakdown and may split further.
+Plans 0, A, B are mutually independent (parallelizable). C depends on all three. **A.a layers on A** (the hero-follower
+crowd — a design addition made after A was written; kept as a separate plan at the author's request). D and E follow C;
+E also touches Plan 0 (Impulse). `writing-plans` owns final task breakdown and may split further.
 
 | Plan | One-line scope | Depends on |
 |---|---|---|
 | **0 · Camera & scale** | Cinemachine ortho rig, zoomed-out baseline, per-zone vcams, `Confiner2D`, Impulse shake | — (first) |
 | **A · Swarm rework** | Kill lanes; seek+separation+cohesion; ambient walkway paths; per-zone density curve | — |
+| **A.a · Hero-follower crowd** | Layers on A: all chaff become hero-squad followers (per-hero cap; orphan→player on hero death; re-adopt into freed slots); `SwarmBridge` pushes hero positions/caps into the sim | A |
 | **B · Render foundation** | PPv2 install + volume/profile; whiff = grade; perf gate | — |
 | **C · Level 01 build** | Waves A–H; scene geometry; enemy roster; Zone 4 lull; `AI_Active` verify | 0, A, B |
 | **D · Character art** | AI-gen chaff/ambient/roster/player, scaled to the new baseline | 0, A, C |
@@ -129,6 +131,27 @@ Current state (ground truth):
 **Tests (EditMode):** separation keeps a minimum inter-agent spacing under density; agents converge on the player;
 path-follow advances an agent along a constructed path; density curve returns expected caps at sampled progressions.
 
+### 5a. Chaff-as-followers — hero squads (Plan A.a, layered on A)
+
+A design addition made after Plan A was written (kept as a separate plan at the author's request). It **re-targets**
+Plan A's crowd: instead of all chaff seeking the player, **every chaff is a follower of a hero enemy** (the
+MonoBehaviour roster units — thug/elite/mini-boss). Model:
+- **Per-hero follower cap** — `UnitDefinitionAsset.MaxFollowers` (new field), optional per-wave override. Assignment =
+  **nearest hero with a free slot** (for fresh spawns and orphan re-adoption alike).
+- **Replacement** — a hero refills a freed slot while the wave budget / `ChaffCap` ceiling allows, **adopting an
+  existing orphan before spawning a fresh chaff**.
+- **Orphans** — a hero's death does **not** despawn its followers; they become orphans that **seek the player** until
+  re-adopted into any hero's freed slot.
+- **Density** — `ChaffCap` (Plan A's progression curve) becomes the **ceiling**; actual population is hero-demand-driven
+  (filled slots + orphans ≤ ceiling), not a flat flood.
+- **Bridge** — `SwarmBridge.Tick` pushes a hero table (id = `TrackedEntity.Id`, position, cap from `MaxFollowers`) into
+  the sim each tick, exactly as it already pushes `PlayerPosition`. A hero leaving `IEntitiesService` drops its id →
+  its followers auto-orphan. The `ISwarmBridge` interface + all consumers stay untouched.
+- **Reuse** — Plan A's `SwarmSteering` math is unchanged; only the *target* differs (assigned-hero position, or the
+  player when orphaned).
+- **Verification** — the chaff-side ships with placeholder heroes for a smoke test; Plan C's real roster does the full
+  follower run.
+
 ---
 
 ## 6. Plan B — Render foundation *(PPv2)*
@@ -172,7 +195,9 @@ Walkable-band colliders still define the playable space per zone. Per-wave arena
 control reads more deliberately.
 
 **Enemy roster:** author 4 `UnitDefinitionAsset`s (only `UnitDefinition_NmeOne` + the player exist today) —
-**thug / chump / elite / mini-boss**. Mini-boss = the elite def with inflated `_maxHealth` + scale. First-pass
+**thug / chump / elite / mini-boss**. Mini-boss = the elite def with inflated `_maxHealth` + scale. Each roster def
+also sets **`MaxFollowers`** (the hero-follower cap, Plan A.a); Plan C runs the full follower-squad verification
+(chaff group around heroes; orphans seek the player on hero death and re-adopt into freed slots). First-pass
 `_maxHealth` set relative to `FinishReadyHealthThreshold` (`EngagementSettings`) so Finish-Ready windows land where
 the pacing wants; **tuned in-editor** (runtime is ground truth).
 
