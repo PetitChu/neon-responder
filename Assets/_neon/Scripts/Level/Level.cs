@@ -115,6 +115,8 @@ namespace BrainlessLabs.Neon
                 {
                     container.Resolve<ISwarmBridge>();
                     container.Resolve<AutoEngageSystem>();
+                    container.Resolve<FinishReadySystem>();
+                    container.Resolve<FinishReadySelector>();
                 }
             });
         }
@@ -128,6 +130,8 @@ namespace BrainlessLabs.Neon
             builder.RegisterInstance(EngagementConfig.FromSettings());
             builder.Register<SwarmBridge>(Lifetime.Scoped).As<ISwarmBridge>();
             builder.Register<AutoEngageSystem>(Lifetime.Scoped).AsSelf();
+            builder.Register<FinishReadySystem>(Lifetime.Scoped).AsSelf();
+            builder.Register<FinishReadySelector>(Lifetime.Scoped).AsSelf();
         }
 
         void Start()
