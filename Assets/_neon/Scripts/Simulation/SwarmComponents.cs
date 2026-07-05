@@ -3,11 +3,10 @@ using Unity.Mathematics;
 
 namespace BrainlessLabs.Neon.Simulation
 {
-    /// <summary>2D belt position (x = along the belt, y = depth lane band).</summary>
+    /// <summary>2D belt position (x = along the belt, y = depth within the belt band).</summary>
     public struct BeltPosition : IComponentData
     {
         public float2 Value;
-        public int LaneIndex;
     }
 
     public struct SwarmVelocity : IComponentData
