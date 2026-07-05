@@ -14,9 +14,11 @@ namespace BrainlessLabs.Neon
         public readonly Vector2 BeltMin;
         public readonly Vector2 BeltMax;
         public readonly float FinishReadyThreshold;
+        public readonly AnimationCurve ChaffCapCurve;
 
         public SwarmConfig(bool enabled, int chaffCap, int ambientCap, float spawnRatePerSecond,
-            int chaffMaxHealth, float chaffMoveSpeed, Vector2 beltMin, Vector2 beltMax, float finishReadyThreshold)
+            int chaffMaxHealth, float chaffMoveSpeed, Vector2 beltMin, Vector2 beltMax, float finishReadyThreshold,
+            AnimationCurve chaffCapCurve = null)
         {
             Enabled = enabled;
             ChaffCap = chaffCap;
@@ -27,6 +29,7 @@ namespace BrainlessLabs.Neon
             BeltMin = beltMin;
             BeltMax = beltMax;
             FinishReadyThreshold = finishReadyThreshold;
+            ChaffCapCurve = chaffCapCurve;
         }
 
         public static SwarmConfig From(LevelConfigurationAsset config, Level level)
@@ -42,7 +45,8 @@ namespace BrainlessLabs.Neon
                 block.ChaffMoveSpeed,
                 new Vector2(level.LevelStartX, block.BeltYMin),
                 new Vector2(level.LevelStartX + level.LevelLength, block.BeltYMax),
-                settings.FinishReadyHealthThreshold);
+                settings.FinishReadyHealthThreshold,
+                block.ChaffCapCurve);
         }
     }
 }

@@ -61,6 +61,9 @@ namespace BrainlessLabs.Neon
         [Range(0, 150)] public int ChaffCap = 120;
         [Range(0, 150)] public int AmbientCap = 100;
 
+        [Tooltip("Optional: chaff cap over level progression 0→1 (spec §5 rising sawtooth). Empty = use ChaffCap flat.")]
+        public AnimationCurve ChaffCapCurve = new();
+
         [Tooltip("Chaff spawned per second (flooding from both belt ends) until the cap is reached.")]
         public float ChaffSpawnRatePerSecond = 8f;
 

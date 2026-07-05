@@ -57,10 +57,15 @@ namespace BrainlessLabs.Neon
             }
 
             // Signal → density (spec §5.4): the Run-sheet SpawnNastiness stat (base 1,
-            // Signal raises it) scales chaff cap + spawn rate live.
+            // Signal raises it) scales chaff cap + spawn rate live. Progression (player-X
+            // across the belt) drives the optional per-zone ChaffCapCurve.
             float nastiness = _stats.Run.GetValue(StatId.SpawnNastiness);
             if (nastiness <= 0f) nastiness = 1f;
-            state.ChaffCap = Mathf.Min(150, Mathf.RoundToInt(_config.ChaffCap * nastiness)); // 150 = spike-verified proxy-pool ceiling
+            float span = _config.BeltMax.x - _config.BeltMin.x;
+            float progression = span > 1e-3f
+                ? Mathf.Clamp01((state.PlayerPosition.x - _config.BeltMin.x) / span)
+                : 0f;
+            state.ChaffCap = SwarmDensity.ResolveChaffCap(_config.ChaffCap, _config.ChaffCapCurve, progression, nastiness);
             state.SpawnRatePerSecond = _config.SpawnRatePerSecond * nastiness;
 
             entityManager.SetComponentData(_controlEntity, state);
