@@ -50,13 +50,21 @@ namespace BrainlessLabs.Neon.Simulation
 
             var playerTarget = new float2(world.PlayerPosition.x, world.PlayerPosition.y);
 
-            foreach (var (position, velocity, entity) in
-                     SystemAPI.Query<RefRW<BeltPosition>, RefRW<SwarmVelocity>>()
+            // Hero table snapshot: each chaff seeks its assigned hero; orphans seek the player.
+            var control = SystemAPI.GetSingletonEntity<SwarmWorldState>();
+            using var heroes = new NativeArray<HeroSlot>(
+                state.EntityManager.GetBuffer<HeroSlot>(control).AsNativeArray(), Allocator.Temp);
+
+            foreach (var (position, velocity, follower, entity) in
+                     SystemAPI.Query<RefRW<BeltPosition>, RefRW<SwarmVelocity>, RefRO<FollowerState>>()
                          .WithAll<SwarmHealth>()
                          .WithEntityAccess())
             {
+                int heroIdx = HeroAssignment.IndexOfHero(follower.ValueRO.HeroId, heroes);
+                float2 target = heroIdx >= 0 ? heroes[heroIdx].Position : playerTarget; // orphan → player
+
                 float2 desired = SwarmSteering.ComputeDesiredVelocity(
-                    position.ValueRO.Value, playerTarget, crowd,
+                    position.ValueRO.Value, target, crowd,
                     world.ChaffMoveSpeed, SEP_RADIUS, SEP_WEIGHT, COH_RADIUS, COH_WEIGHT, STOP_RADIUS);
 
                 // Per-entity symmetry breaker: coincident agents skip each other in the
