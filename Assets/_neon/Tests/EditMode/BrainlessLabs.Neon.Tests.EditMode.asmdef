@@ -3,8 +3,10 @@
     "rootNamespace": "BrainlessLabs.Neon.Tests",
     "references": [
         "BrainlessLabs.Neon",
+        "BrainlessLabs.Neon.Simulation",
         "Unity.Collections",
         "Unity.Entities",
+        "Unity.Mathematics",
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
         "VContainer"
