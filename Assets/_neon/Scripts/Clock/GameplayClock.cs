@@ -39,6 +39,8 @@ namespace BrainlessLabs.Neon
             }
         }
 
+        private float _lastAppliedTimeScale = 1f;
+
         void ITickable.Tick()
         {
             if (!_loggedFirstTick)
@@ -46,7 +48,23 @@ namespace BrainlessLabs.Neon
                 UnityEngine.Debug.Log("[Gameplay] GameplayClock ticking.");
                 _loggedFirstTick = true;
             }
-            Advance(UnityEngine.Time.deltaTime);
+
+            // Spec §4.1: the clock owns engine time. Scale sources (hitstop, level-up
+            // slow-mo, pause) drive Time.timeScale so the WHOLE world slows — Mono
+            // combat, animators, physics, and the ECS sim included. Written only on
+            // change so Level's legacy last-kill SlowMotionRoutine (direct
+            // Time.timeScale writes) keeps working between clock changes; that
+            // routine migrates onto a clock source with M3's RunService.
+            float effectiveScale = EffectiveScale;
+            if (!UnityEngine.Mathf.Approximately(effectiveScale, _lastAppliedTimeScale))
+            {
+                UnityEngine.Time.timeScale = effectiveScale;
+                _lastAppliedTimeScale = effectiveScale;
+            }
+
+            // Unscaled delta × EffectiveScale (inside Advance) — using the scaled
+            // deltaTime here would double-apply the scale now that we set timeScale.
+            Advance(UnityEngine.Time.unscaledDeltaTime);
         }
 
         /// <summary>Advance gameplay time by an unscaled delta and run the ordered tick.</summary>
