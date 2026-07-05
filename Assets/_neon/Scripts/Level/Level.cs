@@ -90,10 +90,10 @@ namespace BrainlessLabs.Neon
 
             _dynamicCameraBound.transform.position = new Vector3(worldX, transform.position.y, 0f);
 
-            var camFollow = Camera.main?.GetComponent<CameraFollow>();
-            if (camFollow != null)
+            var confiner = FindFirstObjectByType<NeonCameraConfinerDriver>();
+            if (confiner != null)
             {
-                camFollow.levelBound = _dynamicCameraBound;
+                confiner.SetRightBound(worldX);
             }
         }
 
