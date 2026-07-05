@@ -17,7 +17,7 @@ MonoBehaviour:
   PlayerSpawnDirection: 1
   Waves:
   - WaveName: level-01-wave-01-easy
-    TriggerType: 1
+    TriggerType: 3
     TriggerProgressionPercent: 0.05
     TriggerDistance: 0
     Entries:
@@ -31,7 +31,39 @@ MonoBehaviour:
     SpawnProgression: 0.5
     SpawnYRange: {x: -2, y: 2}
     HasCameraBound: 1
-    CameraBoundProgression: 0.15
+    CameraBoundProgression: 0.35
+  - WaveName: level-01-wave-02-mid
+    TriggerType: 3
+    TriggerProgressionPercent: 0
+    TriggerDistance: 0
+    Entries:
+    - UnitDefinition: {fileID: 11400000, guid: 6eec7b60903b2fc47a5d28af3addcd2f, type: 2}
+      Count: 14
+      SpawnInterval: 1
+    MaxActiveEnemies: 6
+    CooldownBetweenSpawns: 1
+    SpawnPositionMode: 0
+    SpawnDistanceFromPlayer: 2
+    SpawnProgression: 0.5
+    SpawnYRange: {x: -2, y: 2}
+    HasCameraBound: 1
+    CameraBoundProgression: 0.65
+  - WaveName: level-01-wave-03-hard
+    TriggerType: 3
+    TriggerProgressionPercent: 0
+    TriggerDistance: 0
+    Entries:
+    - UnitDefinition: {fileID: 11400000, guid: 6eec7b60903b2fc47a5d28af3addcd2f, type: 2}
+      Count: 18
+      SpawnInterval: 1
+    MaxActiveEnemies: 7
+    CooldownBetweenSpawns: 1
+    SpawnPositionMode: 0
+    SpawnDistanceFromPlayer: 2
+    SpawnProgression: 0.5
+    SpawnYRange: {x: -2, y: 2}
+    HasCameraBound: 1
+    CameraBoundProgression: 1
   Swarm:
     EnableSwarm: 1
     ChaffCap: 150
@@ -40,7 +72,14 @@ MonoBehaviour:
     ChaffMoveSpeed: 1.6
     BeltYMin: -3.5
     BeltYMax: -0.5
-  EndLevelWhenAllWavesCompleted: 1
+  Run:
+    EnableRun: 1
+    EncounterNodePositions:
+    - {x: 5, y: -1.5}
+    - {x: 16, y: -1.5}
+    - {x: 28, y: -1.5}
+    NodeRadius: 2.5
+  EndLevelWhenAllWavesCompleted: 0
   SlowMotionOnLastKill: 1
   LevelCompletedMenu: LevelCompleted
   AllLevelsCompletedMenu: AllLevelsCompleted

@@ -10,6 +10,7 @@ namespace BrainlessLabs.Neon.Tests
         private GameplayClock _clock;
         private GameplaySignals _signals;
         private StatSystem _stats;
+        private SignalSystem _signal;
         private ProtocolService _protocols;
         private ProgressionSystem _progression;
         private readonly List<ProtocolDefinitionAsset> _createdAssets = new();
@@ -29,7 +30,8 @@ namespace BrainlessLabs.Neon.Tests
             _clock = new GameplayClock();
             _signals = new GameplaySignals();
             _stats = new StatSystem();
-            _protocols = new ProtocolService(_stats, _signals, MakeCatalog(3), randomSeed: 777);
+            _signal = new SignalSystem(_signals, _stats, 1f, 1f); // Signal 0 → band 0 → base weights
+            _protocols = new ProtocolService(_stats, _signals, _signal, MakeCatalog(3), randomSeed: 777);
             _progression = new ProgressionSystem(_signals, _clock, _protocols, TestConfig);
             _offers.Clear();
             _offerSub = _signals.On<LevelUpChoicesReady>().Subscribe(e => _offers.Add(e));
@@ -40,6 +42,7 @@ namespace BrainlessLabs.Neon.Tests
         {
             _offerSub?.Dispose();
             _progression.Dispose();
+            _signal.Dispose();
             _signals.Dispose();
             foreach (var asset in _createdAssets) Object.DestroyImmediate(asset);
             _createdAssets.Clear();
@@ -135,7 +138,7 @@ namespace BrainlessLabs.Neon.Tests
         public void EmptyCatalog_LevelsWithoutDraft_NoSlowMo()
         {
             _progression.Dispose();
-            var emptyService = new ProtocolService(_stats, _signals, new List<ProtocolDefinitionAsset>(), randomSeed: 1);
+            var emptyService = new ProtocolService(_stats, _signals, _signal, new List<ProtocolDefinitionAsset>(), randomSeed: 1);
             _progression = new ProgressionSystem(_signals, _clock, emptyService, TestConfig);
 
             Xp(10);

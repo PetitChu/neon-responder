@@ -30,9 +30,9 @@ namespace BrainlessLabs.Neon.Lifecycle
             RegisterMomentumSystem(builder);
             RegisterNullSwarmBridge(builder);
             RegisterEconomySystem(builder);
+            RegisterSignalSystem(builder); // before ProtocolService — it consumes ISignalSystem
             RegisterProtocolService(builder);
             RegisterProgressionSystem(builder);
-            RegisterSignalSystem(builder);
         }
 
         private static void RegisterGameplaySignals(IContainerBuilder builder)

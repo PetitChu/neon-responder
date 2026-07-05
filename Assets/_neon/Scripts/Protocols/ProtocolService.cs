@@ -5,7 +5,7 @@ namespace BrainlessLabs.Neon
 {
     public sealed class ProtocolService : IProtocolService
     {
-        // Doc §8.2 base weights. Signal scaling (×band) arrives with M3's Signal.
+        // Doc §8.2 base weights, Signal-scaled per band in RarityWeight.
         private const float WEIGHT_STOCK = 100f;
         private const float WEIGHT_TUNED = 50f;
         private const float WEIGHT_PROTOTYPE = 18f;
@@ -13,15 +13,17 @@ namespace BrainlessLabs.Neon
 
         private readonly IStatSystem _stats;
         private readonly IGameplaySignals _signals;
+        private readonly ISignalSystem _signal;
         private readonly List<ProtocolDefinitionAsset> _catalog;
         private readonly Dictionary<ProtocolDefinitionAsset, int> _stacks = new();
         private readonly System.Random _random;
 
         public ProtocolService(IStatSystem stats, IGameplaySignals signals,
-            IReadOnlyList<ProtocolDefinitionAsset> catalog, int randomSeed)
+            ISignalSystem signal, IReadOnlyList<ProtocolDefinitionAsset> catalog, int randomSeed)
         {
             _stats = stats;
             _signals = signals;
+            _signal = signal;
             _catalog = catalog != null
                 ? new List<ProtocolDefinitionAsset>(catalog)
                 : new List<ProtocolDefinitionAsset>();
@@ -94,13 +96,20 @@ namespace BrainlessLabs.Neon
             _signals.Publish(new ProtocolAcquired(protocol, newStackCount));
         }
 
-        private static float RarityWeight(ProtocolRarity rarity)
+        private float RarityWeight(ProtocolRarity rarity)
         {
+            // Doc §8.2: rarer tiers get likelier as the night deepens —
+            // band = Signal fraction quantized 0–3 (like Momentum tiers).
+            int band = 0;
+            if (_signal != null && _signal.Dawn > 0f)
+            {
+                band = Mathf.Clamp(Mathf.RoundToInt(_signal.Value / _signal.Dawn * 3f), 0, 3);
+            }
             switch (rarity)
             {
-                case ProtocolRarity.Stock: return WEIGHT_STOCK;
-                case ProtocolRarity.Tuned: return WEIGHT_TUNED;
-                case ProtocolRarity.Prototype: return WEIGHT_PROTOTYPE;
+                case ProtocolRarity.Stock: return WEIGHT_STOCK;                       // always-available floor
+                case ProtocolRarity.Tuned: return WEIGHT_TUNED * (1f + 0.25f * band); // doc §8.2
+                case ProtocolRarity.Prototype: return WEIGHT_PROTOTYPE * (1f + 0.5f * band);
                 default: return 0f;
             }
         }

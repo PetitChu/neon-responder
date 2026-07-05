@@ -9,6 +9,7 @@ namespace BrainlessLabs.Neon.Tests
     {
         private StatSystem _stats;
         private GameplaySignals _signals;
+        private SignalSystem _signal;
         private readonly List<ProtocolDefinitionAsset> _createdAssets = new();
 
         [SetUp]
@@ -16,11 +17,13 @@ namespace BrainlessLabs.Neon.Tests
         {
             _stats = new StatSystem();
             _signals = new GameplaySignals();
+            _signal = new SignalSystem(_signals, _stats, 1f, 1f); // Signal 0 → band 0 → base weights
         }
 
         [TearDown]
         public void TearDown()
         {
+            _signal.Dispose();
             _signals.Dispose();
             foreach (var asset in _createdAssets) Object.DestroyImmediate(asset);
             _createdAssets.Clear();
@@ -47,7 +50,7 @@ namespace BrainlessLabs.Neon.Tests
 
         private ProtocolService MakeService(params ProtocolDefinitionAsset[] catalog)
         {
-            return new ProtocolService(_stats, _signals, catalog, randomSeed: 12345);
+            return new ProtocolService(_stats, _signals, _signal, catalog, randomSeed: 12345);
         }
 
         [Test]
