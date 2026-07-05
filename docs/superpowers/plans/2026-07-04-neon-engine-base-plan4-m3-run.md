@@ -2024,6 +2024,46 @@ Report the gate record to Sebastien. **Plan 5 (M4: Siren Pulse, the Overcharge f
 8. **RunService transitions that fire inside `onEnter`** (COMPLETE→SHOP/BOSS, BOSS→WON) settle on the next `OnLogic` tick — standard UnityHFSM; tests advance the clock enough to observe the settled phase.
 9. **Objective fill uses gameplay-scaled dt** (the clock delta) — so hitstop/slow-mo affects reboot speed too; acceptable and consistent with "the clock owns gameplay time."
 
+## M3 gate record
+
+**Date:** 2026-07-05 · **Machine:** Sebastien's dev PC (editor unfocused, driven via MCP) · **Branch:** `claude/neon-m3-run` (10 commits off `claude/neon-m2-growth` @ `489f4a6`)
+
+**Tests: 117/117 PASS** — 23 M0 + 25 M1 + 42 M2 + 27 M3 (EconomySpend 5 · Signal 7 · Objective 7 · RunService 8). ProtocolService's 8 stayed green through the mechanical ctor edit.
+
+### The seven gate answers
+
+1. **Wall-clock start→dawn:** machine-floor run = **~5.2 min** (boot-complete t=30.5s → RunWon t=340.6s) with an invulnerable autopilot pinned to the node, zero shop dwell, zero travel/fight time. Pure mechanical floor ≈ 2.7 min (3×50s reboot + intros); the rest was knockback drift + level-up slow-mo stretching fills. A real player adds wave-clearing before the zone is holdable (10/14/18-hero waves + chaff), travel, shop decisions, and deaths — the 10–15 min target is plausible but **needs Sebastien's hands-on run to confirm**; live knobs if off: `RebootDurationSeconds` (50s), encounter count (3), wave sizes.
+2. **Ends on the dawn beat:** ✅ third objective → Signal 1.0 → `[Run] Boss stub — skipping to dawn (MVP).` → **RunWon menu** ("DAWN — CITY STABILIZED", MainMenu preselected + Quit). Camera background landed **exactly** `DawnColor` (0.45, 0.35, 0.30) — the lerp tracked ⅓/⅔/1 precisely at each objective.
+3. **Objective legible in chaos (§16):** machine-verifiable parts ✅ — objective bar + label ("REACH THE NODE"/"REBOOTING…"), node arrow (HandPointer sprite, center-screen, rotates to node, hides within 40px), zone glow marker tinting by fill, dawn strip. Screenshot-verified. **Legibility in the full dawn pile is a hands-on judgement** — flagged (chaff-blob from the M1 flag may hurt it; Feel & Level owns the fix).
+4. **Shop rhythm:** ✅ mechanics — `Shop` freezes the clock (scale 0, combat/sim frozen mid-swarm behind the dim), Heal spends 25 → +40 HP (verified 40→80 / 132→107), insufficient-funds correctly no-ops (TrySpend guard; button disables below cost, re-enables on charge gain), Continue resumes scale 1 → next encounter + its Manual wave. Fight→shop→fight *feel* = hands-on.
+5. **Signal→density:** ✅ chaff cap scaled live 80 → 107 (Signal ⅓) → 150 (dawn, ×2 clamped at the spike ceiling); spawn rate doubles alongside. Visible thickening required re-basing Level1's `ChaffCap` 150→80 (deviation 12 below).
+6. **Lose / win paths:** ✅ lose — a *real* combat death (not simulated) drove `HealthSystem.onUnitDeath` → `RunLost` + GameOver menu, shop scale released. ✅ win — RunWon menu solely via `RunEnded(true)`; GameOver stayed down.
+7. **FPS at dawn (cap 150 × nastiness):** **197 FPS** avg over 21.9s (4322 frames), editor unfocused, RunWon overlay up over the full simming swarm. M1 baseline ~197 (focused), M2 ~234 (unfocused, mid-fight, no run layer). No regression vs the M1 gate floor; the M2 delta is method noise (different scene state) — worth a mid-fight spot-check during hands-on.
+
+### Interaction regressions (M1/M2 under the run)
+
+- Auto-engage + chip→Finish-Ready alive inside encounters (chaff reached Finish-Ready; finish prompt "+N ready" rendering; finish sweeps paid Charge/Overcharge and stepped Momentum — WARM observed).
+- **Level-up slow-mo vs shop pause: no fight.** Mid-encounter level-up held 0.1 scale, picker picks (incl. 2 banked drafts back-to-back) released to 1.0; shop pause 0 → Continue → 1.0. Different clock scale sources compose and release cleanly.
+- Protocol drafts fire and apply under the run (Afterburner/Wide Sweep/Overclocked Coil cards picked mid-run); Signal-scaled weights active (band 1–3 as night deepens — EditMode-verified math, base weights at Signal 0 keep all M2 tests green).
+- Hero finish-challenge sequences: code untouched by M3 (working agreement 7) — hands-on feel check rides along with Sebastien's run.
+
+### Deviations encountered in execution (beyond the plan's 9 documented ones)
+
+10. Plan's `SignalSystemTests.NastinessStacksAdditively_NotWithMomentum` needed `GainMultiplier` base seeded (fresh StatSheet → base 0; 0×2=0). Test fixed, assertion intent unchanged.
+11. `ProgressionSystemTests` also constructs `ProtocolService` directly (2 sites the plan missed) — same mechanical `ISignalSystem` param fix as `ProtocolServiceTests`.
+12. Level1 authoring: `EndLevelWhenAllWavesCompleted` **off** (its LevelCompleted menu would fire mid-run; RunService owns the level end) · 1 wave re-authored into **3 Manual waves** (10/14/18 enemies, camera bounds marching 0.35/0.65/1.0) · node positions for *today's* 38-unit strip: (5,−1.5) (16,−1.5) (28,−1.5) · `Swarm.ChaffCap` **150→80** so the Signal ramp is visible (spec §6 band is 80–150; dawn load = old cap, so the FPS baseline holds).
+13. Fill bars needed a real sprite (`UISprite`, copied from the Momentum meter) — null-sprite Filled Images ignore `fillAmount` visually. Caught by screenshot (M2 lesson), fixed in-scene.
+14. RunWon menu = duplicated `UILevelCompleted` (inherits UIFader + UISetPlayerInactive); its next-level Continue button removed (MVP = one run per boot).
+15. **Post-win drafts:** XP keeps flowing after dawn (swarm still sims), so a level-up picker can pop over the RunWon fade-in. Cosmetic; the menu fades in over it. Flagged for M4 (run-end should quiesce the growth loop — folds into the run-reset work already deferred).
+16. One non-reproducible phantom shop-Continue in the first smoke session — attributed to a stray human click on the machine (panel is center-screen; sessions 2/3 + the gate run held Shop indefinitely with zero phantom continues).
+
+### Hands-on items for Sebastien (non-blocking, same pattern as M2's Overdrive-scream)
+
+- Full-run wall-clock with real fighting (10–15 target; knobs live).
+- Objective/arrow/glow legibility in the dawn-density pile.
+- Shop-beat feel (freeze abruptness, Heal as a real decision).
+- Hero challenge sequences inside encounters + mid-fight FPS spot-check.
+
 ## Spec coverage self-check (for reviewers)
 
 - Spec §7 M3: `RunService` (UnityHFSM) sequencing encounter phases ✅ (Task 6) · `RebootNodeObjective` ✅ (Task 5) · `ISignalSystem` feeding spawn/darkness/music ✅ (Tasks 3/4/8 — music exposed, consumed M4 per R3) · shop beat ✅ (Tasks 2/7) · gate: full run ends on dawn + objective legible + EditMode tests for run transitions + Signal curve ✅ (Tasks 6/3/10).

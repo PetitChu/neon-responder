@@ -66,7 +66,7 @@ MonoBehaviour:
     CameraBoundProgression: 1
   Swarm:
     EnableSwarm: 1
-    ChaffCap: 150
+    ChaffCap: 80
     AmbientCap: 100
     ChaffSpawnRatePerSecond: 8
     ChaffMoveSpeed: 1.6
