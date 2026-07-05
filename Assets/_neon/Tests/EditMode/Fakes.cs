@@ -98,4 +98,9 @@ namespace BrainlessLabs.Neon.Tests
 
         public void ApplyAreaDamage(Vector2 center, float radius, int damage) => AreaDamageCalls.Add((center, radius, damage));
     }
+
+    internal sealed class FakeMomentumSystem : IMomentumSystem
+    {
+        public MomentumTier Tier { get; set; } = MomentumTier.Cool;
+    }
 }
