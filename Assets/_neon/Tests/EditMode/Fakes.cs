@@ -121,6 +121,34 @@ namespace BrainlessLabs.Neon.Tests
         public MomentumTier Tier { get; set; } = MomentumTier.Cool;
     }
 
+    internal sealed class FakeEconomy : IEconomySystem
+    {
+        public int XpValue;
+        public int NeonChargeValue;
+        public int OverchargeValue;
+        public bool OverchargeFull;
+
+        public int Xp => XpValue;
+        public int NeonCharge => NeonChargeValue;
+        public int Overcharge => OverchargeValue;
+
+        public bool TrySpend(int amount)
+        {
+            if (amount <= 0) return true;
+            if (NeonChargeValue < amount) return false;
+            NeonChargeValue -= amount;
+            return true;
+        }
+
+        public bool TryConsumeOvercharge()
+        {
+            if (!OverchargeFull) return false;
+            OverchargeValue = 0;
+            OverchargeFull = false;
+            return true;
+        }
+    }
+
     internal sealed class FakeInputService : IInputService
     {
         public bool Special;

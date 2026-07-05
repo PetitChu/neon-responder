@@ -120,6 +120,7 @@ namespace BrainlessLabs.Neon
                     container.Resolve<FinishResolver>();
                     container.Resolve<ProtocolEffectsSystem>();
                     container.Resolve<IRunService>();
+                    container.Resolve<ISpecialSystem>();
                 }
             });
         }
@@ -134,6 +135,8 @@ namespace BrainlessLabs.Neon
             builder.RegisterInstance(GrowthConfig.FromSettings());
             builder.RegisterInstance(RunConfig.From(_configuration, RunSettingsAsset.InstanceAsset.Settings));
             builder.Register<RunService>(Lifetime.Scoped).As<IRunService>();
+            builder.RegisterInstance(SpecialConfig.FromSettings());
+            builder.Register<SpecialSystem>(Lifetime.Scoped).As<ISpecialSystem>();
             builder.Register<SwarmBridge>(Lifetime.Scoped).As<ISwarmBridge>();
             builder.Register<AutoEngageSystem>(Lifetime.Scoped).AsSelf();
             builder.Register<FinishReadySystem>(Lifetime.Scoped).AsSelf();
