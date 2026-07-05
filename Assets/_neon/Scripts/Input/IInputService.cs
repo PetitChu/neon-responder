@@ -9,6 +9,8 @@ namespace BrainlessLabs.Neon
         bool DefendKeyDown(int playerId);
         bool GrabKeyDown(int playerId);
         bool JumpKeyDown(int playerId);
+        bool SpecialKeyDown(int playerId);
+        bool FinisherKeyDown(int playerId);
         Vector2 GetInputVector(int playerId);
         bool JoypadDirInputDetected(int playerId);
     }

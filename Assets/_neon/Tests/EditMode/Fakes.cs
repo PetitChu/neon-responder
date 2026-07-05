@@ -103,4 +103,22 @@ namespace BrainlessLabs.Neon.Tests
     {
         public MomentumTier Tier { get; set; } = MomentumTier.Cool;
     }
+
+    internal sealed class FakeInputService : IInputService
+    {
+        public bool Special;
+        public bool Finisher;
+
+        public bool PunchKeyDown(int playerId) => false;
+        public bool KickKeyDown(int playerId) => false;
+        public bool DefendKeyDown(int playerId) => false;
+        public bool GrabKeyDown(int playerId) => false;
+        public bool JumpKeyDown(int playerId) => false;
+        public UnityEngine.Vector2 GetInputVector(int playerId) => UnityEngine.Vector2.zero;
+        public bool JoypadDirInputDetected(int playerId) => false;
+
+        // Consumed-on-read, mirroring WasPressedThisFrame edge semantics.
+        public bool SpecialKeyDown(int playerId) { bool v = Special; Special = false; return v; }
+        public bool FinisherKeyDown(int playerId) { bool v = Finisher; Finisher = false; return v; }
+    }
 }

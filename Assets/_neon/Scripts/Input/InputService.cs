@@ -13,6 +13,8 @@ namespace BrainlessLabs.Neon
         private readonly InputAction _defend;
         private readonly InputAction _grab;
         private readonly InputAction _jump;
+        private readonly InputAction _special;
+        private readonly InputAction _finisher;
 
         public InputService()
         {
@@ -24,6 +26,8 @@ namespace BrainlessLabs.Neon
             _defend = _playerInput.Player.Defend;
             _grab = _playerInput.Player.Grab;
             _jump = _playerInput.Player.Jump;
+            _special = _playerInput.Player.Special;
+            _finisher = _playerInput.Player.Finisher;
 
             _move.Enable();
             _punch.Enable();
@@ -31,6 +35,8 @@ namespace BrainlessLabs.Neon
             _defend.Enable();
             _grab.Enable();
             _jump.Enable();
+            _special.Enable();
+            _finisher.Enable();
 
             InputSystem.onDeviceChange += OnDeviceChange;
         }
@@ -58,6 +64,16 @@ namespace BrainlessLabs.Neon
         public bool JumpKeyDown(int playerId)
         {
             return _jump?.WasPressedThisFrame() ?? false;
+        }
+
+        public bool SpecialKeyDown(int playerId)
+        {
+            return _special?.WasPressedThisFrame() ?? false;
+        }
+
+        public bool FinisherKeyDown(int playerId)
+        {
+            return _finisher?.WasPressedThisFrame() ?? false;
         }
 
         public Vector2 GetInputVector(int playerId)
@@ -88,6 +104,8 @@ namespace BrainlessLabs.Neon
             _defend.Disable();
             _grab.Disable();
             _jump.Disable();
+            _special.Disable();
+            _finisher.Disable();
 
             _playerInput.Dispose();
         }
