@@ -1,13 +1,13 @@
 using Unity.Burst;
+using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 
 namespace BrainlessLabs.Neon.Simulation
 {
     /// <summary>
-    /// Chaff seek the player and crowd at a stop radius; ambient bounce-wander.
-    /// M1 simplification (documented deviation): per-lane Y + jitter instead of
-    /// true separation steering.
+    /// Chaff steer as a crowd (seek player + separation + light cohesion via
+    /// SwarmSteering) and hold at a stop radius; ambient bounce-wander.
     /// </summary>
     [BurstCompile]
     [UpdateAfter(typeof(SwarmSpawnSystem))]
@@ -15,6 +15,12 @@ namespace BrainlessLabs.Neon.Simulation
     {
         private const float STOP_RADIUS = 0.9f;
         private const float STEER_LERP = 0.08f;
+
+        // Crowd tuning; mirror SwarmSteeringTests when changing.
+        private const float SEP_RADIUS = 0.6f;
+        private const float SEP_WEIGHT = 1f;
+        private const float COH_RADIUS = 1.5f;
+        private const float COH_WEIGHT = 0.15f;
 
         public void OnCreate(ref SystemState state)
         {
@@ -28,23 +34,23 @@ namespace BrainlessLabs.Neon.Simulation
             if (world.Enabled == 0) return;
             float deltaTime = SystemAPI.Time.DeltaTime;
 
-            // Chaff: seek player, hold lane depth.
-            foreach (var (position, velocity, entity) in
-                     SystemAPI.Query<RefRW<BeltPosition>, RefRW<SwarmVelocity>>()
-                         .WithAll<SwarmHealth>()
-                         .WithEntityAccess())
-            {
-                float laneY = math.lerp(world.BeltMin.y, world.BeltMax.y,
-                    (position.ValueRO.LaneIndex + 0.5f) / 3f);
-                var target = new float2(world.PlayerPosition.x, laneY);
-                float2 toTarget = target - position.ValueRO.Value;
-                float distance = math.length(toTarget);
+            // Chaff: crowd-steer toward the player. Gather all chaff positions once
+            // (chaff = has SwarmHealth) for the O(n) neighbor scan per agent.
+            var crowdQuery = SystemAPI.QueryBuilder()
+                .WithAll<BeltPosition, SwarmHealth>().Build();
+            using var crowdPos = crowdQuery.ToComponentDataArray<BeltPosition>(Allocator.Temp);
+            var crowd = new NativeArray<float2>(crowdPos.Length, Allocator.Temp);
+            for (int i = 0; i < crowdPos.Length; i++) crowd[i] = crowdPos[i].Value;
 
-                // Deterministic per-entity jitter so the crowd doesn't stack on one point.
-                float jitter = (entity.Index % 7 - 3) * 0.15f;
-                float2 desired = distance > STOP_RADIUS + jitter
-                    ? math.normalizesafe(toTarget) * world.ChaffMoveSpeed
-                    : float2.zero;
+            var playerTarget = new float2(world.PlayerPosition.x, world.PlayerPosition.y);
+
+            foreach (var (position, velocity) in
+                     SystemAPI.Query<RefRW<BeltPosition>, RefRW<SwarmVelocity>>()
+                         .WithAll<SwarmHealth>())
+            {
+                float2 desired = SwarmSteering.ComputeDesiredVelocity(
+                    position.ValueRO.Value, playerTarget, crowd,
+                    world.ChaffMoveSpeed, SEP_RADIUS, SEP_WEIGHT, COH_RADIUS, COH_WEIGHT, STOP_RADIUS);
 
                 var newVelocity = math.lerp(velocity.ValueRO.Value, desired, STEER_LERP);
                 var newPosition = math.clamp(position.ValueRO.Value + newVelocity * deltaTime,
@@ -53,6 +59,7 @@ namespace BrainlessLabs.Neon.Simulation
                 velocity.ValueRW.Value = newVelocity;
                 position.ValueRW.Value = newPosition;
             }
+            crowd.Dispose();
 
             // Ambient: bounce-wander (spike pattern).
             foreach (var (position, velocity) in
