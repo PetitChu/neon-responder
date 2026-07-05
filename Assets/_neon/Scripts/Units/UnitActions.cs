@@ -38,12 +38,22 @@ namespace BrainlessLabs.Neon {
         [Inject] private IInputService _inputService;
         [Inject] private IAudioService _audioService;
         [Inject] private IEntitiesService _entitiesService;
+        [Inject] private ISwarmBridge _swarmBridge;
         public IInputService InputService => _inputService;
         public IAudioService AudioService => _audioService;
         public IEntitiesService Entities => _entitiesService;
+        public ISwarmBridge SwarmBridge => _swarmBridge;
 
         public delegate void OnUnitDealDamage(GameObject recipient, AttackData attackData);
 	    public static event OnUnitDealDamage onUnitDealDamage;
+
+        public delegate void OnVerbWhiffed(UnitActions unit, ATTACKTYPE attackType);
+        public static event OnVerbWhiffed onVerbWhiffed;
+
+        //report a completed verb that hit nothing (whiff-cost seam — FinishResolver listens)
+        public void ReportVerbWhiff(ATTACKTYPE attackType){
+            onVerbWhiffed?.Invoke(this, attackType);
+        }
 
         void OnDestroy() {
 
@@ -140,6 +150,13 @@ namespace BrainlessLabs.Neon {
                     }
                     damageDealt = true;
                 }
+            }
+
+            //additive swarm seam (spec §5.2): the same hitbox also sweeps DOTS chaff via the
+            //bridge (chaff have no colliders — F4). Finish-Ready chaff die as a FINISH inside
+            //the bridge (single-verb chaff finish). Existing verb behavior above is unchanged.
+            if(isPlayer && HitBoxActive() && _swarmBridge != null){
+                if(_swarmBridge.ApplyVerbHit(settings.hitBox.bounds, attackData)) damageDealt = true;
             }
             return damageDealt;
         }

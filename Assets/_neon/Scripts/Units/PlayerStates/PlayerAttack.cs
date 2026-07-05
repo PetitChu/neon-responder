@@ -92,6 +92,10 @@ namespace BrainlessLabs.Neon {
 
             //reset combo if nothing was hit
             if(!damageDealt && unit.settings.continueComboOnHit) unit.attackList.Clear();
+
+            //whiff-cost seam (spec §5.1): a completed punch/kick that hit nothing.
+            //Grab whiffs are exempt (v0.4) — grabs never enter this state.
+            if(!damageDealt && attackData != null) unit.ReportVerbWhiff(attackData.attackType);
         }
 
         //search through the combos to check if there is a match

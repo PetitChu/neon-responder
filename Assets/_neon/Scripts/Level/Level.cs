@@ -117,6 +117,7 @@ namespace BrainlessLabs.Neon
                     container.Resolve<AutoEngageSystem>();
                     container.Resolve<FinishReadySystem>();
                     container.Resolve<FinishReadySelector>();
+                    container.Resolve<FinishResolver>();
                 }
             });
         }
@@ -132,6 +133,7 @@ namespace BrainlessLabs.Neon
             builder.Register<AutoEngageSystem>(Lifetime.Scoped).AsSelf();
             builder.Register<FinishReadySystem>(Lifetime.Scoped).AsSelf();
             builder.Register<FinishReadySelector>(Lifetime.Scoped).AsSelf();
+            builder.Register<FinishResolver>(Lifetime.Scoped).AsSelf();
         }
 
         void Start()

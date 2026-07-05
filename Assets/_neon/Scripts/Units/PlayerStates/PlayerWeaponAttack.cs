@@ -45,7 +45,13 @@ namespace BrainlessLabs.Neon {
             }
 
             //return to Idle
-            if(Time.time - stateStartTime > animDuration) unit.UnitStateMachine.SetState(new PlayerIdle()); 
+            if(Time.time - stateStartTime > animDuration) unit.UnitStateMachine.SetState(new PlayerIdle());
+        }
+
+        public override void Exit(){
+
+            //whiff-cost seam (spec §5.1): a completed weapon swing that hit nothing
+            if(!damageDealt) unit.ReportVerbWhiff(ATTACKTYPE.WEAPON);
         }
     }
 }
