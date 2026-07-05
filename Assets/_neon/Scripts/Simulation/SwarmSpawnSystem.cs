@@ -11,8 +11,6 @@ namespace BrainlessLabs.Neon.Simulation
     [BurstCompile]
     public partial struct SwarmSpawnSystem : ISystem
     {
-        private const int LANE_COUNT = 3;
-
         private EntityArchetype _chaffArchetype;
         private EntityArchetype _ambientArchetype;
         private EntityQuery _chaffQuery;
@@ -57,7 +55,7 @@ namespace BrainlessLabs.Neon.Simulation
                 var entity = state.EntityManager.CreateEntity(_ambientArchetype);
                 var position = _random.NextFloat2(world.BeltMin, world.BeltMax);
                 state.EntityManager.SetComponentData(entity, new SwarmAgent { Tier = SwarmTier.Ambient });
-                state.EntityManager.SetComponentData(entity, new BeltPosition { Value = position, LaneIndex = 0 });
+                state.EntityManager.SetComponentData(entity, new BeltPosition { Value = position });
                 state.EntityManager.SetComponentData(entity, new SwarmVelocity
                 {
                     Value = _random.NextFloat2Direction() * _random.NextFloat(0.2f, 0.8f)
@@ -75,14 +73,13 @@ namespace BrainlessLabs.Neon.Simulation
                 _spawnAccumulator -= 1f;
                 chaffCount++;
 
-                int lane = _random.NextInt(0, LANE_COUNT);
-                float laneY = math.lerp(world.BeltMin.y, world.BeltMax.y, (lane + 0.5f) / LANE_COUNT);
                 float spawnX = _spawnFromLeft ? world.BeltMin.x : world.BeltMax.x;
+                float spawnY = _random.NextFloat(world.BeltMin.y, world.BeltMax.y);
                 _spawnFromLeft = !_spawnFromLeft;
 
                 var entity = state.EntityManager.CreateEntity(_chaffArchetype);
                 state.EntityManager.SetComponentData(entity, new SwarmAgent { Tier = SwarmTier.Chaff });
-                state.EntityManager.SetComponentData(entity, new BeltPosition { Value = new float2(spawnX, laneY), LaneIndex = lane });
+                state.EntityManager.SetComponentData(entity, new BeltPosition { Value = new float2(spawnX, spawnY) });
                 state.EntityManager.SetComponentData(entity, new SwarmVelocity { Value = float2.zero });
                 state.EntityManager.SetComponentData(entity, new SwarmHealth { Current = world.ChaffMaxHealth, Max = world.ChaffMaxHealth });
                 state.EntityManager.SetComponentEnabled<FinishReadyTag>(entity, false);
