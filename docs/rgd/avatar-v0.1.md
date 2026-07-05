@@ -1,7 +1,8 @@
-# Neon Responder: Night Shift — The Avatar ("Last Light")
+# Neon Responder: Night Shift — The Avatar ("NR-0047")
 
 **Design doc · v0.1** · *Companion to [Character Sheet](character-sheet-v0.1.md) + [Special Moves](special-moves-v0.1.md) + [Protocol Stack](protocol-stack-v0.1.md).*
-Anchored to **GDD v0.4** (`Neon_Responder_GDD`). Status: **design intent only** — no avatar art exists yet.
+Anchored to **GDD v0.4** (`Neon_Responder_GDD`). Status: **design intent + first working sprite accepted**
+(`Assets/_generated/Sprites/Test_Sprite.png`, see §6).
 This doc is the **protagonist bible**: lore, persona, voice, visual guide, and a Unity-AI **sprite tech spec**.
 It feeds the "sprite swap" item in the Feel & Level pass and the Character Sheet's "who am I this run" portrait.
 
@@ -36,8 +37,9 @@ dark screen**, and to carry the GDD's **Kung Fury tone** as its deadpan center.
 4. **Samurai form = signature blade + improvises (decided):** one iconic neon blade (reads as his auto-engage "gear"
    grinding chaff) **plus** picked-up street props (§6 combat verbs). Blade = who he is; props = what the street gives him.
 5. **Male protagonist** (assumed from brief). Single fixed character — the GDD cuts "multiple characters" (§13).
-6. **Name = Kaito Mori**, myth-callsign **"Last Light"** (working). Dispatch tag is an open Q (§9) — a mundane unit
-   number played against the legend is *funnier*, so the two-layer joke is deliberate.
+6. **Name = Kaito Mori** (confirmed for now). **Callsign = "NR-0047" (decided):** pure bureaucracy,
+   no myth-name — the city's deadliest swordsman is a payroll number, and dispatch reads god-tier carnage as routine
+   ticket-closing. The legend lives in what he *does*, not what he's called. "NR" doubles as *Neon Responder*.
 7. **Sprite height = 128px** (decided) — rich enough for "HD pixel-art," multiple-of-8, sets the whole pixel budget.
 
 ---
@@ -72,9 +74,11 @@ neon monsters are funny *because he is the straight man*, not the clown.
 - **Level-up pick:** *"Overtime better be neon."*
 - **To the boss (Blackout Idol):** *"You're my last call. Then I'm going home."*
 - **On a stabilized node:** *"...one down. Dawn's at six. You're all done by five."*
+- **Asked the blade's name:** *"It has a name."* (turns the scabbard: **COMPANY PROPERTY**)
 
 **Dispatch / UI voice (the world talking *to* him)** stays the GDD's self-aware copy — "*signal in the static*",
-"*bring back the dawn*", "**YOU'RE LATE.**" The gag: the city addresses a mythic swordsman like a late field tech.
+"*bring back the dawn*", "**NR-0047, YOU'RE LATE.**" The gag: the city addresses a mythic swordsman by employee ID,
+like a late field tech.
 
 **Whiff / low-Momentum voice:** losing his flow reads as *losing his cool* — a beat of un-composed irritation, never
 despair. The stakes are pride and the clock, not angst.
@@ -90,10 +94,11 @@ wearing a hi-vis vest. Play the collision straight and it lands as both cool and
 - **Samurai layer:** long **haori/coat** over lean segmented **armor**; asymmetric kimono-wrap collar; **obi/sash**;
   topknot or shaved-side undercut; a half-face **respirator mask** (night-shift smog + keeps him a myth, not a face).
 - **Responder layer:** a **hi-vis harness** with reflective banding *rendered as neon light-lines*; a **dispatch
-  beacon** clipped to the obi (blinking); a shoulder **mon** (family crest) that doubles as a **unit insignia /
-  dispatch number**. The responder's kit and the samurai's kit are **the same objects**.
-- **The signature blade:** a neon-edged **grid-blade** that is *also his tool* — he reboots nodes and cuts the horde
-  with the same instrument (name it gloriously overwrought; see §9). Worn at the hip; drawn iai-style.
+  beacon** clipped to the obi (blinking); a shoulder **mon** (family crest) that doubles as his **unit insignia —
+  NR-0047**. The responder's kit and the samurai's kit are **the same objects**.
+- **The signature blade — "COMPANY PROPERTY":** a neon-edged **grid-blade** that is *also his tool* — he reboots nodes
+  and cuts the horde with the same instrument. The street swears the legendary blade has a secret name; it does — it's
+  the inventory stamp on the scabbard: **PROPERTY OF GRID MAINTENANCE DIV.** Worn at the hip; drawn iai-style.
 - **Absurd-mundane prop (optional flavor):** a laminated badge / a convenience-store coffee — one small mundane
   object to sell the "it's a job" gag against the mythic figure.
 
@@ -145,6 +150,12 @@ Not just flavor — every system has a character read, so the fiction and the me
 
 **Target:** single character, **128px tall** at idle bounding box, side-view (belt brawler), **canonical facing =
 right** (mirror for left), transparent background, high-definition pixel-art.
+
+**Current working sprite (accepted "for now", 2026-07-05):** `Assets/_generated/Sprites/Test_Sprite.png` — 512×512
+Unity-AI output of the seed below. On-spec: topknot, respirator, dark-indigo robes, shoulder mon, neon-edged blade,
+facing right. Accepted deviations: harness reads **safety-green vest** (sharper "ronin in a work vest" gag than the
+cyan light-lines — keep); 512×512 canvas (scale to 128px in-game height via import PPU, not native-128). Treat as the
+**Cool** base reference until a final animation set is authored.
 
 **Style rules:**
 - Crisp pixels, **no anti-aliased blur**; hard cel shading; bold readable silhouette that survives at belt scale
@@ -222,11 +233,11 @@ voice pass, not a redesign.)
 
 ## 9. Open questions
 
-1. **Callsign / dispatch tag:** myth-name **"Last Light"** (chosen, working) — but what's his *bureaucratic* tag the
-   dispatch UI uses? A mundane unit number ("**Unit 7**", "**Night Shift**") played against the legend is the funnier
-   two-layer joke. Confirm the pair.
-2. **Given name:** **Kaito Mori** (working) — keep, or go a different flavor (Ren / Jin / Akira)?
-3. **The blade's name:** wants to be gloriously overwrought (a Kung-Fury-grade proper noun). Propose 3 on your go.
+1. **Callsign — resolved: "NR-0047."** Pure-bureaucracy tag, no myth-name (the two-layer street-legend gag is
+   dropped). Dispatch addresses him by employee ID; the "NR" reads as *Neon Responder*.
+2. **Given name — resolved: Kaito Mori** (confirmed for now; revisit only if the voice pass surfaces a better fit).
+3. **Blade name — resolved: "COMPANY PROPERTY."** The legend's true name is the inventory stamp on the scabbard
+   (**PROPERTY OF GRID MAINTENANCE DIV.**) — maximum deadpan, extends the NR-0047 payroll gag. Bark: *"It has a name."*
 4. **Momentum heat ramp:** cyan→aqua→magenta→white (proposed) — confirm it matches the **HUD Momentum band colors**
    from the M2 growth HUD, or re-tint to match the meter.
 5. **Face reveal:** respirator always on (stays a myth) vs. a dawn/clock-out unmask beat? Affects the victory pose.
@@ -234,6 +245,6 @@ voice pass, not a redesign.)
    overtime, timesheets). Decides how much UI copy leans into the "it's a job" joke.
 
 ---
-*Next: on your go — (a) lock the §9 names, (b) generate the Cool base sprite from the §6 seed and derive the heat
-tints, (c) do the light voice pass on the Character Sheet + families. The Character-Sheet portrait is the first place
-he becomes visible in-build.*
+*Next: on your go — (a) generate the Cool base sprite from the §6 seed and derive the heat tints, (b) do the light
+voice pass on the Character Sheet + families. The Character-Sheet portrait is the first place he becomes visible
+in-build.*
