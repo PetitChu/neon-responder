@@ -1,0 +1,40 @@
+{
+    "asset": "e3ed000d89223e0428be85e5e98f11e9",
+    "fileName": "019f307d-a415-70ba-b2ff-00032e2b1dec.png",
+    "prompt": "\"High-definition pixel-art sprite, side view, full body, 128px tall, transparent background. A lean masterless samurai (ronin) in a dark indigo haori over segmented tech-armor, half-face respirator, topknot; wearing a modern hi-vis first-responder harness whose reflective strips glow as thin cyan neon light-lines; a glowing shoulder crest; a neon-edged katana at the hip; a small blinking dispatch beacon on the sash. Near-black palette, self-illuminated, crisp pixels, hard cel shading, no blur. Deadpan, cool, slightly tired posture. Neon-noir cyberpunk with Japanese Edo influence.\" Avoid: realistic 3D render, soft anti-aliasing, chibi proportions, bright non-neon fills, gun as primary weapon, generic \"ninja.\"",
+    "negativePrompt": "",
+    "model": "flux-2-dev",
+    "modelName": "Flux 2 (Dev)",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "refinementMode": "Generation",
+    "pixelateTargetSize": 0,
+    "pixelateKeepImageSize": false,
+    "pixelatePixelBlockSize": 0,
+    "pixelatePixelGridSize": 0,
+    "pixelateMode": 0,
+    "pixelateOutlineThickness": 0,
+    "doodles": {
+        "m_Items": []
+    },
+    "upscaleFactor": 0,
+    "dimensions": {
+        "width": 512,
+        "height": 512
+    },
+    "spriteSheet": false,
+    "duration": 0.0,
+    "dynamicParams": {
+        "serializedData": [
+            {
+                "key": "shadow_mode",
+                "value": ""
+            },
+            {
+                "key": "pixel_grid_size",
+                "value": "16"
+            }
+        ]
+    }
+}
