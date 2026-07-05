@@ -41,7 +41,7 @@ namespace BrainlessLabs.Neon {
                 if(!hasChoice) continue;
 
                 var protocol = levelUp.Choices[i];
-                if(choiceTitles[i] != null) choiceTitles[i].text = $"{protocol.DisplayName}\n<size=60%>{protocol.Family} · {protocol.Rarity}</size>";
+                if(choiceTitles[i] != null) choiceTitles[i].text = $"{protocol.DisplayName}\n<size=10>{protocol.Family} · {protocol.Rarity}</size>"; //integer px — uGUI rich text has no % sizes
                 if(choiceDescriptions[i] != null) choiceDescriptions[i].text = protocol.Description;
             }
         }
