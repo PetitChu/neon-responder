@@ -8,7 +8,7 @@ namespace BrainlessLabs.Neon.Tests
     public class SwarmSteeringTests
     {
         // radius/weight knobs mirror the system consts (SwarmSteeringSystem).
-        const float MoveSpeed = 2f, SepR = 0.6f, SepW = 1f, CohR = 1.5f, CohW = 0.15f, StopR = 0.9f;
+        const float MoveSpeed = 2f, SepR = 0.6f, SepW = 2f, CohR = 1.5f, CohW = 0.15f, StopR = 0.9f;
 
         static float2 Compute(float2 self, float2 target, float2[] crowd)
         {

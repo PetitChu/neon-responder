@@ -17,10 +17,16 @@ namespace BrainlessLabs.Neon.Simulation
         private const float STEER_LERP = 0.08f;
 
         // Crowd tuning; mirror SwarmSteeringTests when changing.
+        // SEP_WEIGHT 2: at weight 1 a pusher behind a stopped agent nets forward
+        // force until spacing collapses to 0 (play-measured); 2 holds ~0.3u.
         private const float SEP_RADIUS = 0.6f;
-        private const float SEP_WEIGHT = 1f;
+        private const float SEP_WEIGHT = 2f;
         private const float COH_RADIUS = 1.5f;
         private const float COH_WEIGHT = 0.15f;
+
+        // Golden angle: a unique drift direction per entity index (see loop comment).
+        private const float TIEBREAK_ANGLE = 2.3999631f;
+        private const float TIEBREAK_SPEED_FRACTION = 0.03f;
 
         public void OnCreate(ref SystemState state)
         {
@@ -44,13 +50,22 @@ namespace BrainlessLabs.Neon.Simulation
 
             var playerTarget = new float2(world.PlayerPosition.x, world.PlayerPosition.y);
 
-            foreach (var (position, velocity) in
+            foreach (var (position, velocity, entity) in
                      SystemAPI.Query<RefRW<BeltPosition>, RefRW<SwarmVelocity>>()
-                         .WithAll<SwarmHealth>())
+                         .WithAll<SwarmHealth>()
+                         .WithEntityAccess())
             {
                 float2 desired = SwarmSteering.ComputeDesiredVelocity(
                     position.ValueRO.Value, playerTarget, crowd,
                     world.ChaffMoveSpeed, SEP_RADIUS, SEP_WEIGHT, COH_RADIUS, COH_WEIGHT, STOP_RADIUS);
+
+                // Per-entity symmetry breaker: coincident agents skip each other in the
+                // separation scan (self-epsilon) and would otherwise receive identical
+                // steering forever - a permanent stack. A tiny unique drift (active even
+                // when seek holds at the stop radius) splits them so separation can act.
+                float driftAngle = entity.Index * TIEBREAK_ANGLE;
+                desired += new float2(math.cos(driftAngle), math.sin(driftAngle))
+                           * (TIEBREAK_SPEED_FRACTION * world.ChaffMoveSpeed);
 
                 var newVelocity = math.lerp(velocity.ValueRO.Value, desired, STEER_LERP);
                 var newPosition = math.clamp(position.ValueRO.Value + newVelocity * deltaTime,
