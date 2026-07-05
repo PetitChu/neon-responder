@@ -20,6 +20,7 @@ namespace BrainlessLabs.Neon
         private readonly IGameplayClock _clock;
         private readonly IGameplaySignals _signals;
         private readonly IEntitiesService _entities;
+        private readonly IStatSystem _stats;
         private readonly SwarmConfig _config;
 
         private World _world;
@@ -30,11 +31,12 @@ namespace BrainlessLabs.Neon
         private bool _initialized;
         private bool _capLogged;
 
-        public SwarmBridge(IGameplayClock clock, IGameplaySignals signals, IEntitiesService entities, SwarmConfig config)
+        public SwarmBridge(IGameplayClock clock, IGameplaySignals signals, IEntitiesService entities, IStatSystem stats, SwarmConfig config)
         {
             _clock = clock;
             _signals = signals;
             _entities = entities;
+            _stats = stats;
             _config = config;
             _clock.Register(this, TICK_ORDER);
         }
@@ -53,6 +55,14 @@ namespace BrainlessLabs.Neon
                 var actions = player.GetComponent<UnitActions>();
                 if (actions != null) state.PlayerFacingSign = (int)actions.dir;
             }
+
+            // Signal → density (spec §5.4): the Run-sheet SpawnNastiness stat (base 1,
+            // Signal raises it) scales chaff cap + spawn rate live.
+            float nastiness = _stats.Run.GetValue(StatId.SpawnNastiness);
+            if (nastiness <= 0f) nastiness = 1f;
+            state.ChaffCap = Mathf.Min(150, Mathf.RoundToInt(_config.ChaffCap * nastiness)); // 150 = spike-verified proxy-pool ceiling
+            state.SpawnRatePerSecond = _config.SpawnRatePerSecond * nastiness;
+
             entityManager.SetComponentData(_controlEntity, state);
 
             // Drain sim events → kill XP hangs off ChaffDied. A finish ALSO emits its
