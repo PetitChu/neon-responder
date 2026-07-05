@@ -1,47 +1,37 @@
 using UnityEngine;
-using System.Collections;
+using Unity.Cinemachine;
 
 namespace BrainlessLabs.Neon {
 
-    //class for shaking the camera
-    [RequireComponent(typeof(CameraFollow))]
+    /// <summary>
+    /// Camera shake, now backed by a Cinemachine impulse (was: CameraFollow.additionalYOffset bob).
+    /// Public API (ShowCamShake) is unchanged so FeedbackSystem / UnitActions / DoCamShake are untouched.
+    /// Lives on the Main Camera; a CinemachineImpulseListener on the base vcam consumes the impulse.
+    /// </summary>
+    [RequireComponent(typeof(CinemachineImpulseSource))]
     public class CameraShake : MonoBehaviour {
 
+        // Serialized fields kept for scene/inspector compatibility (curve now unused by the impulse path).
         public AnimationCurve CameraShakeAnimation;
         public float intensity = .15f;
         public float duration = .3f;
 
-        private float yOffset;
-        private CameraFollow cf => GetComponent<CameraFollow>();
+        private CinemachineImpulseSource _source;
+
+        void Awake() {
+            _source = GetComponent<CinemachineImpulseSource>();
+        }
 
         //use default settings
-        public void ShowCamShake(){
-             StartCoroutine(camShakeRoutine(intensity, duration));
+        public void ShowCamShake() {
+            ShowCamShake(intensity, duration);
         }
 
         //use custom settings
-        public void ShowCamShake(float _intensity, float _duration){
-             StartCoroutine(camShakeRoutine(_intensity, _duration));
-        }
-
-        IEnumerator camShakeRoutine(float _intensity, float _duration){
-            if(CameraShakeAnimation.length == 0) yield break; //do nothing when there is no animation 
-            float animCurveDuration = (CameraShakeAnimation[CameraShakeAnimation.length-1].time); //get duration of the animation curve
-
-            //calculate shak animation
-            float t=0;
-            while(t<animCurveDuration){
-
-                //calculate offset
-                yOffset = CameraShakeAnimation.Evaluate(t) * _intensity;
-
-                //send camshake data to CameraFollow component
-                if(cf != null) cf.additionalYOffset = yOffset;
-
-                t += Time.deltaTime / _duration;
-                yield return 0;
-            }
-            yOffset = 0;
+        public void ShowCamShake(float _intensity, float _duration) {
+            if (_source == null) return;
+            _source.ImpulseDefinition.ImpulseDuration = Mathf.Max(0.01f, _duration);
+            _source.GenerateImpulseWithForce(_intensity);
         }
     }
 }
