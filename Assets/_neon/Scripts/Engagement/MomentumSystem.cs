@@ -15,6 +15,7 @@ namespace BrainlessLabs.Neon
         private readonly ModifierSource _source = ModifierSource.Create("momentum");
         private readonly IDisposable _finishSubscription;
         private readonly IDisposable _whiffSubscription;
+        private readonly IDisposable _protocolSubscription;
 
         private int _steps;
         private float _idleSeconds;
@@ -32,8 +33,18 @@ namespace BrainlessLabs.Neon
             _stats.Player.SetBase(StatId.DamageMultiplier, 1f);
             _stats.Run.SetBase(StatId.GainMultiplier, 1f);
 
+            // Momentum's own knobs live on the sheet so Protocols tune them
+            // (Afterburner / Executioner's Cadence / Redline Governor).
+            _stats.Player.SetBase(StatId.MomentumDecaySeconds, config.DecaySeconds);
+            _stats.Player.SetBase(StatId.MomentumBonusStepsBelowHot, 0f);
+            _stats.Player.SetBase(StatId.OverdriveMultiplier,
+                config.TierMultipliers[(int)MomentumTier.Overdrive]);
+
             _finishSubscription = _signals.On<EnemyFinished>().Subscribe(_ => OnFinish());
             _whiffSubscription = _signals.On<VerbWhiffed>().Subscribe(_ => ResetToCool());
+            // A protocol acquired while already at a tier must re-fold that tier's
+            // multiplier (e.g. Redline Governor taken AT Overdrive).
+            _protocolSubscription = _signals.On<ProtocolAcquired>().Subscribe(_ => ApplyTier(Tier, publish: false));
 
             _clock.Register(this, TICK_ORDER);
             ApplyTier(MomentumTier.Cool, publish: false);
@@ -44,7 +55,8 @@ namespace BrainlessLabs.Neon
             if (_steps == 0) return;
 
             _idleSeconds += deltaTime;
-            if (_idleSeconds < _config.DecaySeconds) return;
+            float decayWindow = Mathf.Max(0.5f, _stats.Player.GetValue(StatId.MomentumDecaySeconds));
+            if (_idleSeconds < decayWindow) return;
 
             // Decay: -1 tier per idle window; steps snap to the bottom of the lower tier.
             _idleSeconds = 0f;
@@ -58,6 +70,7 @@ namespace BrainlessLabs.Neon
         {
             _finishSubscription?.Dispose();
             _whiffSubscription?.Dispose();
+            _protocolSubscription?.Dispose();
             _clock.Unregister(this);
             _stats.Player.RemoveBySource(_source);
             _stats.Run.RemoveBySource(_source);
@@ -66,7 +79,12 @@ namespace BrainlessLabs.Neon
         private void OnFinish()
         {
             int maxSteps = _config.StepsPerTier * ((int)MomentumTier.Overdrive);
-            _steps = Mathf.Min(_steps + 1, maxSteps);
+            int gained = 1;
+            if (Tier < MomentumTier.Hot)
+            {
+                gained += Mathf.Max(0, Mathf.RoundToInt(_stats.Player.GetValue(StatId.MomentumBonusStepsBelowHot)));
+            }
+            _steps = Mathf.Min(_steps + gained, maxSteps);
             _idleSeconds = 0f;
             var newTier = (MomentumTier)Mathf.Min(_steps / _config.StepsPerTier, (int)MomentumTier.Overdrive);
             if (newTier != Tier) ApplyTier(newTier, publish: true);
@@ -84,7 +102,9 @@ namespace BrainlessLabs.Neon
             var previous = Tier;
             Tier = tier;
 
-            float multiplier = _config.TierMultipliers[Mathf.Clamp((int)tier, 0, _config.TierMultipliers.Length - 1)];
+            float multiplier = tier == MomentumTier.Overdrive
+                ? Mathf.Max(1f, _stats.Player.GetValue(StatId.OverdriveMultiplier))
+                : _config.TierMultipliers[Mathf.Clamp((int)tier, 0, _config.TierMultipliers.Length - 1)];
             _stats.Player.RemoveBySource(_source);
             _stats.Run.RemoveBySource(_source);
             _stats.Player.AddModifier(StatId.DamageMultiplier, StatOp.Mult, multiplier, _source);
