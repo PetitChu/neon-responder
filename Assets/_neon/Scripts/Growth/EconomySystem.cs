@@ -45,6 +45,16 @@ namespace BrainlessLabs.Neon
             GrantXp(_config.XpPerKill);
         }
 
+        public bool TrySpend(int amount)
+        {
+            if (amount <= 0) return true;
+            if (NeonCharge < amount) return false;
+
+            NeonCharge -= amount;
+            _signals.Publish(new NeonChargeChanged(NeonCharge));
+            return true;
+        }
+
         private void OnFinish()
         {
             NeonCharge += GrantWhole(_config.ChargePerFinish, ref _chargeFraction);

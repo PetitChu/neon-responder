@@ -14,5 +14,8 @@ namespace BrainlessLabs.Neon
 
         /// <summary>Moment-to-moment meter (finishes). Spent by the M4 Overcharge finisher.</summary>
         int Overcharge { get; }
+
+        /// <summary>Deduct Neon Charge if affordable. Returns false (no change) if too poor.</summary>
+        bool TrySpend(int amount);
     }
 }
