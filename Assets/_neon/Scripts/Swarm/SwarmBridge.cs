@@ -56,6 +56,25 @@ namespace BrainlessLabs.Neon
                 if (actions != null) state.PlayerFacingSign = (int)actions.dir;
             }
 
+            // Hero table (spec §5a): id/pos/cap per live enemy, rebuilt each tick.
+            // A hero leaving IEntitiesService (death/unregister) drops out here, which
+            // auto-orphans its followers in SwarmAssignmentSystem.
+            var heroes = entityManager.GetBuffer<HeroSlot>(_controlEntity);
+            heroes.Clear();
+            var enemies = _entities.GetByType(UNITTYPE.ENEMY);
+            for (int i = 0; i < enemies.Count; i++)
+            {
+                var go = enemies[i].GameObject;
+                if (go == null) continue;
+                int cap = enemies[i].Definition != null ? enemies[i].Definition.MaxFollowers : 0;
+                heroes.Add(new HeroSlot
+                {
+                    Id = enemies[i].Id,
+                    Position = new float2(go.transform.position.x, go.transform.position.y),
+                    Cap = cap,
+                });
+            }
+
             // Signal → density (spec §5.4): the Run-sheet SpawnNastiness stat (base 1,
             // Signal raises it) scales chaff cap + spawn rate live. Progression (player-X
             // across the belt) drives the optional per-zone ChaffCapCurve.
@@ -283,7 +302,7 @@ namespace BrainlessLabs.Neon
             var entityManager = _world.EntityManager;
             _controlEntity = entityManager.CreateEntity(
                 typeof(SwarmWorldState), typeof(SwarmDamageCommand),
-                typeof(SwarmKillCommand), typeof(SwarmEventRecord));
+                typeof(SwarmKillCommand), typeof(SwarmEventRecord), typeof(HeroSlot));
             entityManager.SetComponentData(_controlEntity, new SwarmWorldState
             {
                 PlayerFacingSign = 1f,
