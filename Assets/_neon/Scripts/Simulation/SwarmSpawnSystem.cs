@@ -1,4 +1,5 @@
 using Unity.Burst;
+using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 
@@ -25,7 +26,7 @@ namespace BrainlessLabs.Neon.Simulation
 
             _chaffArchetype = state.EntityManager.CreateArchetype(
                 typeof(SwarmAgent), typeof(BeltPosition), typeof(SwarmVelocity),
-                typeof(SwarmHealth), typeof(FinishReadyTag));
+                typeof(SwarmHealth), typeof(FinishReadyTag), typeof(FollowerState));
             _ambientArchetype = state.EntityManager.CreateArchetype(
                 typeof(SwarmAgent), typeof(BeltPosition), typeof(SwarmVelocity), typeof(AmbientPathState));
 
@@ -78,13 +79,36 @@ namespace BrainlessLabs.Neon.Simulation
 
         private void FloodChaff(ref SystemState state, in SwarmWorldState world)
         {
-            int chaffCount = _chaffQuery.CalculateEntityCount();
-            _spawnAccumulator += world.SpawnRatePerSecond * SystemAPI.Time.DeltaTime;
+            if (!SystemAPI.TryGetSingletonEntity<SwarmWorldState>(out var control)) return;
 
-            while (_spawnAccumulator >= 1f && chaffCount < world.ChaffCap)
+            // Snapshot the hero table: CreateEntity below is a structural change that
+            // would invalidate a live DynamicBuffer handle.
+            var heroesBuf = state.EntityManager.GetBuffer<HeroSlot>(control);
+            var heroes = new NativeArray<HeroSlot>(heroesBuf.AsNativeArray(), Allocator.Temp);
+            if (heroes.Length == 0) { heroes.Dispose(); return; } // no heroes → no chaff (all chaff are followers)
+
+            int total = _chaffQuery.CalculateEntityCount();
+            if (total >= world.ChaffCap) { _spawnAccumulator = 0f; heroes.Dispose(); return; }
+
+            // Follower count per hero (index-aligned with `heroes`).
+            var counts = new NativeArray<int>(heroes.Length, Allocator.Temp);
+            foreach (var follower in SystemAPI.Query<RefRO<FollowerState>>().WithAll<SwarmHealth>())
             {
+                int idx = HeroAssignment.IndexOfHero(follower.ValueRO.HeroId, heroes);
+                if (idx >= 0) counts[idx]++;
+            }
+
+            _spawnAccumulator += world.SpawnRatePerSecond * SystemAPI.Time.DeltaTime;
+            while (_spawnAccumulator >= 1f && total < world.ChaffCap)
+            {
+                // pick any hero with an open slot (assignment tunes the rest)
+                int heroIdx = -1;
+                for (int i = 0; i < heroes.Length; i++)
+                    if (heroes[i].Cap - counts[i] > 0) { heroIdx = i; break; }
+                if (heroIdx < 0) break; // no demand
+
                 _spawnAccumulator -= 1f;
-                chaffCount++;
+                total++; counts[heroIdx]++;
 
                 float spawnX = _spawnFromLeft ? world.BeltMin.x : world.BeltMax.x;
                 float spawnY = _random.NextFloat(world.BeltMin.y, world.BeltMax.y);
@@ -95,10 +119,12 @@ namespace BrainlessLabs.Neon.Simulation
                 state.EntityManager.SetComponentData(entity, new BeltPosition { Value = new float2(spawnX, spawnY) });
                 state.EntityManager.SetComponentData(entity, new SwarmVelocity { Value = float2.zero });
                 state.EntityManager.SetComponentData(entity, new SwarmHealth { Current = world.ChaffMaxHealth, Max = world.ChaffMaxHealth });
+                state.EntityManager.SetComponentData(entity, new FollowerState { HeroId = heroes[heroIdx].Id });
                 state.EntityManager.SetComponentEnabled<FinishReadyTag>(entity, false);
             }
-
-            if (chaffCount >= world.ChaffCap) _spawnAccumulator = 0f;
+            counts.Dispose();
+            heroes.Dispose();
+            if (total >= world.ChaffCap) _spawnAccumulator = 0f;
         }
     }
 }
