@@ -6117,7 +6117,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineImpulseListener
   ApplyAfter: 2
   ChannelMask: 1
-  Gain: 4
+  Gain: 1.4
   Use2DDistance: 0
   UseCameraSpace: 1
   ReactionSettings:
