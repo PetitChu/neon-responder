@@ -119,6 +119,7 @@ namespace BrainlessLabs.Neon
                     container.Resolve<FinishReadySelector>();
                     container.Resolve<FinishResolver>();
                     container.Resolve<ProtocolEffectsSystem>();
+                    container.Resolve<IRunService>();
                 }
             });
         }
@@ -131,6 +132,8 @@ namespace BrainlessLabs.Neon
             builder.RegisterInstance(SwarmConfig.From(_configuration, this));
             builder.RegisterInstance(EngagementConfig.FromSettings());
             builder.RegisterInstance(GrowthConfig.FromSettings());
+            builder.RegisterInstance(RunConfig.From(_configuration, RunSettingsAsset.InstanceAsset.Settings));
+            builder.Register<RunService>(Lifetime.Scoped).As<IRunService>();
             builder.Register<SwarmBridge>(Lifetime.Scoped).As<ISwarmBridge>();
             builder.Register<AutoEngageSystem>(Lifetime.Scoped).AsSelf();
             builder.Register<FinishReadySystem>(Lifetime.Scoped).AsSelf();
@@ -163,8 +166,17 @@ namespace BrainlessLabs.Neon
             // Spawn player at configured progression point
             _spawnerService.SpawnPlayers();
 
-            // Start enemy waves
+            // Start the wave system (Manual waves park until RunService triggers them).
             _spawnerService.StartWaves();
+
+            // Hand run control to RunService when this level opts into the run flow
+            // (RunConfig.EnableRun). SpawnerService.TriggerWave is the per-encounter
+            // Manual-wave trigger. Levels without a run block keep the free-fight path.
+            if (_configuration.Run.EnableRun)
+            {
+                var runService = Container.Resolve<IRunService>();
+                runService.BeginRun(_spawnerService.TriggerWave);
+            }
 
             // Update debug fields
             _totalWaves = _spawnerService.TotalWaves;
