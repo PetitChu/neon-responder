@@ -216,6 +216,58 @@ namespace BrainlessLabs.Neon
             }
         }
 
+        public int MassFinishReady(Vector2 center, float radius)
+        {
+            if (!_initialized || radius <= 0f) return 0;
+
+            using var entities = _chaffQuery.ToEntityArray(Allocator.Temp);
+            using var positions = _chaffQuery.ToComponentDataArray<BeltPosition>(Allocator.Temp);
+            using var healths = _chaffQuery.ToComponentDataArray<SwarmHealth>(Allocator.Temp);
+
+            var centerF = new float2(center.x, center.y);
+            float radiusSq = radius * radius;
+            var damageBuffer = _world.EntityManager.GetBuffer<SwarmDamageCommand>(_controlEntity);
+            int count = 0;
+
+            for (int i = 0; i < entities.Length; i++)
+            {
+                if (math.lengthsq(positions[i].Value - centerF) > radiusSq) continue;
+
+                int threshold = Mathf.Max(1, Mathf.CeilToInt(healths[i].Max * _config.FinishReadyThreshold));
+                if (healths[i].Current <= threshold) { count++; continue; } // already ready
+
+                // Non-chip damage that lands it exactly at the threshold (FinishReadyEvalSystem flips the tag next tick).
+                int damage = healths[i].Current - threshold;
+                damageBuffer.Add(new SwarmDamageCommand { Target = entities[i], Amount = damage, IsChip = 0 });
+                count++;
+            }
+            return count;
+        }
+
+        public int FinishAllChaff(Vector2 center, float radius)
+        {
+            if (!_initialized || radius <= 0f) return 0;
+
+            using var entities = _chaffQuery.ToEntityArray(Allocator.Temp);
+            using var positions = _chaffQuery.ToComponentDataArray<BeltPosition>(Allocator.Temp);
+
+            var centerF = new float2(center.x, center.y);
+            float radiusSq = radius * radius;
+            var killBuffer = _world.EntityManager.GetBuffer<SwarmKillCommand>(_controlEntity);
+            int count = 0;
+
+            for (int i = 0; i < entities.Length; i++)
+            {
+                var p = positions[i].Value;
+                if (math.lengthsq(p - centerF) > radiusSq) continue;
+
+                killBuffer.Add(new SwarmKillCommand { Target = entities[i] });
+                _signals.Publish(new EnemyFinished(new Vector2(p.x, p.y), wasChaff: true)); // finisher = mass finishes (the scream)
+                count++;
+            }
+            return count;
+        }
+
         private bool TryInitialize()
         {
             if (_initialized) return _world != null && _world.IsCreated;

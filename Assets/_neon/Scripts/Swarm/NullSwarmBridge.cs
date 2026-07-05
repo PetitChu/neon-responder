@@ -29,5 +29,8 @@ namespace BrainlessLabs.Neon
         public void ApplyAreaDamage(Vector2 center, float radius, int damage)
         {
         }
+
+        public int MassFinishReady(Vector2 center, float radius) => 0;
+        public int FinishAllChaff(Vector2 center, float radius) => 0;
     }
 }

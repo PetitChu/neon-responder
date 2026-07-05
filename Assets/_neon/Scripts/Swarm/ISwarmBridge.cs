@@ -30,5 +30,11 @@ namespace BrainlessLabs.Neon
 
         /// <summary>Radial chaff damage (e.g. Concussive Finish). Non-finish damage — may kill.</summary>
         void ApplyAreaDamage(Vector2 center, float radius, int damage);
+
+        /// <summary>Drop in-radius chaff to the Finish-Ready threshold (no kill) — Siren Pulse. Returns count.</summary>
+        int MassFinishReady(Vector2 center, float radius);
+
+        /// <summary>Kill in-radius chaff AS finishes (each publishes EnemyFinished) — the Overcharge finisher. Returns count.</summary>
+        int FinishAllChaff(Vector2 center, float radius);
     }
 }

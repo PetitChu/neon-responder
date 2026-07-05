@@ -97,6 +97,23 @@ namespace BrainlessLabs.Neon.Tests
         public readonly List<(Vector2 Center, float Radius, int Damage)> AreaDamageCalls = new();
 
         public void ApplyAreaDamage(Vector2 center, float radius, int damage) => AreaDamageCalls.Add((center, radius, damage));
+
+        public readonly List<(Vector2 Center, float Radius)> MassFinishReadyCalls = new();
+        public readonly List<(Vector2 Center, float Radius)> FinishAllChaffCalls = new();
+        public int MassFinishReadyReturn;
+        public int FinishAllChaffReturn;
+
+        public int MassFinishReady(Vector2 center, float radius)
+        {
+            MassFinishReadyCalls.Add((center, radius));
+            return MassFinishReadyReturn;
+        }
+
+        public int FinishAllChaff(Vector2 center, float radius)
+        {
+            FinishAllChaffCalls.Add((center, radius));
+            return FinishAllChaffReturn;
+        }
     }
 
     internal sealed class FakeMomentumSystem : IMomentumSystem
