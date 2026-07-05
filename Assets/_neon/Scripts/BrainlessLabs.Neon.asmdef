@@ -12,6 +12,7 @@
         "Unity.Entities",
         "Unity.InputSystem",
         "Unity.Mathematics",
+        "Unity.Postprocessing.Runtime",
         "UnityHFSM",
         "VContainer"
     ],
