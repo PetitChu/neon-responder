@@ -92,7 +92,14 @@ namespace BrainlessLabs.Neon
             }
             else
             {
-                heroTarget.GetComponent<HealthSystem>()?.SubstractHealth(damage);
+                // M1 gate flag: chip pushes hero-tier toward Finish-Ready but never
+                // kills — mirrors the chaff-side IsChip floor. Verbs do the killing.
+                var heroHealth = heroTarget.GetComponent<HealthSystem>();
+                if (heroHealth != null)
+                {
+                    int applied = Mathf.Min(damage, heroHealth.currentHp - 1);
+                    if (applied > 0) heroHealth.SubstractHealth(applied);
+                }
             }
         }
     }

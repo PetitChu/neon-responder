@@ -17,4 +17,4 @@ MonoBehaviour:
   _unitType: 10
   _prefab: {fileID: 4955587178937794416, guid: 9b3c06f11fa3aa0438a864ecb939b5ca, type: 3}
   _portrait: {fileID: 21300000, guid: 5d96b704716877b47b2b16dc37e5f2f4, type: 3}
-  _maxHealth: 10
+  _maxHealth: 40

@@ -9,6 +9,7 @@ namespace BrainlessLabs.Neon {
     public class PlayerAttack : UnitState {
 
         private bool damageDealt; //true if the attack has hit something
+        private bool hitboxWasActive; //true if this attack's hitbox ever activated (whiff-report guard)
         private bool animFinished => (Time.time - stateStartTime > animDuration); //true if the end of the animation is reached
         private float animDuration => unit.GetAnimDuration(attackData.animationState); //the duration of the animation
         private AttackData attackData; //information about the current attack
@@ -62,6 +63,7 @@ namespace BrainlessLabs.Neon {
             else if(unit.InputService.KickKeyDown(playerId)) attackKeyPressed = ATTACKTYPE.KICK;
 
             //check for hit until damage was dealt
+            if(!hitboxWasActive && unit.HitBoxActive()) hitboxWasActive = true;
             if(!damageDealt) damageDealt = unit.CheckForHit(attackData);
 
             //stop doing a follow up attack if this is the last attack in the combo
@@ -95,7 +97,9 @@ namespace BrainlessLabs.Neon {
 
             //whiff-cost seam (spec §5.1): a completed punch/kick that hit nothing.
             //Grab whiffs are exempt (v0.4) — grabs never enter this state.
-            if(!damageDealt && attackData != null) unit.ReportVerbWhiff(attackData.attackType);
+            //hitboxWasActive guard (M1 gate anomaly): a state that never activated its
+            //hitbox (interrupted first-frame exits) is not a whiff.
+            if(!damageDealt && hitboxWasActive && attackData != null) unit.ReportVerbWhiff(attackData.attackType);
         }
 
         //search through the combos to check if there is a match
