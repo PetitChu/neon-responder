@@ -25,5 +25,9 @@ namespace BrainlessLabs.Neon
         }
 
         public bool ApplyVerbHit(Bounds hitBounds, AttackData attackData) => false;
+
+        public void ApplyAreaDamage(Vector2 center, float radius, int damage)
+        {
+        }
     }
 }

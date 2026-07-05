@@ -188,6 +188,24 @@ namespace BrainlessLabs.Neon
             return hitAny;
         }
 
+        public void ApplyAreaDamage(Vector2 center, float radius, int damage)
+        {
+            if (!_initialized || radius <= 0f) return;
+
+            using var entities = _chaffQuery.ToEntityArray(Allocator.Temp);
+            using var positions = _chaffQuery.ToComponentDataArray<BeltPosition>(Allocator.Temp);
+
+            var centerF = new float2(center.x, center.y);
+            float radiusSq = radius * radius;
+            var damageBuffer = _world.EntityManager.GetBuffer<SwarmDamageCommand>(_controlEntity);
+
+            for (int i = 0; i < entities.Length; i++)
+            {
+                if (math.lengthsq(positions[i].Value - centerF) > radiusSq) continue;
+                damageBuffer.Add(new SwarmDamageCommand { Target = entities[i], Amount = damage, IsChip = 0 });
+            }
+        }
+
         private bool TryInitialize()
         {
             if (_initialized) return _world != null && _world.IsCreated;

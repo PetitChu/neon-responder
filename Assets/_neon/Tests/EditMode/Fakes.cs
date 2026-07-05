@@ -93,5 +93,9 @@ namespace BrainlessLabs.Neon.Tests
         public void ApplyChip(in TargetRef target, int damage) => ChipCalls.Add((target, damage));
 
         public bool ApplyVerbHit(Bounds hitBounds, AttackData attackData) => false;
+
+        public readonly List<(Vector2 Center, float Radius, int Damage)> AreaDamageCalls = new();
+
+        public void ApplyAreaDamage(Vector2 center, float radius, int damage) => AreaDamageCalls.Add((center, radius, damage));
     }
 }

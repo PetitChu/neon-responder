@@ -27,5 +27,8 @@ namespace BrainlessLabs.Neon
         /// chaff was hit (feeds the whiff decision).
         /// </summary>
         bool ApplyVerbHit(Bounds hitBounds, AttackData attackData);
+
+        /// <summary>Radial chaff damage (e.g. Concussive Finish). Non-finish damage — may kill.</summary>
+        void ApplyAreaDamage(Vector2 center, float radius, int damage);
     }
 }
