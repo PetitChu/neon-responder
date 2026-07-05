@@ -27,6 +27,10 @@ namespace BrainlessLabs.Neon
         [SerializeField]
         private int _maxHealth = 1;
 
+        [Tooltip("Max chaff followers this enemy anchors as a squad (0 = commands no followers). Plan A.a.")]
+        [SerializeField]
+        private int _maxFollowers = 0;
+
         /// <summary>
         /// Unique identifier for this unit definition.
         /// </summary>
@@ -56,5 +60,10 @@ namespace BrainlessLabs.Neon
         /// Maximum health for this unit.
         /// </summary>
         public int MaxHealth => _maxHealth;
+
+        /// <summary>
+        /// Max chaff followers this enemy anchors as a squad (0 = commands no followers).
+        /// </summary>
+        public int MaxFollowers => _maxFollowers;
     }
 }
