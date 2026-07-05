@@ -55,6 +55,16 @@ namespace BrainlessLabs.Neon
             return true;
         }
 
+        public bool TryConsumeOvercharge()
+        {
+            if (Overcharge < _config.OverchargeCap) return false;
+
+            Overcharge = 0;
+            _overchargeFraction = 0f;
+            _signals.Publish(new OverchargeChanged(Overcharge, _config.OverchargeCap));
+            return true;
+        }
+
         private void OnFinish()
         {
             NeonCharge += GrantWhole(_config.ChargePerFinish, ref _chargeFraction);
