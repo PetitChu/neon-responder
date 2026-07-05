@@ -32,6 +32,7 @@ namespace BrainlessLabs.Neon.Lifecycle
             RegisterEconomySystem(builder);
             RegisterProtocolService(builder);
             RegisterProgressionSystem(builder);
+            RegisterSignalSystem(builder);
         }
 
         private static void RegisterGameplaySignals(IContainerBuilder builder)
@@ -91,6 +92,17 @@ namespace BrainlessLabs.Neon.Lifecycle
                 .WithParameter<IReadOnlyList<ProtocolDefinitionAsset>>(GrowthSettingsAsset.InstanceAsset.Settings.ProtocolCatalog)
                 .WithParameter<int>(0) // unseeded RNG at runtime; tests seed explicitly
                 .As<IProtocolService>();
+        }
+
+        // Signal is run-agnostic → session scope (spec §4.3).
+        private static void RegisterSignalSystem(IContainerBuilder builder)
+        {
+            var runSettings = RunSettingsAsset.InstanceAsset.Settings;
+            builder.Register<SignalSystem>(Lifetime.Singleton)
+                .WithParameter("dawnValue", runSettings.DawnValue)
+                .WithParameter("maxSpawnNastinessBonus", runSettings.MaxSpawnNastinessBonus)
+                .As<ISignalSystem>();
+            builder.RegisterBuildCallback(container => container.Resolve<ISignalSystem>());
         }
 
         private static void RegisterProgressionSystem(IContainerBuilder builder)
