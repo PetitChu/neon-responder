@@ -31,6 +31,7 @@ namespace BrainlessLabs.Neon.Lifecycle
             RegisterNullSwarmBridge(builder);
             RegisterEconomySystem(builder);
             RegisterProtocolService(builder);
+            RegisterProgressionSystem(builder);
         }
 
         private static void RegisterGameplaySignals(IContainerBuilder builder)
@@ -90,6 +91,14 @@ namespace BrainlessLabs.Neon.Lifecycle
                 .WithParameter<IReadOnlyList<ProtocolDefinitionAsset>>(GrowthSettingsAsset.InstanceAsset.Settings.ProtocolCatalog)
                 .WithParameter<int>(0) // unseeded RNG at runtime; tests seed explicitly
                 .As<IProtocolService>();
+        }
+
+        private static void RegisterProgressionSystem(IContainerBuilder builder)
+        {
+            builder.Register<ProgressionSystem>(Lifetime.Singleton)
+                .WithParameter(GrowthConfig.FromSettings())
+                .As<IProgressionSystem>();
+            builder.RegisterBuildCallback(container => container.Resolve<IProgressionSystem>());
         }
 
         private void RegisterNextState(IContainerBuilder builder)
