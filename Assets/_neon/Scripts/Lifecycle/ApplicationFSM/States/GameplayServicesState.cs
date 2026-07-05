@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using VContainer;
 using VContainer.Unity;
 
@@ -29,6 +30,7 @@ namespace BrainlessLabs.Neon.Lifecycle
             RegisterMomentumSystem(builder);
             RegisterNullSwarmBridge(builder);
             RegisterEconomySystem(builder);
+            RegisterProtocolService(builder);
         }
 
         private static void RegisterGameplaySignals(IContainerBuilder builder)
@@ -80,6 +82,14 @@ namespace BrainlessLabs.Neon.Lifecycle
                 .WithParameter(GrowthConfig.FromSettings())
                 .As<IEconomySystem>();
             builder.RegisterBuildCallback(container => container.Resolve<IEconomySystem>());
+        }
+
+        private static void RegisterProtocolService(IContainerBuilder builder)
+        {
+            builder.Register<ProtocolService>(Lifetime.Singleton)
+                .WithParameter<IReadOnlyList<ProtocolDefinitionAsset>>(GrowthSettingsAsset.InstanceAsset.Settings.ProtocolCatalog)
+                .WithParameter<int>(0) // unseeded RNG at runtime; tests seed explicitly
+                .As<IProtocolService>();
         }
 
         private void RegisterNextState(IContainerBuilder builder)
