@@ -55,9 +55,18 @@ namespace BrainlessLabs.Neon
             }
             entityManager.SetComponentData(_controlEntity, state);
 
-            // Drain sim events. M1 consumes nothing from chip-deaths (they are NOT
-            // finishes — v0.4); feedback hooks arrive in M4.
-            entityManager.GetBuffer<SwarmEventRecord>(_controlEntity).Clear();
+            // Drain sim events → kill XP hangs off ChaffDied. A finish ALSO emits its
+            // death here (finish rewards flow separately off EnemyFinished — Charge/
+            // Overcharge; kills — XP; no double-granting because the reward types differ).
+            var events = entityManager.GetBuffer<SwarmEventRecord>(_controlEntity);
+            for (int i = 0; i < events.Length; i++)
+            {
+                if (events[i].Kind == SwarmEventRecord.KIND_CHAFF_DIED)
+                {
+                    _signals.Publish(new ChaffDied(new Vector2(events[i].Position.x, events[i].Position.y)));
+                }
+            }
+            events.Clear();
 
             if (!_capLogged && CountHot() >= _config.ChaffCap)
             {

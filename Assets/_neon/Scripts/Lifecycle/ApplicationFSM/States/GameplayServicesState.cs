@@ -28,6 +28,7 @@ namespace BrainlessLabs.Neon.Lifecycle
             RegisterScenesService(builder);
             RegisterMomentumSystem(builder);
             RegisterNullSwarmBridge(builder);
+            RegisterEconomySystem(builder);
         }
 
         private static void RegisterGameplaySignals(IContainerBuilder builder)
@@ -71,6 +72,14 @@ namespace BrainlessLabs.Neon.Lifecycle
         {
             builder.Register<NullSwarmBridge>(Lifetime.Singleton)
                 .As<ISwarmBridge>();
+        }
+
+        private static void RegisterEconomySystem(IContainerBuilder builder)
+        {
+            builder.Register<EconomySystem>(Lifetime.Singleton)
+                .WithParameter(GrowthConfig.FromSettings())
+                .As<IEconomySystem>();
+            builder.RegisterBuildCallback(container => container.Resolve<IEconomySystem>());
         }
 
         private void RegisterNextState(IContainerBuilder builder)
