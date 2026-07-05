@@ -234,3 +234,43 @@ MonoBehaviour:
     clip:
     - {fileID: 8300000, guid: a41096de1c89d614fb91e9a70e664878, type: 3}
     lastTimePlayed: 0
+  - name: MomentumTierUp
+    volume: 0.6
+    randomVolume: 0
+    randomPitch: 0
+    minTimeBetweenCall: 0.2
+    range: 0
+    loop: 0
+    clip:
+    - {fileID: 8300000, guid: 069f7474701f0dc4681c66e4ebc8c75a, type: 3}
+    lastTimePlayed: 0
+  - name: Whiff
+    volume: 0.5
+    randomVolume: 0
+    randomPitch: 0.2
+    minTimeBetweenCall: 0.15
+    range: 0
+    loop: 0
+    clip:
+    - {fileID: 8300000, guid: 1806f0fdb824f2749afb89f6b4ff9aad, type: 3}
+    lastTimePlayed: 0
+  - name: FinisherStinger
+    volume: 1
+    randomVolume: 0
+    randomPitch: 0
+    minTimeBetweenCall: 0.5
+    range: 0
+    loop: 0
+    clip:
+    - {fileID: 8300000, guid: 5a7bb39c014a19c45ae72716b5d513ae, type: 3}
+    lastTimePlayed: 0
+  - name: NodeRestoredStinger
+    volume: 0.8
+    randomVolume: 0
+    randomPitch: 0
+    minTimeBetweenCall: 0.5
+    range: 0
+    loop: 0
+    clip:
+    - {fileID: 8300000, guid: 8360f906949aca8428ae3e3a9d930dbf, type: 3}
+    lastTimePlayed: 0
