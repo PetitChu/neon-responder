@@ -86,3 +86,6 @@ crashlytics-build.properties
 
 # NuGet packages
 .nuget/
+
+# Playwright MCP browser profile (machine-local tooling cache)
+.playwright-mcp/

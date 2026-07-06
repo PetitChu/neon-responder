@@ -1,0 +1,41 @@
+{
+    "asset": "de1ea22f9d8d3504285106cc6d80a9e0",
+    "fileName": "019f341d-4a81-77d9-bfcd-f42703320562.png",
+    "prompt": "High-definition pixel-art sprite, side view, full body, 128px tall, transparent background. A lean street-brawler ronin in a long open dark-indigo haori coat flaring off the shoulders, over segmented tech-armor; sleeves clear of bare wrapped forearms and taped knuckles; loose boxer's guard stance, weight forward, hands low and ready; half-face respirator, topknot; wearing a modern safety-green first-responder vest whose reflective strips glow as thin cyan neon light-lines; a glowing shoulder crest; a small blinking dispatch beacon on the sash. No visible weapon — at most a sword hilt barely hinted inside the coat at the back, never breaking the silhouette. Near-black palette, self-illuminated, crisp pixels, hard cel shading, no blur. Deadpan, cool, slightly tired posture. Neon-noir cyberpunk with Japanese Edo influence.",
+    "negativePrompt": "",
+    "model": "flux-2-dev",
+    "modelName": "Flux 2 (Dev)",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "refinementMode": "Generation",
+    "pixelateTargetSize": 0,
+    "pixelateKeepImageSize": false,
+    "pixelatePixelBlockSize": 0,
+    "pixelatePixelGridSize": 0,
+    "pixelateMode": 0,
+    "pixelateOutlineThickness": 0,
+    "doodles": {
+        "m_Items": [
+            {
+                "doodleReferenceType": 7,
+                "doodle": [],
+                "label": "Image",
+                "strength": 0.25,
+                "invertStrength": false,
+                "assetReferenceGuid": "214c336376afcdf43bb3207b06f99638",
+                "unlabeledIndex": -1
+            }
+        ]
+    },
+    "upscaleFactor": 0,
+    "dimensions": {
+        "width": 512,
+        "height": 512
+    },
+    "spriteSheet": false,
+    "duration": 0.0,
+    "dynamicParams": {
+        "serializedData": []
+    }
+}
