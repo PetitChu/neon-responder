@@ -9,23 +9,21 @@ namespace BrainlessLabs.Neon
     /// <summary>
     /// Spec §5.5 feedback: a pure CONSUMER of the combat seams + signals. Applies
     /// per-verb hitstop (clock scale dip) + CameraShake, a finish beat, the tier-up
-    /// flourish, and the whiff record-scratch + red flash. Scene MonoBehaviour on
-    /// UNSCALED time (hitstop release can't use the frozen gameplay clock).
-    /// Injected clock is used only to set/clear scale sources — timing is unscaled.
+    /// flourish, and the whiff record-scratch + fullscreen desaturate (WhiffPostFx).
+    /// Scene MonoBehaviour on UNSCALED time (hitstop release can't use the frozen
+    /// gameplay clock). Injected clock is used only to set/clear scale sources.
     /// </summary>
     public class FeedbackSystem : MonoBehaviour
     {
-        [SerializeField] private CanvasGroup whiffFlash; // full-screen red vignette (uGUI), alpha 0 at rest
-
         [Inject] private IGameplaySignals _signals;
         [Inject] private IGameplayClock _clock;
         [Inject] private IAudioService _audio;
 
         private FeelConfig _config;
         private CameraShake _cameraShake;
+        private WhiffPostFx _whiffPostFx;
         private readonly ModifierSource _hitstopSource = ModifierSource.Create("hitstop");
         private Coroutine _hitstopRoutine;
-        private Coroutine _whiffRoutine;
         private IDisposable _finishSub;
         private IDisposable _tierSub;
 
@@ -34,7 +32,7 @@ namespace BrainlessLabs.Neon
             if (_signals == null || _clock == null) { enabled = false; return; } // scene w/o DI
             _config = FeelConfig.FromSettings();
             _cameraShake = Camera.main != null ? Camera.main.GetComponent<CameraShake>() : null;
-            if (whiffFlash != null) whiffFlash.alpha = 0f;
+            _whiffPostFx = UnityEngine.Object.FindFirstObjectByType<WhiffPostFx>();
 
             _finishSub = _signals.On<EnemyFinished>().Subscribe(f => Play(_config.Finish, f.Position));
             _tierSub = _signals.On<MomentumTierChanged>().Subscribe(OnTier);
@@ -77,8 +75,7 @@ namespace BrainlessLabs.Neon
         {
             if (unit == null || !unit.isPlayer) return;
             _audio?.PlaySFX("Whiff", PlayerPos()); // record-scratch
-            if (_whiffRoutine != null) StopCoroutine(_whiffRoutine);
-            _whiffRoutine = StartCoroutine(WhiffFlashRoutine());
+            _whiffPostFx?.Pulse(_config.WhiffFlashSeconds);
         }
 
         private void Play(HitProfile profile, Vector2 position)
@@ -99,20 +96,6 @@ namespace BrainlessLabs.Neon
             yield return new WaitForSecondsRealtime(seconds); // UNSCALED — scaled time is dilated during hitstop
             _clock.ClearScale(_hitstopSource);
             _hitstopRoutine = null;
-        }
-
-        private IEnumerator WhiffFlashRoutine()
-        {
-            if (whiffFlash == null) yield break;
-            float t = 0f;
-            while (t < _config.WhiffFlashSeconds)
-            {
-                whiffFlash.alpha = Mathf.Lerp(0.6f, 0f, t / _config.WhiffFlashSeconds);
-                t += Time.unscaledDeltaTime;
-                yield return null;
-            }
-            whiffFlash.alpha = 0f;
-            _whiffRoutine = null;
         }
 
         private Vector2 PlayerPos()
