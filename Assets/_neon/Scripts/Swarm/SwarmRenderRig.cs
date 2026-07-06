@@ -19,8 +19,9 @@ namespace BrainlessLabs.Neon
         [SerializeField] private Color _hotColor = new(1f, 0.35f, 0.65f, 1f);
         [SerializeField] private Color _finishReadyColor = new(1f, 0.85f, 0.2f, 1f);
         [SerializeField] private int _proxyCapacity = 150;
+        [SerializeField] private Material _chaffMaterial; // assign Sprite-Lit-Default so 2D lights reach chaff later
 
-        [Header("Ambient instancing (built-in RP: DrawMeshInstanced + Neon/InstancedUnlit)")]
+        [Header("Ambient instancing (URP: DrawMeshInstanced + Neon/InstancedUnlit)")]
         [SerializeField] private Material _ambientMaterial;
         [SerializeField] private float _ambientSize = 0.8f;
 
@@ -71,6 +72,7 @@ namespace BrainlessLabs.Neon
                 proxy.transform.SetParent(transform, worldPositionStays: false);
                 var spriteRenderer = proxy.AddComponent<SpriteRenderer>();
                 spriteRenderer.sprite = _chaffSprite;
+                if (_chaffMaterial != null) spriteRenderer.material = _chaffMaterial;
                 spriteRenderer.color = _hotColor;
                 proxy.SetActive(false);
                 _proxies[i] = proxy.transform;
