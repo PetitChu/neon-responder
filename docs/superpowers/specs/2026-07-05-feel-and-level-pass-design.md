@@ -35,7 +35,7 @@ real system; nothing repeats for free.*
 |---|---|---|
 | 1 | **One unified spec → staged plans** | Cross-cutting forks (camera scale, render, crowd) resolved once; `writing-plans` carves implementation. |
 | 2 | **Camera: replace `PixelPerfectCamera` with a Cinemachine orthographic rig**, zoomed-out baseline | Non-negotiable: avatar + enemies are too big; the player must see more of the world. This is foundational — **it supersedes the level doc §2/§3/§9 "fixed zoom / faked width" fork.** |
-| 3 | **Render: add Post-Processing Stack v2** (`com.unity.postprocessing`) | Bloom (neon), color grading, vignette; whiff desaturate = an animated grade weight. |
+| 3 | **Render: URP with the 2D Renderer** — PPv2/BiRP was a wrong turn, corrected by **Plan B.b** | End-state wants 2D lights, wet-ground/rain render features, and an SRP for the ECS-graphics track. Plan B built bloom/grade/vignette + whiff-desaturate on PPv2/built-in RP (executed), then **Plan B.b migrates to URP 2D** and ports post to URP Volumes at parity (the whiff *architecture* ports ~1:1; the PPv2 *stack* is removed). |
 | 4 | **Chaff crowd = seek + separation + light cohesion** (no alignment) | Reads as a converging mob, not marching columns; alignment is what reintroduces column reads. |
 | 5 | **Ambient = scene-authored polyline paths + gizmos**, baked into the sim | Matches the level's other spatial data (all scene-authored); no new package; path-follow stays unit-testable. |
 | 6 | **Art = characters real (AI-gen per bible); environment functional-blockout** | PPv2 carries mood; environment art beautified in a later pass. |
@@ -47,7 +47,7 @@ real system; nothing repeats for free.*
 ## 3. Plan decomposition
 
 ```
-[ 0. Camera & scale  ∥  A. Swarm rework  ∥  B. Render foundation ] → C. Level 01 build → [ D. Character art ∥ E. UI / feedback ]
+[ 0. Camera & scale  ∥  A. Swarm rework  ∥  B. Render foundation ] → B.b. URP 2D migration → C. Level 01 build → [ D. Character art ∥ E. UI / feedback ]
 ```
 
 Plans 0, A, B are mutually independent (parallelizable). C depends on all three. **A.a layers on A** (the hero-follower
@@ -59,7 +59,8 @@ E also touches Plan 0 (Impulse). `writing-plans` owns final task breakdown and m
 | **0 · Camera & scale** | Cinemachine ortho rig, zoomed-out baseline, per-zone vcams, `Confiner2D`, Impulse shake | — (first) |
 | **A · Swarm rework** | Kill lanes; seek+separation+cohesion; ambient walkway paths; per-zone density curve | — |
 | **A.a · Hero-follower crowd** | Layers on A: all chaff become hero-squad followers (per-hero cap; orphan→player on hero death; re-adopt into freed slots); `SwarmBridge` pushes hero positions/caps into the sim | A |
-| **B · Render foundation** | PPv2 install + volume/profile; whiff = grade; perf gate | — |
+| **B · Render foundation** | PPv2 install + volume/profile; whiff = grade; perf gate (executed on BiRP, then superseded) | — |
+| **B.b · URP 2D migration** | BiRP→URP 2D Renderer; port post to URP Volumes; remove PPv2; lighting foundation. Corrects Plan B's pipeline; **must precede Plan C** | B |
 | **C · Level 01 build** | Waves A–H; scene geometry; enemy roster; Zone 4 lull; `AI_Active` verify | 0, A, B |
 | **D · Character art** | AI-gen chaff/ambient/roster/player, scaled to the new baseline | 0, A, C |
 | **E · UI / feedback** | Finish prompt; HUD restyle; naming reconciliation; `CameraShake`→Impulse | B (touches 0) |
@@ -154,7 +155,14 @@ MonoBehaviour roster units — thug/elite/mini-boss). Model:
 
 ---
 
-## 6. Plan B — Render foundation *(PPv2)*
+## 6. Plan B — Render foundation *(PPv2 — executed, then superseded by Plan B.b)*
+
+> **Pipeline correction:** Plan B was built on PPv2 + built-in RP, which was the wrong foundation for a 2D
+> neon game (no 2D lights, no render features, dead-end stack). **Plan B.b** (`…-plan-bb-urp.md`) migrates to
+> URP 2D and ports the post below to the URP Volume system at parity — the whiff architecture (`WhiffFx` curve +
+> tests, `WhiffPostFx` weight-pulse, `FeedbackSystem` seam) ports ~1:1; the PPv2 package/profiles/components are
+> removed. The bloom/grade/vignette/whiff *intent* below stands; only the stack changes.
+
 
 - Install `com.unity.postprocessing`. Add a `PostProcessLayer` to the (Cinemachine) main camera + a global
   `PostProcessVolume` / profile: **bloom** (neon signage + Finish-Ready glow), **color grading**, **vignette**.
