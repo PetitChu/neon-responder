@@ -40,7 +40,7 @@
 **Files:**
 - Modify: `Packages/manifest.json`, `Assets/_neon/Scripts/BrainlessLabs.Neon.asmdef`
 
-- [ ] **Step 1: Add the package**
+- [x] **Step 1: Add the package**
 
 Package Manager → Add by name → `com.unity.postprocessing`, or add to `Packages/manifest.json`:
 
@@ -50,17 +50,17 @@ Package Manager → Add by name → `com.unity.postprocessing`, or add to `Packa
 
 (Use the latest 3.x the registry offers for Unity 6.3.5.)
 
-- [ ] **Step 2: Add the assembly reference**
+- [x] **Step 2: Add the assembly reference**
 
 Add `"Unity.Postprocessing.Runtime"` to the `references` array in `BrainlessLabs.Neon.asmdef` (alongside `Unity.Cinemachine`, `Unity.2D.PixelPerfect`, etc.).
 
-- [ ] **Step 3: Verify the API surface (no invented APIs)**
+- [x] **Step 3: Verify the API surface (no invented APIs)**
 
 After the domain reload, confirm these resolve (`UnityEngine.Rendering.PostProcessing`): `PostProcessLayer`, `PostProcessVolume`, `PostProcessProfile`, `Bloom`, `ColorGrading`, `Vignette`. Confirm `ColorGrading.saturation` (a `FloatParameter`) and `PostProcessVolume.weight`/`.priority`/`.isGlobal` exist. Adjust later tasks if a name differs in the installed version.
 
 Run: `mcp__unityMCP__read_console`. Expected: **no compile errors** after package + asmdef.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add Packages/manifest.json Packages/packages-lock.json Assets/_neon/Scripts/BrainlessLabs.Neon.asmdef
@@ -77,11 +77,11 @@ Scene/asset authoring; verified in play mode.
 - Create: `Assets/_neon/Rendering/NeonPostBase.asset` (PostProcessProfile)
 - Modify: `Assets/_neon/Scenes/Game/03_Level1.unity`
 
-- [ ] **Step 1: Add the PostProcessLayer to the Main Camera**
+- [x] **Step 1: Add the PostProcessLayer to the Main Camera**
 
 On the Plan-0 Main Camera (the one with `CinemachineBrain`): add `PostProcessLayer`. Set its `Volume Layer` to a dedicated layer (create/assign a `PostProcessing` layer) and set the trigger to the camera. This auto-pulls PPv2's resources.
 
-- [ ] **Step 2: Create the base profile + a global volume**
+- [x] **Step 2: Create the base profile + a global volume**
 
 Create `Assets/_neon/Rendering/NeonPostBase.asset` (PostProcessProfile) with:
 - **Bloom** — modest intensity, threshold set so only bright neon/glow blooms (not the whole scene); this is what makes the Finish-Ready glow + signage pop.
@@ -90,12 +90,12 @@ Create `Assets/_neon/Rendering/NeonPostBase.asset` (PostProcessProfile) with:
 
 Add a `GameObject "Post Global"` in `03_Level1` on the `PostProcessing` layer with a `PostProcessVolume`: `isGlobal = true`, `priority = 0`, profile = `NeonPostBase`.
 
-- [ ] **Step 3: Play-verify (Recipe 4 boot, Game view — not MCP screenshots)**
+- [x] **Step 3: Play-verify (Recipe 4 boot, Game view — not MCP screenshots)**
   - Neon/bright elements + Finish-Ready chaff glow **bloom**; the scene isn't washed out (threshold correct).
   - The **HUD + finish prompt stay crisp** (Overlay composites after post — confirm no bloom bleed on glyphs).
   - No console errors; instanced ambient still draws (`UnityStats.instancedBatches`).
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add Assets/_neon/Rendering/NeonPostBase.asset* Assets/_neon/Scenes/Game/03_Level1.unity
@@ -114,7 +114,7 @@ git commit -m "feat: PPv2 base volume (bloom/grade/vignette) on 03_Level1 (Plan 
 - Modify: `Assets/_neon/Scripts/Feel/FeedbackSystem.cs`
 - Modify: `03_Level1.unity`
 
-- [ ] **Step 1: Write the failing test for the weight curve**
+- [x] **Step 1: Write the failing test for the weight curve**
 
 ```csharp
 using NUnit.Framework;
@@ -132,11 +132,11 @@ namespace BrainlessLabs.Neon.Tests
 }
 ```
 
-- [ ] **Step 2: Run to verify it fails**
+- [x] **Step 2: Run to verify it fails**
 
 Run EditMode. Expected: FAIL — `WhiffFx` undefined.
 
-- [ ] **Step 3: Implement the pure curve**
+- [x] **Step 3: Implement the pure curve**
 
 ```csharp
 using UnityEngine;
@@ -155,11 +155,11 @@ namespace BrainlessLabs.Neon
 }
 ```
 
-- [ ] **Step 4: Run to verify it passes**
+- [x] **Step 4: Run to verify it passes**
 
 Run EditMode. Expected: 4 `WhiffFxTests` PASS; suite green (Plan A.a's 155 + 4 = 159).
 
-- [ ] **Step 5: Add the whiff volume component**
+- [x] **Step 5: Add the whiff volume component**
 
 ```csharp
 using UnityEngine;
@@ -197,11 +197,11 @@ namespace BrainlessLabs.Neon
 }
 ```
 
-- [ ] **Step 6: Author the whiff profile + volume in the scene**
+- [x] **Step 6: Author the whiff profile + volume in the scene**
 
 Create `Assets/_neon/Rendering/NeonPostWhiff.asset` with **ColorGrading** only, `saturation = -100` (full grey). Add `GameObject "Post Whiff"` on the `PostProcessing` layer: `PostProcessVolume` (`isGlobal = true`, `priority = 10` > base, `weight = 0`, profile = `NeonPostWhiff`) + `WhiffPostFx` (wire its `_whiffVolume`).
 
-- [ ] **Step 7: Rewire FeedbackSystem to pulse the desaturate instead of the red flash**
+- [x] **Step 7: Rewire FeedbackSystem to pulse the desaturate instead of the red flash**
 
 In `FeedbackSystem`: cache `WhiffPostFx` in `Start` (`_whiffPostFx = Object.FindFirstObjectByType<WhiffPostFx>();`). In `OnVerbWhiffed`, keep the SFX line, and replace the red-flash coroutine with a pulse:
 
@@ -216,11 +216,11 @@ private void OnVerbWhiffed(UnitActions unit, ATTACKTYPE attackType)
 
 Delete `WhiffFlashRoutine` and the `_whiffRoutine` field. Leave the `whiffFlash` `CanvasGroup` field for now but unassign it in the scene (or remove the field + scene object) — the desaturate replaces it. Add `using` if needed (types are in the same asmdef namespace).
 
-- [ ] **Step 8: Compile + play-verify**
+- [x] **Step 8: Compile + play-verify**
 
 `mcp__unityMCP__read_console` — no errors. Boot via Recipe 4; whiff a verb (swing at nothing). Confirm: **record-scratch SFX + a brief fullscreen desaturate-to-grey** that decays out — and the old red flash is gone.
 
-- [ ] **Step 9: Commit**
+- [x] **Step 9: Commit**
 
 ```bash
 git add Assets/_neon/Scripts/Feel/WhiffFx.cs Assets/_neon/Scripts/Feel/WhiffPostFx.cs Assets/_neon/Tests/EditMode/Feel/WhiffFxTests.cs Assets/_neon/Rendering/NeonPostWhiff.asset* Assets/_neon/Scripts/Feel/FeedbackSystem.cs Assets/_neon/Scenes/Game/03_Level1.unity
@@ -234,36 +234,36 @@ git commit -m "feat: whiff fullscreen desaturate via PPv2 (replaces red flash) +
 **Files:**
 - Verify only (profiler / stats)
 
-- [ ] **Step 1: Measure with the stack on, at cap**
+- [x] **Step 1: Measure with the stack on, at cap**
 
 Boot via Recipe 4, Level 01 with swarm enabled at the `ChaffCap` ceiling (~150). With PPv2 active, capture frame time (Profiler, or an on-screen FPS). Compare against the pre-PPv2 baseline (spike headroom ~197 FPS at cap 150).
 
-- [ ] **Step 2: Judge**
+- [x] **Step 2: Judge**
 
 Expected: PPv2 (bloom + grade + vignette) is a fixed fullscreen cost — comfortably within headroom on PC. If bloom is disproportionately expensive, lower its resolution/iterations. **Done = no material regression** (stays well above target framerate). Record the measured number.
 
-- [ ] **Step 3: Legibility check under bloom (world-space feedback)**
+- [x] **Step 3: Legibility check under bloom (world-space feedback)**
 
 Confirm world-space feedback that bloom *does* touch stays legible: Finish-Ready glow reads (not a white blob), and `FloatingTextSpawner` popups aren't blown out. If blown out, raise the bloom threshold. (HUD/finish prompt are Overlay → already safe.)
 
-- [ ] **Step 4: (No commit unless a profile value was tuned — then commit the profile.)**
+- [x] **Step 4: (No commit unless a profile value was tuned — then commit the profile.)**
 
 ---
 
 ## Task 5: Green sweep & acceptance
 
-- [ ] **Step 1: Full EditMode suite**
+- [x] **Step 1: Full EditMode suite**
 
 Run EditMode. Expected: **green** — Plan A.a's 155 + 4 (`WhiffFxTests`) = 159, no regressions.
 
-- [ ] **Step 2: Acceptance play-test (Recipe 4 boot, Level 01)** — confirm all:
+- [x] **Step 2: Acceptance play-test (Recipe 4 boot, Level 01)** — confirm all:
   - Bloom makes neon/glow pop; scene not washed out; vignette frames the fight.
   - HUD + finish prompt crisp (no bloom bleed).
   - Whiff = record-scratch + fullscreen desaturate pulse; no red flash.
   - Frame rate within headroom at 150 chaff.
   - No console errors.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add -A
