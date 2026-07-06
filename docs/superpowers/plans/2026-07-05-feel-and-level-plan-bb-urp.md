@@ -55,23 +55,23 @@
 - Create: `Assets/_neon/Rendering/NeonURP-Pipeline.asset`, `Assets/_neon/Rendering/NeonURP-Renderer2D.asset`
 - Modify: `ProjectSettings/GraphicsSettings.asset`, `ProjectSettings/QualitySettings.asset`
 
-- [ ] **Step 1: Create the pipeline + 2D renderer**
+- [x] **Step 1: Create the pipeline + 2D renderer**
 
 Assets → Create → Rendering → **URP Universal Renderer** is the 3D one — instead create **URP → 2D Renderer (Renderer2D Data)** → `NeonURP-Renderer2D.asset`, and a **URP Pipeline Asset** → `NeonURP-Pipeline.asset`, and set the pipeline's Renderer list to the Renderer2D. On the pipeline asset: **HDR = on**, and leave scaling/shadows at 2D-sane defaults.
 
-- [ ] **Step 2: Assign as Default Render Pipeline**
+- [x] **Step 2: Assign as Default Render Pipeline**
 
 `ProjectSettings/GraphicsSettings` → Scriptable Render Pipeline Settings = `NeonURP-Pipeline`. **Leave every Quality level's Render Pipeline Asset = None** (so the graphics default applies uniformly — per the handoff).
 
-- [ ] **Step 3: Quality — MSAA off**
+- [x] **Step 3: Quality — MSAA off**
 
 `QualitySettings` → for all levels (esp. "Ultra"): **Anti Aliasing = Disabled** (2× MSAA is useless for 2D and conflicts with HDR targets).
 
-- [ ] **Step 4: Compile + expect broken materials**
+- [x] **Step 4: Compile + expect broken materials**
 
 `mcp-for-unity` `read_console`. Expected: no *compile* errors. The scene will render with **magenta/pink** materials (BiRP shaders don't run under URP) — that is expected and fixed in Tasks 2–3. Confirm the game boots via Recipe 4 (DI intact) even if pink.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add Assets/_neon/Rendering/NeonURP-Pipeline.asset* Assets/_neon/Rendering/NeonURP-Renderer2D.asset* ProjectSettings/GraphicsSettings.asset ProjectSettings/QualitySettings.asset
@@ -85,7 +85,7 @@ git commit -m "build: assign URP 2D pipeline as default (HDR on, MSAA off) (Plan
 **Files:**
 - Rewrite: `Assets/_neon/Shaders/NeonInstancedUnlit.shader` (keep the name `Neon/InstancedUnlit`)
 
-- [ ] **Step 1: Rewrite the shader URP-compatible (instancing preserved)**
+- [x] **Step 1: Rewrite the shader URP-compatible (instancing preserved)**
 
 ```hlsl
 Shader "Neon/InstancedUnlit"
@@ -155,15 +155,15 @@ Shader "Neon/InstancedUnlit"
 
 (`_Color` is a per-material uniform — `SwarmRenderRig.DrawAmbient` passes only matrices to `DrawMeshInstanced`, no per-instance color array, so this matches usage. `DrawMeshInstanced` feeds `unity_ObjectToWorld` per instance, which `TransformObjectToHClip` consumes via the instancing macros.)
 
-- [ ] **Step 2: Compile check**
+- [x] **Step 2: Compile check**
 
 `read_console`. Expected: shader compiles; `SwarmAmbient.mat` (uses `Neon/InstancedUnlit`) is no longer pink in the inspector preview.
 
-- [ ] **Step 3: Play-verify the instanced draw (the critical one)**
+- [x] **Step 3: Play-verify the instanced draw (the critical one)**
 
 Boot via Recipe 4, Level 01, swarm on. Confirm **ambient quads render** and `UnityEditor.UnityStats.instancedBatches ≥ 1` (probe via `mcp-for-unity` `execute_code`; do **not** use the MCP screenshot tool). If ambient is invisible: the shader/instancing path is wrong — do not proceed until `instancedBatches ≥ 1`.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add Assets/_neon/Shaders/NeonInstancedUnlit.shader
@@ -178,7 +178,7 @@ git commit -m "feat: URP-compatible instanced unlit shader (DrawMeshInstanced pr
 - Modify: `Assets/_neon/Scripts/Swarm/SwarmRenderRig.cs`
 - Modify: `Assets/_neon/Scenes/Game/03_Level1.unity` (+ pink-material sweep across shipping scenes)
 
-- [ ] **Step 1: Give chaff proxies a lit material**
+- [x] **Step 1: Give chaff proxies a lit material**
 
 Add a serialized material field and assign it to each proxy in `Start` (proxies currently take the default sprite material):
 
@@ -191,19 +191,19 @@ if (_chaffMaterial != null) spriteRenderer.material = _chaffMaterial;
 
 (`spriteRenderer.color` tinting — `_hotColor`/`_finishReadyColor` — still applies with `Sprite-Lit-Default`.)
 
-- [ ] **Step 2: Sweep sprite materials in shipping scenes**
+- [x] **Step 2: Sweep sprite materials in shipping scenes**
 
 In `03_Level1` (and any other shipping scene showing pink), set `SpriteRenderer` materials to **`Sprite-Lit-Default`** (Unity default; sprites with the built-in default already fall back, but explicitly set the ones rendering pink). Assign `_chaffMaterial = Sprite-Lit-Default` on the `SwarmRenderRig`. Note any addon/template materials that need a URP shader.
 
-- [ ] **Step 3: Add the parity global light**
+- [x] **Step 3: Add the parity global light**
 
 Add a `Light2D` (Global, intensity 1, white) to `03_Level1` (Renderer2D must be active). With lit sprites + a global light at 1, brightness matches BiRP unlit. **No other lights** (authoring is Plan C/mood).
 
-- [ ] **Step 4: Play-verify parity**
+- [x] **Step 4: Play-verify parity**
 
 Boot via Recipe 4. Sprites (player, chaff, environment) render at ~pre-migration brightness, **no pink**. Chaff tint (hot / finish-ready) still shows. No console errors.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add Assets/_neon/Scripts/Swarm/SwarmRenderRig.cs Assets/_neon/Scenes/Game/03_Level1.unity
@@ -219,11 +219,11 @@ git commit -m "feat: sprites → Sprite-Lit-Default + global Light2D for URP par
 - Modify: `Assets/_neon/Scripts/Feel/WhiffPostFx.cs`, `Assets/_neon/Scripts/BrainlessLabs.Neon.asmdef`
 - Modify: `03_Level1.unity`
 
-- [ ] **Step 1: Enable post on the camera**
+- [x] **Step 1: Enable post on the camera**
 
 On the Plan-0 Main Camera, its `UniversalAdditionalCameraData`: **Post Processing = on**; **Volume Mask = `PostProcessing`** layer (reuse Plan B's layer 10). Cinemachine still drives the transform; URP handles post per-camera.
 
-- [ ] **Step 2: Base volume profile (parity with `NeonPostBase`)**
+- [x] **Step 2: Base volume profile (parity with `NeonPostBase`)**
 
 Create `NeonVolumeBase.asset` (VolumeProfile) with URP overrides:
 - **Bloom** — intensity 2.5, threshold 0.9 (URP has no "knee"; set scatter ~0.5 to approximate; HDR is on so bloom has range).
@@ -232,7 +232,7 @@ Create `NeonVolumeBase.asset` (VolumeProfile) with URP overrides:
 
 Add `GameObject "Post Global"` (reuse/replace the PPv2 one) on the `PostProcessing` layer with a URP `Volume`: `Is Global = true`, `Priority = 0`, profile = `NeonVolumeBase`.
 
-- [ ] **Step 3: Whiff volume profile + re-type WhiffPostFx**
+- [x] **Step 3: Whiff volume profile + re-type WhiffPostFx**
 
 Create `NeonVolumeWhiff.asset` with a **Color Adjustments** override, **saturation = −100**. Add `GameObject "Post Whiff"` on the `PostProcessing` layer: URP `Volume` `Is Global = true`, `Priority = 10`, `Weight = 0`, profile = `NeonVolumeWhiff`.
 
@@ -276,15 +276,15 @@ namespace BrainlessLabs.Neon
 
 Wire the `Post Whiff` `Volume` into `WhiffPostFx._whiffVolume`. `WhiffFx`, its tests, and `FeedbackSystem` are **unchanged**.
 
-- [ ] **Step 4: asmdef refs**
+- [x] **Step 4: asmdef refs**
 
 In `BrainlessLabs.Neon.asmdef`: remove `"Unity.Postprocessing.Runtime"`. Ensure `"Unity.RenderPipelines.Core.Runtime"` is referenced (provides `UnityEngine.Rendering.Volume`). Add `"Unity.RenderPipelines.Universal.Runtime"` only if any runtime code touches URP override types (the profiles are authored as assets, so likely not needed — add only if compile demands).
 
-- [ ] **Step 5: Compile + play-verify post + whiff**
+- [x] **Step 5: Compile + play-verify post + whiff**
 
 `read_console` — no errors. Boot via Recipe 4: bloom/grade/vignette read like the Plan-B BiRP look; HUD/finish-prompt crisp. Whiff a verb — confirm the desaturate pulse fires (raise `UnitActions.onVerbWhiffed` **deferred** and track `Volume.weight` max, per the constraint). SFX still plays.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add Assets/_neon/Rendering/NeonVolumeBase.asset* Assets/_neon/Rendering/NeonVolumeWhiff.asset* Assets/_neon/Scripts/Feel/WhiffPostFx.cs Assets/_neon/Scripts/BrainlessLabs.Neon.asmdef Assets/_neon/Scenes/Game/03_Level1.unity
@@ -298,27 +298,27 @@ git commit -m "feat: URP Volume post (bloom/grade/vignette) + whiff desaturate r
 **Files:**
 - Modify: `Packages/manifest.json`; Delete: `NeonPostBase.asset`, `NeonPostWhiff.asset`; Modify: `03_Level1.unity`, ProjectSettings defines
 
-- [ ] **Step 1: Strip the scene of PPv2 components**
+- [x] **Step 1: Strip the scene of PPv2 components**
 
 Remove the `PostProcessLayer` from the Main Camera and delete any leftover PPv2 `PostProcessVolume` components/GOs (the URP `Volume` GOs from Task 4 replace them). Confirm nothing in the scene references `NeonPostBase`/`NeonPostWhiff`.
 
-- [ ] **Step 2: Delete the PPv2 profile assets**
+- [x] **Step 2: Delete the PPv2 profile assets**
 
 Delete `Assets/_neon/Rendering/NeonPostBase.asset` + `.meta` and `NeonPostWhiff.asset` + `.meta`.
 
-- [ ] **Step 3: Remove the package**
+- [x] **Step 3: Remove the package**
 
 Remove `"com.unity.postprocessing": "3.4.0"` from `Packages/manifest.json`. Let the resolver update `packages-lock.json`.
 
-- [ ] **Step 4: Verify the scripting defines cleared**
+- [x] **Step 4: Verify the scripting defines cleared**
 
 Confirm `UNITY_POST_PROCESSING_STACK_V2` is gone from `ProjectSettings/ProjectSettings.asset` scripting-define lists across platforms (should auto-remove with the package; strip manually if any linger).
 
-- [ ] **Step 5: Compile clean**
+- [x] **Step 5: Compile clean**
 
 `read_console`. Expected: **no errors, no "PostProcessing" namespace references** anywhere. (`rg -n "UnityEngine.Rendering.PostProcessing|PostProcessVolume|PostProcessLayer|Postprocessing.Runtime" Assets/_neon` → no hits.)
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add -A
@@ -329,26 +329,26 @@ git commit -m "chore: remove PPv2 entirely — package, assets, scene components
 
 ## Task 6: Gates & acceptance
 
-- [ ] **Step 1: EditMode suite**
+- [x] **Step 1: EditMode suite**
 
 Run EditMode scoped to `BrainlessLabs.Neon.Tests.EditMode`. Expected: **161/161 green** (`WhiffFx` tests unchanged; no new tests in B.b).
 
-- [ ] **Step 2: Perf gate @150 chaff**
+- [x] **Step 2: Perf gate @150 chaff**
 
 Force cap 150 (density-probe recipe: box `SwarmBridge._config` ChaffCap=150 / rate=40 / null ChaffCapCurve, bump `UnitDefinitionAsset._maxFollowers`, **restore after**). Measure live-fight FPS with URP post on, via the same editor probe. Compare to baselines: PPv2 was **189 FPS** on / **224** off / ~**197** M1. Expected: URP 2D + Volume post lands in the same ballpark (≥ ~180 on-post). Record the number; investigate if materially below.
 
-- [ ] **Step 3: Instanced draw + acceptance play-test (Recipe 4)** — confirm all:
+- [x] **Step 3: Instanced draw + acceptance play-test (Recipe 4)** — confirm all:
   - `instancedBatches ≥ 1` (ambient draws under URP).
   - No pink materials in `03_Level1`; sprites at parity brightness; chaff tints show.
   - Bloom/grade/vignette read like Plan B; HUD + finish prompt crisp.
   - Whiff = record-scratch + fullscreen desaturate pulse (deferred-probe verified); no red flash.
   - No console errors.
 
-- [ ] **Step 4: Other-scene smoke**
+- [x] **Step 4: Other-scene smoke**
 
 Boot the menu / level-select / other shipping scenes (via the normal flow) — confirm they load and render (no pink, no errors). Full art-parity of non-Level-01 scenes is not required, but they must not be broken.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add -A
